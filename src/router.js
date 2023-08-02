@@ -3,6 +3,8 @@ import Home from './views/Home.vue';
 import About from './views/About.vue';
 import Contact from './views/Contact.vue';
 import Products from './views/Products.vue';
+import Add from './views/Add.vue';
+import Edit from './views/Edit.vue';
 const routes = [
     {
         //http://localhost/
@@ -23,6 +25,16 @@ const routes = [
         //http://localhost/products
         path:'/products',
         component:Products
+    },
+    {
+        //http://localhost/products/add
+        path:'/products/add',
+        component:Add
+    },
+    {
+        //http://localhost/products/edit/1
+        path:'/products/edit/:id',
+        component:Edit
     }
 ]
 
