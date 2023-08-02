@@ -24,8 +24,8 @@
         <td>{{ price }}</td>
         <td>{{ make }}</td>
         <td>
-            <RouterLink class="btn btn-secondary mb-3" :to="'/products/edit/' + id"><i class="bi bi-person-add"></i> 修改</RouterLink>
-            <button class="btn btn-danger" @click="deleteHandler(id)"><i class="bi bi-person-add"></i> 刪除</button>
+            <RouterLink class="btn btn-secondary me-3" :to="'/products/edit/' + id"><i class="bi bi-pencil-fill"></i> 修改</RouterLink>
+            <button class="btn btn-danger" @click="deleteHandler(id)"><i class="bi bi-trash-fill"></i> 刪除</button>
         </td>
       </tr>
     </tbody>
