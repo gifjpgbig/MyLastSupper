@@ -19,8 +19,6 @@ public class OrderListController {
 	@Autowired
 	private OrderListService olService;
 	
-
-	
 	
 	@PostMapping("/order/findByCustomerId/{id}")
 	public List<OrderListBean> findBycustomerId(@PathVariable Integer id){
@@ -51,17 +49,17 @@ public class OrderListController {
 	//改變訂單狀態
 	@PutMapping("/order/update/status/{id}")
 	public void updateStatus(@PathVariable Integer id, @RequestBody OrderListBean ol) {
-		olService.updateOrderById(id, ol);
+		olService.updateStatusById(id, ol);
 	}
 	//改變客戶針對訂單的評論、店家的評價、餐點的評論
 	@PutMapping("/order/update/reviews/{id}")
 	public void updateReviews(@PathVariable Integer id, @RequestBody OrderListBean ol) {
-		olService.updateOrderById(id, ol);
+		olService.updateReviewsById(id, ol);
 	}
 	//改變店家回覆客戶的評論
 	@PutMapping("/order/update/reply/{id}")
 	public void updateReply(@PathVariable Integer id, @RequestBody OrderListBean ol) {
-		olService.updateOrderById(id, ol);
+		olService.updateReplyById(id, ol);
 	}
 	
 	
