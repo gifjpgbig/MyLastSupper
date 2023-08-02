@@ -1,12 +1,17 @@
 <script setup>
-import HelloVue from "./components/HelloVue.vue";
-
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.js'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import Navbar from './components/Navbar.vue'
 
 </script>
 
 <template>
-  <h2>Hello Vue!!</h2>
- <router-view></router-view>
+  <div class="container">
+   <Navbar></Navbar>
+   <router-view></router-view>
+  </div>
+  
 </template>
 
 <style scoped>

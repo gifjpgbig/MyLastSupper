@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Home from './components/Home.vue';
-import About from './components/About.vue';
-import Contact from './components/Contact.vue';
+import Home from './views/Home.vue';
+import About from './views/About.vue';
+import Contact from './views/Contact.vue';
 const routes = [
     {
         //http://localhost/
