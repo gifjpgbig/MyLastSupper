@@ -64,7 +64,7 @@ const loadProducts = async () => {
   products.value = response.data.list;
 
   //計算總共幾頁
- totalPages.value = datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows)
+ totalPages.value = +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows)
 };
 
 //paging 由子元件觸發
@@ -84,6 +84,7 @@ const inputHandler = value =>{
 const changeHandler = value => {
     datas.rows = value
     datas.start = 0
+    console.log("pagesize：",datas)
     loadProducts()
 }
 
