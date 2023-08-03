@@ -1,52 +1,104 @@
 <template>
   <h2>Product List</h2>
-  <RouterLink class="btn btn-primary mb-3" to="/products/add"><i class="bi bi-person-add"></i> 新增</RouterLink>
+  <RouterLink class="btn btn-primary mb-3" to="/orders/add"
+    ><i class="bi bi-person-add"></i> 新增</RouterLink
+  >
   <div class="row mb-3">
-    <div class="col-3"><PageSize @pageSizeChange="changeHandler"></PageSize></div>
+    <div class="col-3">
+      <PageSize @pageSizeChange="changeHandler"></PageSize>
+    </div>
     <div class="col-6"></div>
-    <div class="col-3"><SearchTextBox @searchInput="inputHandler"></SearchTextBox></div>
+    <div class="col-3">
+      <SearchTextBox @searchInput="inputHandler"></SearchTextBox>
+    </div>
   </div>
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>產品編號 <i class="bi" :class="{ 'bi-sort-up': datas.sortOrder === 'asc', 'bi-sort-down': datas.sortOrder === 'desc' }"  @click="sortHandler('id')"></i>
-</th>
-        <th>產品名稱</th>
-        <th>產品價格</th>
-        <th>製造日期</th>
-        <th>編輯</th>
+        <th>
+          訂單編號
+          <i
+            class="bi"
+            :class="{
+              'bi-sort-up': datas.sortOrder === 'asc',
+              'bi-sort-down': datas.sortOrder === 'desc',
+            }"
+            @click="sortHandler('id')"
+          ></i>
+        </th>
+        <th>外送地址</th>
+        <!-- <th>外送費</th> -->
+        <!-- <th>折扣</th> -->
+        <th>訂單狀態</th>
+        <th>客戶ID</th>
+        <th>店家ID</th>
+        <!-- <th>總金額</th> -->
       </tr>
     </thead>
     <tbody>
-      <tr v-for="{ id, name, price, make } in products" :key="id">
+      <tr
+        v-for="{ id, address, status, customerID, shopID } in orders"
+        :key="id"
+      >
         <td>{{ id }}</td>
-        <td>{{ name }}</td>
-        <td>{{ price }}</td>
-        <td>{{ make }}</td>
+        <!-- <td><input type="text" :value="address" /></td> -->
+        <td>{{ address }}</td>
+        <!-- <td>{{ status }}</td> -->
         <td>
-            <RouterLink class="btn btn-secondary me-3" :to="'/products/edit/' + id"><i class="bi bi-pencil-fill"></i> 修改</RouterLink>
-            <button class="btn btn-danger" @click="deleteHandler(id)"><i class="bi bi-trash-fill"></i> 刪除</button>
+          <select class="form-select" id="status" :value="status" 
+          @change="updateStatus(id, $event.target.value)">
+            <option v-for="stat in stats" :value="stat.name" >
+              {{ stat.name }}
+            </option>
+          </select>
+        </td>
+        <td>{{ customerID }}</td>
+        <td>{{ shopID }}</td>
+        <td>
+          <RouterLink
+            class="btn btn-secondary me-3"
+            :to="'/products/edit/' + id"
+            ><i class="bi bi-pencil-fill"></i> 修改</RouterLink
+          >
+          <button class="btn btn-danger" @click="deleteHandler(id)">
+            <i class="bi bi-trash-fill"></i> 刪除
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
-  <Paging :totalPages="totalPages" :thePage="datas.start + 1" @childClick="clickHandler"></Paging>
-  <!--
-  <nav aria-label="Page navigation example">
-  <ul class="pagination">    
-    <li class="page-item" @click="clickHandler(value)" v-for="(value, index) in totalPages" :key="index"><a :class="{'page-link':true,'currentPage':datas.start+1===value}">{{ value }}</a></li>
-    
-  </ul>
-</nav>-->
+  <Paging
+    :totalPages="totalPages"
+    :thePage="datas.start + 1"
+    @childClick="clickHandler"
+  ></Paging>
 </template>
-    
+
 <script setup>
 import { ref, reactive } from "vue";
 import axios from "axios";
 import Paging from "../components/Paging.vue";
 import SearchTextBox from "../components/SearchTextBox.vue";
 import PageSize from "../components/PageSize.vue";
-const products = ref([]);
+const orders = ref([]);
+const stats = ref([
+  {
+    id: 1,
+    name: "已接單",
+  },
+  {
+    id: 2,
+    name: "未接單",
+  },
+  {
+    id: 3,
+    name: "被棄單待接單",
+  },
+  {
+    id: 4,
+    name: "已取消",
+  }
+]);
 const totalPages = ref(0);
 const datas = reactive({
   start: 0,
@@ -55,59 +107,88 @@ const datas = reactive({
   sortOrder: "asc",
   sortType: "id",
 });
-const URL = import.meta.env.VITE_API_JAVAURL;
+const URL = import.meta.env.VITE_API_ORDER;
 const loadProducts = async () => {
-  const URLAPI = `${URL}products/find`;
-  const response = await axios.post(URLAPI, datas);
-  console.log(response.data)
+  // const URLAPI = `${URL}findByCustomerId/1`;
+  const URLAPI = `${URL}find`;
+  const response = await axios.post(URLAPI);
+  console.log(response.data);
   //取得所有商品放進products變數
-  products.value = response.data.list;
+  orders.value = response.data.list;
 
   //計算總共幾頁
- totalPages.value = +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows)
+  totalPages.value =
+    +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows);
 };
 
 //paging 由子元件觸發
-const clickHandler = page =>{
-    datas.start = page - 1
-    loadProducts()
-}
+const clickHandler = (page) => {
+  datas.start = page - 1;
+  loadProducts();
+};
 
 //搜尋
-const inputHandler = value =>{
-    datas.name = value
-    datas.start = 0
-    loadProducts()
-}
+const inputHandler = (value) => {
+  datas.name = value;
+  datas.start = 0;
+  loadProducts();
+};
 
 //一頁幾筆資料
-const changeHandler = value => {
-    datas.rows = value
-    datas.start = 0
-    console.log("pagesize：",datas)
-    loadProducts()
-}
+const changeHandler = (value) => {
+  datas.rows = value;
+  datas.start = 0;
+  console.log("pagesize：", datas);
+  loadProducts();
+};
+
+//更新訂單狀態
+const updateStatus = async (id, status) => {
+  const API_URL = `${URL}update/status/${id}`;
+  console.log(API_URL);
+
+  await new Promise((resolve) => setTimeout(resolve, 50));
+
+  const isConfirmed = window.confirm("確定要執行這個操作嗎？");
+
+  if (isConfirmed) {
+
+  const response = await axios.put(API_URL, {status});
+  if (response.data.success) {
+    alert(response.data.message);
+    // router.push("/products");
+    window.location.reload();
+  }  
+  } else {
+    // 如果使用者取消，不執行更新操作
+    alert("已取消操作");
+    window.location.reload();
+
+  }
+};
+
+
+
 
 //排序
-const sortHandler = type => {
-    datas.sortOrder = datas.sortOrder === "asc" ? "desc" : "asc"
-    datas.sortType = type
-    loadProducts()
-}
+const sortHandler = (type) => {
+  datas.sortOrder = datas.sortOrder === "asc" ? "desc" : "asc";
+  datas.sortType = type;
+  loadProducts();
+};
 
 //刪除
-const deleteHandler = async(id) =>{
-    if(window.confirm("真的要刪除嗎?")){
-        const URLAPI = `${URL}products/${id}`;
-       const response = await axios.delete(URLAPI);
-       if(response.data.success){
-        alert(response.data.message)
-        loadProducts()
-       }
+const deleteHandler = async (id) => {
+  if (window.confirm("真的要刪除嗎?")) {
+    const URLAPI = `${URL}delete1/${id}`;
+    const response = await axios.delete(URLAPI);
+    if (response.data.success) {
+      alert(response.data.message);
+      loadProducts();
     }
-}
+  }
+};
 loadProducts();
 </script>
-    
-<style scoped>
-</style>
+
+<style scoped></style>

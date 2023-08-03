@@ -27,8 +27,8 @@ const routes = [
         component:Products
     },
     {
-        //http://localhost/products/add
-        path:'/products/add',
+        //http://localhost/orders/add
+        path:'/orders/add',
         component:Add
     },
     {
