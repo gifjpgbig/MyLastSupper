@@ -2,6 +2,7 @@ package com.projectdemo.customer.bean;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -96,6 +97,7 @@ public class CustomerBean {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 	@JsonIgnore
+	@JsonIgnoreProperties("orderList")
 	private List<OrderListBean> orderList;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")

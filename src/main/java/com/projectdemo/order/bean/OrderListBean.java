@@ -31,12 +31,10 @@ public class OrderListBean {
 	private Integer id;
 	
 	@ManyToOne
-//	@JsonIgnore
 	@JoinColumn(name = "fk_customer_id", columnDefinition = "int")
 	private CustomerBean customer;
 	
 	@ManyToOne
-//	@JsonIgnore
 	@JoinColumn(name = "fk_shop_id", columnDefinition = "int")
 	private ShopBean shop;
 	

@@ -34,6 +34,13 @@ public class OrderListService {
 	@Autowired
 	private CustomerService customerService;
 	
+	
+	//找到所有訂單、且
+	public List<OrderListBean> findAll(String json){
+		return oLRepo.findAll();
+	}
+	
+	
 	//客戶歷史訂單
 	public List<OrderListBean> findOrderByCustomerId(Integer id){
 		CustomerBean bean = customerService.findCustomerById(id);
@@ -45,15 +52,16 @@ public class OrderListService {
 		return oLRepo.findByShop(bean);
 	}
 	//改變訂單狀態
-	public void updateStatusById(Integer id, OrderListBean ol) {
+	public OrderListBean updateStatusById(Integer id, OrderListBean ol) {
 	    Optional<OrderListBean> optional = oLRepo.findById(id);
 	    if (optional.isPresent()) {
 			OrderListBean olbean = optional.get();
-			System.out.println("original olbean:" + olbean.toString());
+//			System.out.println("original olbean:" + olbean.toString());
 			olbean.setStatus(ol.getStatus());
-			System.out.println("after olbean:" + olbean.toString());
-			oLRepo.save(olbean);
+//			System.out.println("after olbean:" + olbean.toString());
+			return oLRepo.save(olbean);
 	    }
+	    return null;
 	}
 	//改變客戶針對訂單的評論、店家的評價、餐點的評論
 	public void updateReviewsById(Integer id, OrderListBean ol) {
@@ -87,8 +95,18 @@ public class OrderListService {
 	    return null;
 	}
 	
-	public void deleteODById(Integer id) {
-		oLRepo.deleteById(id);
+	public boolean deleteODById(Integer id) {
+		if(exists(id)) {
+			oLRepo.deleteById(id);
+			return true;
+		}
+		return false;
 	}
 
+	public boolean exists(Integer id) {
+		return oLRepo.findById(id).get() != null;
+	}
+	
+	
+	
 }

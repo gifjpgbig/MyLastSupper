@@ -2,6 +2,7 @@ package com.projectdemo.customer.bean;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -24,7 +25,7 @@ public class CustomerCouponBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "int")
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "fk_customer_id", columnDefinition = "int")
 	private CustomerBean customer;
