@@ -1,13 +1,15 @@
 <template>
-  <h2>Product List</h2>
+  <h2>Order List</h2>
+  
   <RouterLink class="btn btn-primary mb-3" to="/orders/add"
     ><i class="bi bi-person-add"></i> 新增</RouterLink
   >
+  <ToggleSwitch>test</ToggleSwitch>
   <div class="row mb-3">
     <div class="col-3">
       <PageSize @pageSizeChange="changeHandler"></PageSize>
     </div>
-    <div class="col-6"></div>
+    <div class="col+-6"></div>
     <div class="col-3">
       <SearchTextBox @searchInput="inputHandler"></SearchTextBox>
     </div>
@@ -27,12 +29,9 @@
           ></i>
         </th>
         <th>外送地址</th>
-        <!-- <th>外送費</th> -->
-        <!-- <th>折扣</th> -->
         <th>訂單狀態</th>
         <th>客戶ID</th>
         <th>店家ID</th>
-        <!-- <th>總金額</th> -->
       </tr>
     </thead>
     <tbody>
@@ -43,7 +42,6 @@
         <td>{{ id }}</td>
         <!-- <td><input type="text" :value="address" /></td> -->
         <td>{{ address }}</td>
-        <!-- <td>{{ status }}</td> -->
         <td>
           <select class="form-select" id="status" :value="status" 
           @change="updateStatus(id, $event.target.value)">
@@ -80,6 +78,7 @@ import axios from "axios";
 import Paging from "../components/Paging.vue";
 import SearchTextBox from "../components/SearchTextBox.vue";
 import PageSize from "../components/PageSize.vue";
+import ToggleSwitch from "../components/ToggleSwitch.vue";
 const orders = ref([]);
 const stats = ref([
   {
@@ -104,6 +103,8 @@ const datas = reactive({
   start: 0,
   rows: 0,
   name: "",
+  cusID: "",
+  shopID: "",
   sortOrder: "asc",
   sortType: "id",
 });
@@ -111,7 +112,7 @@ const URL = import.meta.env.VITE_API_ORDER;
 const loadProducts = async () => {
   // const URLAPI = `${URL}findByCustomerId/1`;
   const URLAPI = `${URL}find`;
-  const response = await axios.post(URLAPI);
+  const response = await axios.post(URLAPI, datas);
   console.log(response.data);
   //取得所有商品放進products變數
   orders.value = response.data.list;
@@ -129,8 +130,9 @@ const clickHandler = (page) => {
 
 //搜尋
 const inputHandler = (value) => {
-  datas.name = value;
+  datas.cusID = value;
   datas.start = 0;
+  console.log(datas.cusID)
   loadProducts();
 };
 
