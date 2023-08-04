@@ -5,9 +5,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,14 +26,18 @@ public class OrderListController {
 
 	// 找到全部的訂單
 	@PostMapping("/order/find")
-	public String find() {
+	public String find(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 
-		List<OrderListBean> orders = olService.findAll(null);
+		System.out.println(json);
+		JSONObject countJson = new JSONObject(json);
+		long count = olService.count(countJson);
+		responseJson.put("count", count);
+		
+		Page<OrderListBean> orders = olService.findAll(json);
 		JSONArray array = new JSONArray();
 		if (orders != null && !orders.isEmpty()) {
 			for (OrderListBean order : orders) {
-//				JSONObject cus = new JSONObject(order.getCustomer());
 				Integer cusID = 0;
 				Integer shopID = 0;
 				if (order.getCustomer().getCustomerID() != null) {
@@ -59,21 +63,21 @@ public class OrderListController {
 	@PostMapping("/order/findByCustomerId/{id}")
 	public String findBycustomerId(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
-
 		List<OrderListBean> orders = olService.findOrderByCustomerId(id);
 		JSONArray array = new JSONArray();
 		if (orders != null && !orders.isEmpty()) {
 			for (OrderListBean order : orders) {
-//				JSONObject cus = new JSONObject(order.getCustomer());
-				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
-						.put("status", order.getStatus()).put("customerID", order.getCustomer().getCustomerID())
+				JSONObject item = new JSONObject()
+						.put("id", order.getId())
+						.put("address", order.getAddress())
+						.put("status", order.getStatus())
+						.put("customerID", order.getCustomer().getCustomerID())
 						.put("customer", order.getCustomer().toString());
 				array = array.put(item);
 			}
 		}
 		responseJson.put("list", array);
 		return responseJson.toString();
-
 	}
 
 	@PostMapping("/order/findByShopId/{id}")
@@ -110,7 +114,7 @@ public class OrderListController {
 //	}
 
 	@PostMapping("/order/findById/{id}")
-	public OrderListBean find(@PathVariable Integer id) {
+	public OrderListBean findById(@PathVariable Integer id) {
 		return olService.findOrderById(id);
 	}
 
