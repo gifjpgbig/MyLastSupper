@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.projectdemo.order.bean.OrderDetailBean;
 import com.projectdemo.order.service.OrderDetailService;
 
 @RestController
+@CrossOrigin()
 public class OrderDetailController {
 
 	@Autowired
@@ -38,7 +40,7 @@ public class OrderDetailController {
 		return findOrderDetailById;
 	}
 
-	@PostMapping("/order/detail/findAllByOrderId")
+	@PostMapping("/order/detail/findAllByOrderId/{id}")
 	public String findAllByOrderId(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
 		List<OrderDetailBean> orders = odService.findOrderDetailById(id);
@@ -54,7 +56,6 @@ public class OrderDetailController {
 				if (order.getOrderList().getId() != null) {
 					detailID = order.getOrderList().getId();
 				}
-				
 				JSONObject item = new JSONObject()
 						.put("id", order.getId())
 						.put("amount", order.getAmount())
@@ -65,8 +66,7 @@ public class OrderDetailController {
 			}
 		}
 		responseJson.put("list", array);
-		return responseJson.toString();
-		
+		return responseJson.toString();		
 	}
 	
 	
