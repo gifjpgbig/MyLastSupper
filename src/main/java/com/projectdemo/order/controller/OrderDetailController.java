@@ -2,6 +2,8 @@ package com.projectdemo.order.controller;
 
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +38,36 @@ public class OrderDetailController {
 		return findOrderDetailById;
 	}
 
-	
-	
+	@PostMapping("/order/detail/findAllByOrderId")
+	public String findAllByOrderId(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		List<OrderDetailBean> orders = odService.findOrderDetailById(id);
+		
+		JSONArray array = new JSONArray();
+		if(orders != null && !orders.isEmpty()) {
+			for(OrderDetailBean order : orders) {
+				Integer dishID = 0;
+				Integer detailID = 0;
+				if (order.getDish().getId() != null) {
+					dishID = order.getDish().getId();
+				}
+				if (order.getOrderList().getId() != null) {
+					detailID = order.getOrderList().getId();
+				}
+				
+				JSONObject item = new JSONObject()
+						.put("id", order.getId())
+						.put("amount", order.getAmount())
+						.put("customization", order.getCustomization())
+						.put("dishID", dishID)
+						.put("detailID", detailID);
+				array = array.put(item);
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
+		
+	}
 	
 	
 	@PostMapping("/order/detail/insert1")
