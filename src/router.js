@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Home from './views/Home.vue';
 import About from './views/About.vue';
 import Contact from './views/Contact.vue';
-import Products from './views/Products.vue';
+import Orders from './views/orders.vue';
 import Add from './views/Add.vue';
 import Edit from './views/Edit.vue';
 const routes = [
@@ -22,9 +22,9 @@ const routes = [
         component:Contact
     },
     {
-        //http://localhost/products
-        path:'/products',
-        component:Products
+        //http://localhost/orders
+        path:'/orders',
+        component:Orders
     },
     {
         //http://localhost/orders/add
@@ -32,8 +32,8 @@ const routes = [
         component:Add
     },
     {
-        //http://localhost/products/edit/1
-        path:'/products/edit/:id',
+        //http://localhost/orders/edit/1
+        path:'/orders/edit/:id',
         component:Edit
     }
 ]

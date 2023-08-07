@@ -4,16 +4,27 @@
       <div class="panel-body">
         <!--Only code you need is this label-->
         <label class="switch">
-          <input type="checkbox" @click="toggleCheckbox" />
+          <input type="checkbox" @click="toggleCheckbox" v-model="checkbox1"/>
           <div class="slider round"></div>
         </label>
-        <p>{{ checkbox }}</p>
+        <!-- <p>{{ checkbox }}</p> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import {ref} from 'vue';
+const checkbox1 = ref("")
+const emit = defineEmits(["toggle"])
+
+
+const toggleCheckbox = () => {
+  checkbox1.value = !checkbox1.value;
+  // Emit the custom event
+  emit('toggle', checkbox1.value);
+};
+
 
 </script>
 

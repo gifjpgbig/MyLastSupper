@@ -4,14 +4,17 @@
   <RouterLink class="btn btn-primary mb-3" to="/orders/add"
     ><i class="bi bi-person-add"></i> 新增</RouterLink
   >
-  <ToggleSwitch>test</ToggleSwitch>
+  <!-- <ToggleSwitch @toggle="onToggle"/> -->
+  <ToggleSwitch :checkbox1="toggleStatus" @toggle="onToggle" />
+
   <div class="row mb-3">
     <div class="col-3">
       <PageSize @pageSizeChange="changeHandler"></PageSize>
     </div>
     <div class="col+-6"></div>
     <div class="col-3">
-      <SearchTextBox @searchInput="inputHandler"></SearchTextBox>
+      <!-- <SearchTextBox @searchInput="inputHandler"></SearchTextBox> -->
+      <SearchTextBox :placeholder="placeholderText" @searchInput="inputHandler" />
     </div>
   </div>
   <table class="table table-bordered">
@@ -28,7 +31,17 @@
             @click="sortHandler('id')"
           ></i>
         </th>
-        <th>外送地址</th>
+        <th>
+          外送地址
+          <i
+            class="bi"
+            :class="{
+              'bi-sort-up': datas.sortOrder === 'asc',
+              'bi-sort-down': datas.sortOrder === 'desc',
+            }"
+            @click="sortHandler('address')"
+          ></i>
+        </th>
         <th>訂單狀態</th>
         <th>客戶ID</th>
         <th>店家ID</th>
@@ -55,7 +68,7 @@
         <td>
           <RouterLink
             class="btn btn-secondary me-3"
-            :to="'/products/edit/' + id"
+            :to="'/Orders/edit/' + id"
             ><i class="bi bi-pencil-fill"></i> 修改</RouterLink
           >
           <button class="btn btn-danger" @click="deleteHandler(id)">
@@ -73,13 +86,14 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed  } from "vue";
 import axios from "axios";
 import Paging from "../components/Paging.vue";
 import SearchTextBox from "../components/SearchTextBox.vue";
 import PageSize from "../components/PageSize.vue";
 import ToggleSwitch from "../components/ToggleSwitch.vue";
 const orders = ref([]);
+const toggleStatus = ref(false);
 const stats = ref([
   {
     id: 1,
@@ -109,12 +123,12 @@ const datas = reactive({
   sortType: "id",
 });
 const URL = import.meta.env.VITE_API_ORDER;
-const loadProducts = async () => {
+const loadOrders = async () => {
   // const URLAPI = `${URL}findByCustomerId/1`;
   const URLAPI = `${URL}find`;
   const response = await axios.post(URLAPI, datas);
   console.log(response.data);
-  //取得所有商品放進products變數
+  //取得所有商品放進Orders變數
   orders.value = response.data.list;
 
   //計算總共幾頁
@@ -122,18 +136,42 @@ const loadProducts = async () => {
     +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows);
 };
 
+//Toggle button 由子元件觸發
+const onToggle = () => {
+  toggleStatus.value = !toggleStatus.value;
+  console.log(toggleStatus.value)
+  const temp = datas.cusID;
+  datas.cusID = datas.shopID;
+  datas.shopID = temp;
+  loadOrders();
+}
+const placeholderText = computed(() => {
+  return toggleStatus.value
+    ? '請輸入客戶名稱 (切換為開啟狀態)'
+    : '請輸入店家名稱 (切換為關閉狀態)';
+});
+
+
 //paging 由子元件觸發
 const clickHandler = (page) => {
   datas.start = page - 1;
-  loadProducts();
+  loadOrders();
 };
 
 //搜尋
 const inputHandler = (value) => {
-  datas.cusID = value;
+  if(toggleStatus.value){
+    datas.cusID = value;
+    datas.shopID = "";
+  }else{
+    datas.cusID = "";
+    datas.shopID = value;
+  }
   datas.start = 0;
+  console.log("in input handler")
   console.log(datas.cusID)
-  loadProducts();
+  console.log(datas.shopID)
+  loadOrders();
 };
 
 //一頁幾筆資料
@@ -141,31 +179,40 @@ const changeHandler = (value) => {
   datas.rows = value;
   datas.start = 0;
   console.log("pagesize：", datas);
-  loadProducts();
+  loadOrders();
 };
 
 //更新訂單狀態
 const updateStatus = async (id, status) => {
   const API_URL = `${URL}update/status/${id}`;
   console.log(API_URL);
-
+  // console.log("parameter status"+status)
+  // const originalStatus = status; // 暫存原始資料
+  // console.log("stored status"+originalStatus)
+  
   await new Promise((resolve) => setTimeout(resolve, 50));
-
+  
   const isConfirmed = window.confirm("確定要執行這個操作嗎？");
-
+  
   if (isConfirmed) {
-
-  const response = await axios.put(API_URL, {status});
-  if (response.data.success) {
-    alert(response.data.message);
-    // router.push("/products");
-    window.location.reload();
-  }  
+    
+    console.log("to java status"+status)
+    const response = await axios.put(API_URL, {status});
+    if (response.data.success) {
+      alert(response.data.message);
+      // router.push("/Orders");
+      // window.location.reload();
+      loadOrders();
+    }  
   } else {
     // 如果使用者取消，不執行更新操作
-    alert("已取消操作");
-    window.location.reload();
+    // console.log("cancel originalStatus"+originalStatus)
+    // status = originalStatus;
+    // console.log("cancel status"+status)
 
+    alert("已取消操作");
+    // window.location.reload();
+    loadOrders();
   }
 };
 
@@ -176,7 +223,7 @@ const updateStatus = async (id, status) => {
 const sortHandler = (type) => {
   datas.sortOrder = datas.sortOrder === "asc" ? "desc" : "asc";
   datas.sortType = type;
-  loadProducts();
+  loadOrders();
 };
 
 //刪除
@@ -186,11 +233,11 @@ const deleteHandler = async (id) => {
     const response = await axios.delete(URLAPI);
     if (response.data.success) {
       alert(response.data.message);
-      loadProducts();
+      loadOrders();
     }
   }
 };
-loadProducts();
+loadOrders();
 </script>
 
 <style scoped></style>

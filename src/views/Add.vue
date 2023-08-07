@@ -16,8 +16,13 @@
       </div>
       <div class="mb-3">
         <label for="price" class="form-label">customer</label>
-        <input type="text" class="form-control" id="status" v-model="order.customer.customerID" />
+        <input type="text" class="form-control" id="customer" v-model="order.customer.customerID" />
       </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">shop</label>
+        <input type="text" class="form-control" id="order" v-model="order.shop.shopID" />
+      </div>
+
 
 
       <button class="btn btn-primary" type="button" @click="addHandler">
