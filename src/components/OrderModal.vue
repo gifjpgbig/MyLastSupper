@@ -19,6 +19,29 @@
           ></button>
         </div>
 
+        <div class="modal-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>amount</th>
+                <th>customization</th>
+                <th>fk_dish_id</th>
+                <th>fk_order_list_id</th>
+                <th>total_price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="{ amount, customization, fk_dish_id, fk_order_list_id, total_price} in orderdetails">
+                <td>{{ amount }}</td>
+                <td>{{ customization }}</td>
+                <td>{{ fk_dish_id }}</td>
+                <td>{{ fk_order_list_id }}</td>
+                <td>{{ total_price }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <div class="modal-footer">
           <button
             type="button"
@@ -28,7 +51,6 @@
           >
             關閉
           </button>
-          <!-- <button type="button" class="btn btn-primary">確定</button> -->
         </div>
       </div>
     </div>
@@ -36,28 +58,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { ref } from 'vue';
 const data = ref([]);
 
-// const showModal = ref(false);
-// const props = defineProps({
-//   numberfrom: Number,
-//   orderid: Number
-// });
-const { showModal, closeModal, orderid } = defineProps(['showModal', 'closeModal', 'orderid']);
-
-// onMounted(async () => {
-//   console.log('before');
-//   try {
-//     const response = await axios.get('https://api.example.com/data');
-//     data.value = response.data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-//   console.log('after');
-// });
-
+const { showModal, closeModal, orderid, orderdetails } = defineProps(['showModal', 'closeModal', 'orderid', 'orderdetails']);
 
 </script>
 

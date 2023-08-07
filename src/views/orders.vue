@@ -4,7 +4,7 @@
   <RouterLink class="btn btn-primary mb-3" to="/orders/add"
     ><i class="bi bi-person-add"></i> 新增</RouterLink
   >
-  <!-- <ToggleSwitch @toggle="onToggle"/> -->
+
   <ToggleSwitch :checkbox1="toggleStatus" @toggle="onToggle" />
 
   <div class="row mb-3">
@@ -13,7 +13,6 @@
     </div>
     <div class="col+-6"></div>
     <div class="col-3">
-      <!-- <SearchTextBox @searchInput="inputHandler"></SearchTextBox> -->
       <SearchTextBox
         :placeholder="placeholderText"
         @searchInput="inputHandler"
@@ -56,7 +55,6 @@
         :key="id"
       >
         <td>{{ id }}</td>
-        <!-- <td><input type="text" :value="address" /></td> -->
         <td>{{ address }}</td>
         <td>
           <select
@@ -74,8 +72,7 @@
         <td>{{ shopID }}</td>
         <td>
           <RouterLink class="btn btn-secondary me-3" :to="'/Orders/edit/' + id"
-            ><i class="bi bi-pencil-fill"></i> 修改</RouterLink
-          >
+            ><i class="bi bi-pencil-fill"></i> 修改</RouterLink>
 
           <button
             class="btn btn-secondary me-3"
@@ -94,7 +91,7 @@
       </tr>
     </tbody>
   </table>
-  <OrderModal v-if="showModal" :closeModal="closeModal" :orderid = "selectedOrder"></OrderModal>
+  <OrderModal :closeModal="closeModal" :orderid = "selectedOrder"></OrderModal>
   <Paging
     :totalPages="totalPages"
     :thePage="datas.start + 1"
@@ -110,10 +107,10 @@ import SearchTextBox from "../components/SearchTextBox.vue";
 import PageSize from "../components/PageSize.vue";
 import OrderModal from "../components/OrderModal.vue";
 import ToggleSwitch from "../components/ToggleSwitch.vue";
-const props = defineProps(['foo'])
 const orders = ref([]);
 const showModal = ref(false);
 const toggleStatus = ref(false);
+const orderdetails = ref([]);
 const stats = ref([
   {
     id: 1,
@@ -169,9 +166,13 @@ watch(showModal, (newVal) => {
 const fetchData = async () => {
   console.log('before')
   try {
+    const URLAPI = `${URL}detail/findAllByOrderId/${selectedOrder.value}`;
     // const response = await axios.get('https://api.example.com/data');
     // 在這裡處理獲得的資料
-    console.log(1231546465)
+    const response = await axios.post(URLAPI)
+    console.log(response)
+    console.log(response.data.list)
+    orderdetails.value = response.data.list
   } catch (error) {
     console.error(error);
   }
