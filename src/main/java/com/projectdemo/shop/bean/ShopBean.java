@@ -237,7 +237,7 @@ public class ShopBean {
 		this.bank = bank;
 	}
 
-	public boolean isOpenStatus() {
+	public boolean getOpenStatus() {
 		return openStatus;
 	}
 
