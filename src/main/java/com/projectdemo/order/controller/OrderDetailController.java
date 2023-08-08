@@ -43,7 +43,7 @@ public class OrderDetailController {
 	@PostMapping("/order/detail/findAllByOrderId/{id}")
 	public String findAllByOrderId(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
-		List<OrderDetailBean> orders = odService.findOrderDetailById(id);
+		List<OrderDetailBean> orders = odService.findODByOrderId(id);
 		
 		JSONArray array = new JSONArray();
 		if(orders != null && !orders.isEmpty()) {
@@ -61,7 +61,8 @@ public class OrderDetailController {
 						.put("amount", order.getAmount())
 						.put("customization", order.getCustomization())
 						.put("dishID", dishID)
-						.put("detailID", detailID);
+						.put("detailID", detailID)
+						.put("total_price", order.getTotalPrice());
 				array = array.put(item);
 			}
 		}

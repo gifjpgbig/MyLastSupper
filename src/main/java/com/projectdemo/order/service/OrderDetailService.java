@@ -35,6 +35,11 @@ public class OrderDetailService {
 	 public List<OrderDetailBean> findOrderDetailById(Integer id) {
 	        return odRepo.findOrderDetailById(id);
 	 }
+	 
+	 
+	 public List<OrderDetailBean> findODByOrderId(Integer id){
+		 return odRepo.findAllByOrderId(id);
+	 }
 	
 	
 //	public OrderDetailBean updateODBById(Integer id, OrderDetailBean od) {
