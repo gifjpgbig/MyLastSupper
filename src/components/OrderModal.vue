@@ -31,7 +31,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="{id, amount, customization, dishID, detailID, total_price} in $props.orderdetails" :key="id">
+              <tr
+                v-for="{
+                  id,
+                  amount,
+                  customization,
+                  dishID,
+                  detailID,
+                  total_price,
+                } in $props.orderdetails"
+                :key="id"
+              >
                 <td>{{ amount }}</td>
                 <td>{{ customization }}</td>
                 <td>{{ dishID }}</td>
@@ -57,13 +67,16 @@
 </template>
 
 <script setup>
-import { ref, defineEmits,onMounted, onUnmounted, onBeforeUnmount  } from 'vue';
-
+import { ref, defineEmits, onMounted, onUnmounted, onBeforeUnmount } from "vue";
 
 const data = ref([]);
 
-const { showModal, orderid,closeModal, orderdetails } = defineProps(['showModal', 'orderid','closeModal', 'orderdetails']);
-
+const { showModal, orderid, closeModal, orderdetails } = defineProps([
+  "showModal",
+  "orderid",
+  "closeModal",
+  "orderdetails",
+]);
 
 // const closeModalHandler = () => {
 //   // Your logic here to handle the modal close event (A程式)
@@ -73,13 +86,17 @@ const { showModal, orderid,closeModal, orderdetails } = defineProps(['showModal'
 
 onMounted(() => {
   // Attach event listener when the component is mounted
-  document.getElementById('orderModal').addEventListener('hidden.bs.modal', closeModalHandler );
+  document
+    .getElementById("orderModal")
+    .addEventListener("hidden.bs.modal", closeModalHandler);
 });
 
 onBeforeUnmount(() => {
   // Remove event listener when the component is unmounted
   if (closeModal) {
-  document.getElementById('orderModal').removeEventListener('hidden.bs.modal', closeModalHandler );
+    document
+      .getElementById("orderModal")
+      .removeEventListener("hidden.bs.modal", closeModalHandler);
   }
 });
 
@@ -88,8 +105,6 @@ const closeModalHandler = () => {
     closeModal();
   }
 };
-
-
 </script>
 
 <style></style>

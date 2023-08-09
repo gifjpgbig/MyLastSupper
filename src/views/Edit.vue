@@ -51,8 +51,8 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-import { useRouter, useRoute } from "vue-router";
 import Order from "../models/order.js";
+import { useRouter, useRoute } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const order = ref(Order);
@@ -87,7 +87,7 @@ const updateHandler = async () => {
   const response = await axios.put(API_URL, order.value);
   if (response.data.success) {
     alert(response.data.message);
-    router.push("/products");
+    router.push("/orders");
   }
 };
 

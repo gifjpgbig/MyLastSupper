@@ -94,6 +94,16 @@
             <i class="bi bi-trash-fill"></i> 外送員
           </button>
 
+          <button
+            class="btn btn-secondary me-3"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#orderReviewModal"
+            @click="openOrderDetailsModal(id), showModal = true"
+          >
+            <i class="bi bi-trash-fill"></i> 意見回饋
+          </button>
+
 
 
           <button class="btn btn-danger" @click="deleteHandler(id)">
@@ -103,6 +113,7 @@
       </tr>
     </tbody>
   </table>
+  <OrderReviewModal :closeModal="closeModal" :orderid = "selectedOrder"></OrderReviewModal>
   <OrderModal :orderdetails="orderdetails" :closeModal="closeModal" :orderid = "selectedOrder"></OrderModal>
   <Paging
     :totalPages="totalPages"
@@ -119,6 +130,7 @@ import SearchTextBox from "../components/SearchTextBox.vue";
 import PageSize from "../components/PageSize.vue";
 import OrderModal from "../components/OrderModal.vue";
 import ToggleSwitch from "../components/ToggleSwitch.vue";
+import OrderReviewModal from "../components/OrderReviewModal.vue";
 const orders = ref([]);
 const selectedOrder = ref(null); // 這裡的數字可以是根據使用者選擇的值
 const showModal = ref(false);
