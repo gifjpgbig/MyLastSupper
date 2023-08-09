@@ -25,6 +25,7 @@ public class OrderListController {
 	private OrderListService olService;
 
 	// 找到全部的訂單
+	// orders.vue
 	@PostMapping("/order/find")
 	public String find(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
@@ -86,6 +87,7 @@ public class OrderListController {
 	}
 
 	// 給vue的馬老ajax controller
+	// add.vue
 	@PostMapping("/order/insert1")
 	public String insert1(@RequestBody OrderListBean ol) {
 		JSONObject responseJson = new JSONObject();
@@ -113,6 +115,7 @@ public class OrderListController {
 //		return olService.addOrder(ol);
 //	}
 
+	//edit.vue
 	@PostMapping("/order/findById/{id}")
 	public OrderListBean findById(@PathVariable Integer id) {
 		return olService.findOrderById(id);
@@ -124,6 +127,8 @@ public class OrderListController {
 	}
 
 	// 改變訂單狀態
+	// orders.vue
+	// edit.vue
 	@PutMapping("/order/update/status/{id}")
 	public String updateStatus(@PathVariable Integer id, @RequestBody OrderListBean ol) {
 		System.out.println(ol.toString());
@@ -148,8 +153,36 @@ public class OrderListController {
 
 	// 改變客戶針對訂單的評論、店家的評價、餐點的評論
 	@PutMapping("/order/update/reviews/{id}")
-	public void updateReviews(@PathVariable Integer id, @RequestBody OrderListBean ol) {
-		olService.updateReviewsById(id, ol);
+	public String updateReviews(@PathVariable Integer id, @RequestBody OrderListBean ol) {
+		JSONObject responseJson = new JSONObject();
+		
+		if (!olService.exists(id)) {
+			responseJson.put("message", "資料不存在");
+			responseJson.put("success", false);
+			return responseJson.toString();
+		}
+		
+		OrderListBean olb = olService.findOrderById(id);
+		
+		
+		if ((olb.getShopComments() != null || olb.getDishComments() != null || olb.getShopReview() != null)) {
+			responseJson.put("message", "已填寫過評論");
+			responseJson.put("text", "本平台不允許過度批判");
+			responseJson.put("success", false);
+		} else {
+			OrderListBean result = 	olService.updateReviewsById(id, ol);
+			if (result != null && !ol.getDishComments().contains("幹") && !ol.getShopComments().contains("幹"))  {
+				responseJson.put("message", "評論回覆成功");
+				responseJson.put("text", "謝謝您的熱情回覆");
+				responseJson.put("success", true);
+			} else {
+				responseJson.put("message", "評論回覆失敗");
+				responseJson.put("text", "本平台禁止不雅字眼");
+				responseJson.put("success", false);
+			}
+		}
+		return responseJson.toString();	
+		
 	}
 
 	// 改變店家回覆客戶的評論
@@ -158,6 +191,7 @@ public class OrderListController {
 		olService.updateReplyById(id, ol);
 	}
 
+	// orders.vue
 	@DeleteMapping("/order/delete1/{id}")
 	public String delete1(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
