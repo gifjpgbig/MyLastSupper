@@ -25,7 +25,7 @@
       </tr>
     </tbody>
   </table>
-  <OrderModal :numberfrom="from"></OrderModal>
+  <!-- <OrderModal :numberfrom="from"></OrderModal> -->
 </template>
 
 <script setup>

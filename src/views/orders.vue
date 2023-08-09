@@ -78,11 +78,23 @@
             class="btn btn-secondary me-3"
             type="button"
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            data-bs-target="#orderModal"
             @click="openOrderDetailsModal(id), showModal = true"
           >
             <i class="bi bi-trash-fill"></i> 詳細
           </button>
+          
+          <button
+            class="btn btn-secondary me-3"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#orderModal"
+            @click="openOrderDetailsModal(id), showModal = true"
+          >
+            <i class="bi bi-trash-fill"></i> 外送員
+          </button>
+
+
 
           <button class="btn btn-danger" @click="deleteHandler(id)">
             <i class="bi bi-trash-fill"></i> 刪除
@@ -91,7 +103,7 @@
       </tr>
     </tbody>
   </table>
-  <OrderModal :closeModal="closeModal" :orderid = "selectedOrder"></OrderModal>
+  <OrderModal :orderdetails="orderdetails" :closeModal="closeModal" :orderid = "selectedOrder"></OrderModal>
   <Paging
     :totalPages="totalPages"
     :thePage="datas.start + 1"
@@ -100,7 +112,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from "vue";
+import { ref, reactive, computed, watch, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import Paging from "../components/Paging.vue";
 import SearchTextBox from "../components/SearchTextBox.vue";
@@ -108,6 +120,7 @@ import PageSize from "../components/PageSize.vue";
 import OrderModal from "../components/OrderModal.vue";
 import ToggleSwitch from "../components/ToggleSwitch.vue";
 const orders = ref([]);
+const selectedOrder = ref(null); // 這裡的數字可以是根據使用者選擇的值
 const showModal = ref(false);
 const toggleStatus = ref(false);
 const orderdetails = ref([]);
@@ -154,7 +167,10 @@ const loadOrders = async () => {
     +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows);
 };
 const closeModal = () => {
+  selectedOrder.value = null;
   showModal.value = false;
+  console.log('Modal closed');
+
 };
 
 watch(showModal, (newVal) => {
@@ -167,12 +183,13 @@ const fetchData = async () => {
   console.log('before')
   try {
     const URLAPI = `${URL}detail/findAllByOrderId/${selectedOrder.value}`;
-    // const response = await axios.get('https://api.example.com/data');
-    // 在這裡處理獲得的資料
     const response = await axios.post(URLAPI)
     console.log(response)
     console.log(response.data.list)
     orderdetails.value = response.data.list
+    console.log('orderdetails')
+    console.log(orderdetails)
+    console.log(orderdetails.value)
   } catch (error) {
     console.error(error);
   }
@@ -195,8 +212,6 @@ const placeholderText = computed(() => {
     : "請輸入店家名稱 (切換為關閉狀態)";
 });
 //查詢訂單明細
-let so = 0;
-const selectedOrder = ref(1); // 這裡的數字可以是根據使用者選擇的值
 const openOrderDetailsModal = (id) => {
      selectedOrder.value = id; // 開啟 modal 同時儲存訂單資料
      console.log(selectedOrder)
@@ -237,9 +252,7 @@ const changeHandler = (value) => {
 const updateStatus = async (id, status) => {
   const API_URL = `${URL}update/status/${id}`;
   console.log(API_URL);
-  // console.log("parameter status"+status)
-  // const originalStatus = status; // 暫存原始資料
-  // console.log("stored status"+originalStatus)
+
 
   await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -250,18 +263,11 @@ const updateStatus = async (id, status) => {
     const response = await axios.put(API_URL, { status });
     if (response.data.success) {
       alert(response.data.message);
-      // router.push("/Orders");
-      // window.location.reload();
+  
       loadOrders();
     }
   } else {
-    // 如果使用者取消，不執行更新操作
-    // console.log("cancel originalStatus"+originalStatus)
-    // status = originalStatus;
-    // console.log("cancel status"+status)
-
     alert("已取消操作");
-    // window.location.reload();
     loadOrders();
   }
 };
@@ -284,9 +290,6 @@ const deleteHandler = async (id) => {
     }
   }
 };
-
-
-
 
 loadOrders();
 </script>

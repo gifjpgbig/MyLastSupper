@@ -1,9 +1,9 @@
 <template>
   <div
     class="modal fade"
-    id="orderModal"
+    id="exampleModal"
     tabindex="-1"
-    aria-labelledby="orderModalLabel"
+    aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-xl">
@@ -73,13 +73,13 @@ const { showModal, orderid,closeModal, orderdetails } = defineProps(['showModal'
 
 onMounted(() => {
   // Attach event listener when the component is mounted
-  document.getElementById('orderModal').addEventListener('hidden.bs.modal', closeModalHandler );
+  document.getElementById('exampleModal').addEventListener('hidden.bs.modal', closeModalHandler );
 });
 
 onBeforeUnmount(() => {
   // Remove event listener when the component is unmounted
   if (closeModal) {
-  document.getElementById('orderModal').removeEventListener('hidden.bs.modal', closeModalHandler );
+  document.getElementById('exampleModal').removeEventListener('hidden.bs.modal', closeModalHandler );
   }
 });
 
