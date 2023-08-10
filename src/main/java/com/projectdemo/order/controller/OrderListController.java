@@ -47,12 +47,18 @@ public class OrderListController {
 				if (order.getShop().getId() != null) {
 					shopID = order.getShop().getId();
 				}
+				boolean show = false;
+				if (order.getDishComments() == null && order.getShopComments() == null && order.getShopReview() == null) {
+					show = !show;
+				}
 				JSONObject item = new JSONObject()
 						.put("id", order.getId())
 						.put("address", order.getAddress())
 						.put("status", order.getStatus())
 						.put("customerID", cusID)
-						.put("shopID", shopID);
+						.put("shopID", shopID)
+						.put("showReview",show);
+						
 				array = array.put(item);
 			}
 		}
@@ -155,6 +161,15 @@ public class OrderListController {
 	@PutMapping("/order/update/reviews/{id}")
 	public String updateReviews(@PathVariable Integer id, @RequestBody OrderListBean ol) {
 		JSONObject responseJson = new JSONObject();
+		
+		if (ol.getDishComments().equals("") || ol.getShopComments().equals("") || ol.getShopReview() == null) {
+			responseJson.put("message", "請輸入資料");
+			responseJson.put("text", "不可以有空白的欄位唷");
+			responseJson.put("success", false);
+			return responseJson.toString();
+		}
+		
+		
 		
 		if (!olService.exists(id)) {
 			responseJson.put("message", "資料不存在");
