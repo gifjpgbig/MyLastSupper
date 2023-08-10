@@ -10,12 +10,6 @@ import axios from "axios";
 
 const { id, review } = defineProps(["id", "review"]);
 
-// const updateReviews = async(id,review) => {
-//   console.log("in update "+id)
-//   // console.log("in update "+review)
-
-// };
-
 const showSweetAlert = async (props1, props2) => {
   let list = {
     dishComments: props2.dishComments,

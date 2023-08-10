@@ -17,9 +17,7 @@
             aria-label="Close"
           ></button>
         </div>
-
         <div class="modal-body">
-
           <div class="mb-3">
             <label for="dish_comments" class="form-label">dish_comments</label>
             <input
@@ -50,7 +48,6 @@
             />
           </div>
         </div>
-
         <div class="modal-footer">
           <button
             type="button"
@@ -74,10 +71,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Review from "../models/Review.js";
-import axios from "axios";
 import OrderReviewToast from "./OrderReviewToast.vue";
-
-
 
 const review = ref(Review);
 const { showModal, orderid: propOrderId, closeModal } = defineProps([
@@ -85,19 +79,6 @@ const { showModal, orderid: propOrderId, closeModal } = defineProps([
   "orderid",
   "closeModal",
 ]);
-
-
-
-// const URL = import.meta.env.VITE_API_ORDER;
-// const updateReviews = async(id) => {
-//   const API_URL = `${URL}update/reviews/${id}`;
-//   alert("進入")
-//   const response = await axios.put(API_URL, review.value);
-//   if (response.data.success) {
-//     msg.success = response.data.success;
-//     msg.failed = "hehehe";
-//   }
-// };
 
 onMounted(() => {
   // Attach event listener when the component is mounted

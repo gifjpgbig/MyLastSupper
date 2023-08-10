@@ -51,7 +51,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="{ id, address, status, customerID, shopID } in orders"
+        v-for="{ id, address, status, customerID, shopID, showReview } in orders"
         :key="id"
       >
         <td>{{ id }}</td>
@@ -93,8 +93,12 @@
           >
             <i class="bi bi-trash-fill"></i> 外送員
           </button>
+          
+          <button class="btn btn-danger me-3" @click="deleteHandler(id)">
+            <i class="bi bi-trash-fill"></i> 刪除
+          </button>
 
-          <button
+          <button v-show="showReview"
             class="btn btn-secondary me-3"
             type="button"
             data-bs-toggle="modal"
@@ -106,9 +110,6 @@
 
 
 
-          <button class="btn btn-danger" @click="deleteHandler(id)">
-            <i class="bi bi-trash-fill"></i> 刪除
-          </button>
         </td>
       </tr>
     </tbody>
