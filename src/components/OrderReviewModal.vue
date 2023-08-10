@@ -36,7 +36,7 @@
               v-model="review.shopComments"
             />
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label for="shop_review" class="form-label">shop_review</label>
             <input
               type="number"
@@ -46,7 +46,10 @@
               id="shopReview"
               v-model="review.shopReview"
             />
-          </div>
+          </div> -->
+          <starRating @updaterating="getRating" ></starRating>
+          <p>Rating from child: {{ RatingFrom }}</p>
+          <p>shopReview from child: {{ review.shopReview }}</p>
         </div>
         <div class="modal-footer">
           <button
@@ -60,7 +63,7 @@
           data-bs-dismiss="modal">
             Save changes
           </button>
-          <OrderReviewToast  data-bs-dismiss="modal"  :id="$props.orderid" :review="review"></OrderReviewToast>
+          <OrderReviewToast  data-bs-dismiss="modal"  :id="$props.orderid" :review="review" @refresh="handleChildData"></OrderReviewToast>
         </div>
       </div>
     </div>
@@ -72,6 +75,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Review from "../models/Review.js";
 import OrderReviewToast from "./OrderReviewToast.vue";
+import starRating from "./starRating.vue";
 
 const review = ref(Review);
 const { showModal, orderid: propOrderId, closeModal } = defineProps([
@@ -79,6 +83,22 @@ const { showModal, orderid: propOrderId, closeModal } = defineProps([
   "orderid",
   "closeModal",
 ]);
+
+const RatingFrom = ref('')
+const getRating = (data) => {
+  RatingFrom.value = data;
+  console.log(review)
+  review.value.shopReview = data
+  console.log(review)
+}
+
+
+const emit = defineEmits(['refresh2'])
+const receivedData = ref('');
+const handleChildData = (data) => {
+  receivedData.value = data;
+  emit('refresh2',true)
+};
 
 onMounted(() => {
   // Attach event listener when the component is mounted

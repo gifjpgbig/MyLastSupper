@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
         <h2>Contact Page</h2>
         <button
     type="button"
@@ -9,8 +9,8 @@
     按下去顯示Modal
   </button>
 
-  <!-- Modal -->
-  <div
+  Modal -->
+  <!-- <div
     class="modal fade"
     id="exampleModal"
     tabindex="-1"
@@ -42,14 +42,47 @@
       </div>
     </div>
   </div>
-</template>
+</template> -->
     
-<script setup>
-// import 'bootstrap/dist/css/bootstrap.min.css'
+<!-- <script setup> -->
+<!-- // import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'bootstrap/dist/js/bootstrap.js'
-// import 'bootstrap-icons/font/bootstrap-icons.css'
+// import 'bootstrap-icons/font/bootstrap-icons.css' -->
+<!-- </script> -->
+    
+<!-- <style> -->
+    
+<!-- </style> -->
+
+<!-- <template>
+       <test :name="aa" :test="bb"  @click="ttest" ></test>
+</template>
+<script setup>
+    import test from "../components/test.vue"
+    import { ref } from 'vue';
+    const aa=ref()
+    const bb=ref()
+    const ttest = () => { 
+    alert(1223)
+    aa.value="aa測試"
+    bb.value="bb測試"
+}
+</script> -->
+
+
+<template>
+  <div>
+    <test @send-data="handleChildData"></test>
+    <p>從子元件獲得的資料：{{ receivedData }}</p>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import test from "../components/test.vue"
+const receivedData = ref('');
+
+const handleChildData = (data) => {
+  receivedData.value = data;
+};
 </script>
-    
-<style>
-    
-</style>

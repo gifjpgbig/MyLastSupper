@@ -6,11 +6,14 @@
     :success="success"
     :failed="failed"
   ></OrderReviewToast>
+
+  <starRating></starRating>
 </template>
 
 <script setup>
 import {ref} from "vue";
 import OrderReviewToast from "../components/OrderReviewToast.vue";
+import starRating from "../components/starRating.vue";
 const success = ref("123213");
 const failed= ref("qwer");
 

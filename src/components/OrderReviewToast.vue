@@ -5,10 +5,12 @@
 </template>
 
 <script setup>
+import {defineEmits} from "vue";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const { id, review } = defineProps(["id", "review"]);
+const emit = defineEmits(['refresh'])
 
 const showSweetAlert = async (props1, props2) => {
   let list = {
@@ -16,6 +18,8 @@ const showSweetAlert = async (props1, props2) => {
     shopComments: props2.shopComments,
     shopReview: props2.shopReview,
   };
+
+
 
   const URL = import.meta.env.VITE_API_ORDER;
   const API_URL = `${URL}update/reviews/${props1}`;
@@ -27,6 +31,7 @@ const showSweetAlert = async (props1, props2) => {
       text: response.data.text,
       confirmButtonText: "OK",
     });
+    emit('refresh',true);
   } else {
     Swal.fire({
       icon: "error",

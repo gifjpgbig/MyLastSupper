@@ -114,7 +114,7 @@
       </tr>
     </tbody>
   </table>
-  <OrderReviewModal :closeModal="closeModal" :orderid = "selectedOrder"></OrderReviewModal>
+  <OrderReviewModal :closeModal="closeModal" :orderid = "selectedOrder" @review2="handleChildData"></OrderReviewModal>
   <OrderModal :orderdetails="orderdetails" :closeModal="closeModal" :orderid = "selectedOrder"></OrderModal>
   <Paging
     :totalPages="totalPages"
@@ -186,11 +186,25 @@ const closeModal = () => {
 
 };
 
+const receivedData = ref(false);
+const handleChildData = (data) => {
+  receivedData.value = data;
+};
+
+
 watch(showModal, (newVal) => {
   if (newVal) {
     fetchData();
   }
 });
+watch(receivedData, (newVal) => {
+  if (newVal) {
+    loadOrders();
+    receivedData = false;
+  }
+});
+
+
 
 const fetchData = async () => {
   console.log('before')
