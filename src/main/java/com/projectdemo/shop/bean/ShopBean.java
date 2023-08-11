@@ -121,7 +121,6 @@ public class ShopBean {
 	private List<FavoritesBean> favorites;
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "shop")
-	@JsonIgnore
 	private OpenHrBean openhrBean;
 	
 	@PrePersist
