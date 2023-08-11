@@ -1,15 +1,15 @@
 <template>
   <div
     class="modal fade"
-    id="exampleModal"
+    id="deliverDetailModal"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="deliverDetailModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5>訂單編號: {{ $props.orderid }}</h5>
+          <h5>外送員訂單編號: {{ $props.orderid }}</h5>
           <!-- <p>Order Details: {{ $props.orderdetails }}</p> -->
           <button
             type="button"
@@ -23,20 +23,22 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>數量</th>
-                <th>客製化項目</th>
-                <th>餐點編號</th>
-                <th>訂單編號</th>
-                <th>總價</th>
+                <th>編號</th>
+                <th>地址</th>
+                <th>抵達時間</th>
+                <th>運送時間</th>
+                <th>外送員姓名</th>
+                <th>是否被棄單</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="{id, amount, customization, dishID, detailID, total_price} in $props.orderdetails" :key="id">
-                <td>{{ amount }}</td>
-                <td>{{ customization }}</td>
-                <td>{{ dishID }}</td>
-                <td>{{ detailID }}</td>
-                <td>{{ total_price }}</td>
+              <tr v-for="{id, address, arriveTime, deliverTime, driverName, isCancel} in $props.deliverDetails" :key="id">
+                <td>{{ id }}</td>
+                <td>{{ address }}</td>
+                <td>{{ arriveTime }}</td>
+                <td>{{ deliverTime }}</td>
+                <td>{{ driverName }}</td>
+                <td>{{ isCancel }}</td>
               </tr>
             </tbody>
           </table>
@@ -57,29 +59,20 @@
 </template>
 
 <script setup>
-import { ref, defineEmits,onMounted, onUnmounted, onBeforeUnmount  } from 'vue';
-import OrderReviewToast from './OrderReviewToast.vue';
-
-const data = ref([]);
-
-const { showModal, orderid,closeModal, orderdetails } = defineProps(['showModal', 'orderid','closeModal', 'orderdetails']);
+import { ref,onMounted, onBeforeUnmount  } from 'vue';
 
 
-// const closeModalHandler = () => {
-//   // Your logic here to handle the modal close event (A程式)
-//   showModal = !showModal
-//   console.log('Modal closed');
-// };
+const { showModal, orderid,closeModal, deliverDetails } = defineProps(['showModal', 'orderid','closeModal', 'deliverDetails']);
 
 onMounted(() => {
   // Attach event listener when the component is mounted
-  document.getElementById('exampleModal').addEventListener('hidden.bs.modal', closeModalHandler );
+  document.getElementById('deliverDetailModal').addEventListener('hidden.bs.modal', closeModalHandler );
 });
 
 onBeforeUnmount(() => {
   // Remove event listener when the component is unmounted
   if (closeModal) {
-  document.getElementById('exampleModal').removeEventListener('hidden.bs.modal', closeModalHandler );
+  document.getElementById('deliverDetailModal').removeEventListener('hidden.bs.modal', closeModalHandler );
   }
 });
 

@@ -9,7 +9,7 @@ import Navbar from './components/Navbar.vue'
 
 <template>
   <div class="container">
-   <Navbar></Navbar>
+    <Navbar v-if="$route.meta.showNavbar"></Navbar>
    <router-view></router-view>
   </div>
   

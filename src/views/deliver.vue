@@ -1,16 +1,20 @@
 <template>
-  <h2>Customer Service Order List</h2>
-
+  <h2>Deliver Order List</h2>
   <RouterLink class="btn btn-primary mb-3" to="/orders/add"
     ><i class="bi bi-person-add"></i> 新增</RouterLink
   >
-
+  <ToggleSwitch :checkbox1="toggleStatus" @toggle="onToggle" />
   <div class="row mb-3">
     <div class="col-3">
       <PageSize @pageSizeChange="changeHandler"></PageSize>
     </div>
     <div class="col+-6"></div>
-    <div class="col-3"></div>
+    <div class="col-3">
+      <SearchTextBox
+        :placeholder="placeholderText"
+        @searchInput="inputHandler"
+      />
+    </div>
   </div>
   <table class="table table-bordered">
     <thead>
@@ -44,14 +48,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="{
-          id,
-          address,
-          status,
-          customerID,
-          shopID,
-          showReview,
-        } in orders"
+        v-for="{ id, address, status, customerID, shopID, showReview } in orders"
         :key="id"
       >
         <td>{{ id }}</td>
@@ -71,16 +68,12 @@
         <td>{{ customerID }}</td>
         <td>{{ shopID }}</td>
         <td>
-          <RouterLink class="btn btn-secondary me-3" :to="'/Orders/edit/' + id"
-            ><i class="bi bi-pencil-fill"></i> 修改</RouterLink
-          >
-
           <button
             class="btn btn-secondary me-3"
             type="button"
             data-bs-toggle="modal"
             data-bs-target="#orderModal"
-            @click="openOrderDetailsModal(id), (showModal = true)"
+            @click="openOrderDetailsModal(id), showModal = true"
           >
             <i class="bi bi-trash-fill"></i> 詳細
           </button>
@@ -90,22 +83,21 @@
             type="button"
             data-bs-toggle="modal"
             data-bs-target="#deliverDetailModal"
-            @click="openDeliverDetailsModal(id), (showModal = true)"
+            @click="openDeliverDetailsModal(id), showModal = true"
           >
             <i class="bi bi-trash-fill"></i> 外送員
           </button>
-
+          
           <button class="btn btn-danger me-3" @click="deleteHandler(id)">
             <i class="bi bi-trash-fill"></i> 刪除
           </button>
 
-          <button
-            v-show="showReview"
+          <button v-show="showReview"
             class="btn btn-secondary me-3"
             type="button"
             data-bs-toggle="modal"
             data-bs-target="#orderReviewModal"
-            @click="openOrderDetailsModal(id), (showModal = true)"
+            @click="openOrderDetailsModal(id), showModal = true"
           >
             <i class="bi bi-trash-fill"></i> 意見回饋
           </button>
@@ -113,21 +105,9 @@
       </tr>
     </tbody>
   </table>
-  <OrderReviewModal
-    :closeModal="closeModal"
-    :orderid="selectedOrder"
-    @review2="handleChildData"
-  ></OrderReviewModal>
-  <OrderDetailModal
-    :orderdetails="orderdetails"
-    :closeModal="closeModal"
-    :orderid="selectedOrder"
-  ></OrderDetailModal>
-  <DeliverDetailModal
-    :deliverDetails="deliverDetails"
-    :closeModal="closeModal"
-    :orderid="selectedOrder"
-  ></DeliverDetailModal>
+  <OrderReviewModal :closeModal="closeModal" :orderid = "selectedOrder" @review2="handleChildData"></OrderReviewModal>
+  <OrderDetailModal :orderdetails="orderdetails" :closeModal="closeModal" :orderid = "selectedOrder"></OrderDetailModal>
+  <DeliverDetailModal :deliverDetails="deliverDetails" :closeModal="closeModal" :orderid = "selectedOrder"></DeliverDetailModal>
   <Paging
     :totalPages="totalPages"
     :thePage="datas.start + 1"
@@ -136,16 +116,19 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, computed, watch, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import Paging from "../components/Paging.vue";
+import SearchTextBox from "../components/SearchTextBox.vue";
 import PageSize from "../components/PageSize.vue";
 import OrderDetailModal from "../components/OrderDetailModal.vue";
 import DeliverDetailModal from "../components/DeliverDetailModal.vue";
+import ToggleSwitch from "../components/ToggleSwitch.vue";
 import OrderReviewModal from "../components/OrderReviewModal.vue";
 const orders = ref([]);
 const selectedOrder = ref(null); // 這裡的數字可以是根據使用者選擇的值
 const showModal = ref(false);
+const toggleStatus = ref(false);
 const orderdetails = ref([]);
 const deliverDetails = ref([]);
 const stats = ref([
@@ -180,26 +163,28 @@ const datas = reactive({
 const URL = import.meta.env.VITE_API_ORDER;
 const loadOrders = async () => {
   // const URLAPI = `${URL}findByCustomerId/1`;
-  const URLAPI = `${URL}find`;
-  const response = await axios.post(URLAPI, datas);
+  const URLAPI = `${URL}Takables`;
+  const response = await axios.get(URLAPI);
   console.log(response.data);
   //取得所有商品放進Orders變數
   orders.value = response.data.list;
+
   //計算總共幾頁
   totalPages.value =
     +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows);
 };
-
 const closeModal = () => {
   selectedOrder.value = null;
   showModal.value = false;
-  console.log("Modal closed");
+  console.log('Modal closed');
+
 };
 
 const receivedData = ref(false);
 const handleChildData = (data) => {
   receivedData.value = data;
 };
+
 
 watch(showModal, (newVal) => {
   if (newVal) {
@@ -214,40 +199,80 @@ watch(receivedData, (newVal) => {
   }
 });
 
+
+
 const fetchODData = async () => {
   try {
     const URLAPI = `${URL}detail/findAllByOrderId/${selectedOrder.value}`;
-    const response = await axios.post(URLAPI);
-    orderdetails.value = response.data.list;
+    const response = await axios.post(URLAPI)
+    orderdetails.value = response.data.list
   } catch (error) {
     console.error(error);
   }
 };
 const fetchDDData = async () => {
+  console.log('before')
   try {
     const URLAPI = `${URL}deliver/findAllByOrderId/${selectedOrder.value}`;
-    const response = await axios.post(URLAPI);
-    deliverDetails.value = response.data.list;
+    const response = await axios.post(URLAPI)
+    console.log(response)
+    console.log(response.data.list)
+    deliverDetails.value = response.data.list
+    console.log('deliverDetails')
+    console.log(deliverDetails)
+    console.log(deliverDetails.value)
   } catch (error) {
     console.error(error);
   }
+  console.log('after')
 };
 
+//Toggle button 由子元件觸發
+const onToggle = () => {
+  toggleStatus.value = !toggleStatus.value;
+  console.log(toggleStatus.value);
+  const temp = datas.cusID;
+  datas.cusID = datas.shopID;
+  datas.shopID = temp;
+  loadOrders();
+};
+
+const placeholderText = computed(() => {
+  return toggleStatus.value
+    ? "請輸入客戶名稱 (切換為開啟狀態)"
+    : "請輸入店家名稱 (切換為關閉狀態)";
+});
 //查詢訂單明細
 const openOrderDetailsModal = (id) => {
-  selectedOrder.value = id; // 開啟 modal 同時儲存訂單資料
-  console.log(selectedOrder);
-};
+     selectedOrder.value = id; // 開啟 modal 同時儲存訂單資料
+     console.log(selectedOrder)
+    };
 
 //查詢訂單外送資訊明細
 const openDeliverDetailsModal = (id) => {
-  selectedOrder.value = id; // 開啟 modal 同時儲存訂單資料
-  console.log(selectedOrder);
-};
+     selectedOrder.value = id; // 開啟 modal 同時儲存訂單資料
+     console.log(selectedOrder)
+    };
 
 //paging 由子元件觸發
 const clickHandler = (page) => {
   datas.start = page - 1;
+  loadOrders();
+};
+
+//搜尋
+const inputHandler = (value) => {
+  if (toggleStatus.value) {
+    datas.cusID = value;
+    datas.shopID = "";
+  } else {
+    datas.cusID = "";
+    datas.shopID = value;
+  }
+  datas.start = 0;
+  console.log("in input handler");
+  console.log(datas.cusID);
+  console.log(datas.shopID);
   loadOrders();
 };
 
@@ -264,6 +289,7 @@ const updateStatus = async (id, status) => {
   const API_URL = `${URL}update/status/${id}`;
   console.log(API_URL);
 
+
   await new Promise((resolve) => setTimeout(resolve, 50));
 
   const isConfirmed = window.confirm("確定要執行這個操作嗎？");
@@ -273,7 +299,7 @@ const updateStatus = async (id, status) => {
     const response = await axios.put(API_URL, { status });
     if (response.data.success) {
       alert(response.data.message);
-
+  
       loadOrders();
     }
   } else {
