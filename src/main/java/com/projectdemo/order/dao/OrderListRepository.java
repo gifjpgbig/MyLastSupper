@@ -39,5 +39,13 @@ public interface OrderListRepository extends JpaRepository<OrderListBean, Intege
 	
 	
 	
+	//讓外送員查看現在可以接的訂單
+	//現在可以接的訂單邏輯是: 訂單狀態不屬於已接單、已取消
+		//還沒被其他外送員接走的訂單
+		//被其他外送員放棄的訂單
+	@Query(value="select * from order_list where status not like '已%'",nativeQuery = true)
+	List<OrderListBean> findIsOrderTakable();
+	
+	
 	
 }

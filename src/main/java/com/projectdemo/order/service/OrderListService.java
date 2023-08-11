@@ -126,6 +126,7 @@ public class OrderListService {
 		return oLRepo.findByShop(bean);
 	}
 
+	
 	// 改變訂單狀態
 	public OrderListBean updateStatusById(Integer id, OrderListBean ol) {
 		Optional<OrderListBean> optional = oLRepo.findById(id);
@@ -137,6 +138,39 @@ public class OrderListService {
 		return null;
 	}
 
+	
+	
+	
+	// 改變訂單狀態，可以說是外送員接單的功能，同時將訂單狀態改變且新增一筆資料到外送明細裡面
+	public OrderListBean updateStatusById(String json) {
+		JSONObject data = new JSONObject(json);
+
+		//改變訂單狀態
+		Integer id = data.getInt("orderid");
+		Optional<OrderListBean> optional = oLRepo.findById(id);
+		if (optional.isPresent()) {
+			OrderListBean olbean = optional.get();
+			olbean.setStatus(data.getString("deliver_status"));
+			return oLRepo.save(olbean);
+		}
+		return null;
+	}
+//	public OrderListBean updateStatusById(Integer id, OrderListBean ol) {
+//		Optional<OrderListBean> optional = oLRepo.findById(id);
+//		if (optional.isPresent()) {
+//			OrderListBean olbean = optional.get();
+//			olbean.setStatus(ol.getStatus());
+//			return oLRepo.save(olbean);
+//		}
+//		return null;
+//	}
+
+	//讓外送員查看現在可以接的訂單
+	public List<OrderListBean> findIsOrderTakable(){
+		return oLRepo.findIsOrderTakable();
+	}
+	
+	
 	// 改變客戶針對訂單的評論、店家的評價、餐點的評論
 	public OrderListBean updateReviewsById(Integer id, OrderListBean ol) {
 		OrderListBean olbean = oLRepo.findById(id).get();
