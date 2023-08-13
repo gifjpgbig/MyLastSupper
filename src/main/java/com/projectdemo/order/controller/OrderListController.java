@@ -201,8 +201,24 @@ public class OrderListController {
 
 	// 改變店家回覆客戶的評論
 	@PutMapping("/order/update/reply/{id}")
-	public void updateReply(@PathVariable Integer id, @RequestBody OrderListBean ol) {
-		olService.updateReplyById(id, ol);
+	public String updateReply(@PathVariable Integer id, @RequestBody OrderListBean ol) {
+		JSONObject responseJson = new JSONObject();
+		OrderListBean olb = olService.findOrderById(id);
+		// 偵測到客戶沒有評論
+		if (olb.getDishComments() == null) {
+			responseJson.put("message", "該筆訂單沒有評論，店家無法進行回覆");
+			responseJson.put("success", false);
+		} else {
+			OrderListBean uolb = olService.updateReplyById(id, ol);
+			if (uolb != null) {
+				responseJson.put("message", "評論回覆成功!");
+				responseJson.put("success", true);
+			} else {
+				responseJson.put("message", "評論回覆失敗，請聯繫客服人員!");
+				responseJson.put("success", false);
+			}
+		}
+		return responseJson.toString();
 	}
 
 	// orders.vue
@@ -251,14 +267,14 @@ public class OrderListController {
 	// 接單的邏輯是:
 	// 將訂單狀態改變成為已接單
 	// 在該筆訂單的外送明細新增一筆屬於該外送員的資料
-	
-	//這是個連續的操作，應該要讓兩個都通過，才能夠視為成功，否則就rollback
+	// 這是個連續的操作，應該要讓兩個都通過，才能夠視為成功，否則就rollback
 	@Transactional
 	@PutMapping("/order/takeOrders")
 	public String takeOrderByDeliver(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 
 		// 將訂單狀態改變成為已接單
+		// orderid、deliver_status
 		OrderListBean olb = olService.updateStatusById(json);
 		if (olb != null) {
 			responseJson.put("message", "接單成功");
@@ -266,17 +282,46 @@ public class OrderListController {
 		} else {
 			responseJson.put("message", "接單失敗");
 			responseJson.put("success", false);
+			throw new RuntimeException("接單失敗"); // 拋出異常來觸發回滾
+
 		}
 
 		// 在該筆訂單的外送明細新增一筆屬於該外送員的資料
+		// driver、address、deliverID、orderid
 		DeliverDetailBean ddb = ddService.addDD(json);
 		if (ddb != null) {
-			responseJson.put("message", responseJson.getString("message")+"訂單已處理");
+			responseJson.put("message", responseJson.getString("message") + "訂單已處理");
 		} else {
 			responseJson.put("success", false);
+			throw new RuntimeException("新增外送明細失敗，已有外送員接單"); // 拋出異常來觸發回滾
 		}
 
 		return responseJson.toString();
 	}
 
+	// 外送員接單的延伸功能，緊急狀況由客服人員註銷已接單的外送員詳細
+	// DeliverDetailService.java, OrderListService.java
+	// deliver_detail_id, reason, deliver_status, orderid
+	@Transactional
+	@PutMapping("/order/terminate")
+	public String terminator(@RequestBody String json) {
+		JSONObject responseJson = new JSONObject();
+		if (olService.updateStatusById(json) != null) {
+			responseJson.put("message", "註銷成功");
+			responseJson.put("success", true);
+		} else {
+			responseJson.put("message", "註銷失敗");
+			responseJson.put("success", false);
+			throw new RuntimeException("註銷失敗"); // 拋出異常來觸發回滾
+		}
+		if(ddService.terminate(json) != null) {
+			responseJson.put("message", "訂單狀態改變成功");
+			responseJson.put("success", true);
+		}else {
+			responseJson.put("message", "註銷失敗");
+			responseJson.put("success", false);
+			throw new RuntimeException("訂單狀態改變失敗，不存在該筆外送員明細"); // 拋出異常來觸發回滾			
+		}
+		return responseJson.toString();
+	}
 }

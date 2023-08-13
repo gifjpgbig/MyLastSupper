@@ -31,8 +31,8 @@ import jakarta.persistence.criteria.Root;
 
 @Configuration
 public class OrderListService {
-	
-	//模仿馬老師的criterial配置
+
+	// 模仿馬老師的criterial配置
 	@PersistenceContext
 	private Session session;
 
@@ -55,9 +55,9 @@ public class OrderListService {
 	@Autowired
 	private CustomerService customerService;
 
-	//計算查詢語法取得的資料總筆數
+	// 計算查詢語法取得的資料總筆數
 	public long count(JSONObject obj) {
-		//創建criteriaBuilder、criteriaQuery
+		// 創建criteriaBuilder、criteriaQuery
 		CriteriaBuilder criteriaBuilder = this.getSession().getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
@@ -68,8 +68,8 @@ public class OrderListService {
 		criteriaQuery = criteriaQuery.select(criteriaBuilder.count(root));
 		// where
 		List<Predicate> predicates = new ArrayList<>();
-		
-		//判斷從orders.vue傳進來的參數cusID、shopID
+
+		// 判斷從orders.vue傳進來的參數cusID、shopID
 		if (obj.has("cusID") && obj.get("cusID") != null && !obj.get("cusID").equals("")) {
 			Integer id = obj.getInt("cusID");
 			predicates.add(criteriaBuilder.equal(root.get("customer").get("id"), id));
@@ -79,7 +79,6 @@ public class OrderListService {
 			predicates.add(criteriaBuilder.equal(root.get("shop").get("id"), id));
 		}
 
-		
 		if (!predicates.isEmpty()) {
 			criteriaQuery = criteriaQuery.where(predicates.toArray(new Predicate[0]));
 		}
@@ -89,28 +88,27 @@ public class OrderListService {
 		return total;
 	}
 
-	//有分頁的找到所有訂單、且可以根據不同條件查找訂單
-	//目前被應用在客服人員查看客戶訂單以及店家訂單、也可以被應用在客戶歷史訂單與店家歷史訂單
+	// 有分頁的找到所有訂單、且可以根據不同條件查找訂單
+	// 目前被應用在客服人員查看客戶訂單以及店家訂單、也可以被應用在客戶歷史訂單與店家歷史訂單
 	public Page<OrderListBean> findAll(String json) {
 		JSONObject obj = new JSONObject(json);
-		
-		//生成Pageable物件
+
+		// 生成Pageable物件
 		Integer pageNumber = obj.getInt("start");
 		Integer rows = obj.getInt("rows") == 0 ? Integer.MAX_VALUE : obj.getInt("rows");
-		Sort.Direction sortOrder = obj.getString("sortOrder").equals("asc")? Sort.Direction.ASC : Sort.Direction.DESC;
+		Sort.Direction sortOrder = obj.getString("sortOrder").equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 		String sortType = obj.getString("sortType");
 		PageRequest pgb = PageRequest.of(pageNumber, rows, sortOrder, sortType);
-		
-		
-		//若要用客戶ID查找
+
+		// 若要用客戶ID查找
 		if (obj.has("cusID") && obj.get("cusID") != null && !obj.get("cusID").equals("")) {
 			return oLRepo.findByCustomerId(obj.getInt("cusID"), pgb);
 		}
-		//若要用店家ID查找
+		// 若要用店家ID查找
 		if (obj.has("shopID") && obj.get("shopID") != null && !obj.get("shopID").equals("")) {
 			return oLRepo.findByShopId(obj.getInt("shopID"), pgb);
 		}
-		
+
 		return oLRepo.findAll(pgb);
 	}
 
@@ -126,7 +124,6 @@ public class OrderListService {
 		return oLRepo.findByShop(bean);
 	}
 
-	
 	// 改變訂單狀態
 	public OrderListBean updateStatusById(Integer id, OrderListBean ol) {
 		Optional<OrderListBean> optional = oLRepo.findById(id);
@@ -138,14 +135,11 @@ public class OrderListService {
 		return null;
 	}
 
-	
-	
-	
 	// 改變訂單狀態，可以說是外送員接單的功能，同時將訂單狀態改變且新增一筆資料到外送明細裡面
 	public OrderListBean updateStatusById(String json) {
 		JSONObject data = new JSONObject(json);
 
-		//改變訂單狀態
+		// 改變訂單狀態
 		Integer id = data.getInt("orderid");
 		Optional<OrderListBean> optional = oLRepo.findById(id);
 		if (optional.isPresent()) {
@@ -165,12 +159,11 @@ public class OrderListService {
 //		return null;
 //	}
 
-	//讓外送員查看現在可以接的訂單
-	public List<OrderListBean> findIsOrderTakable(){
+	// 讓外送員查看現在可以接的訂單
+	public List<OrderListBean> findIsOrderTakable() {
 		return oLRepo.findIsOrderTakable();
 	}
-	
-	
+
 	// 改變客戶針對訂單的評論、店家的評價、餐點的評論
 	public OrderListBean updateReviewsById(Integer id, OrderListBean ol) {
 		OrderListBean olbean = oLRepo.findById(id).get();
@@ -181,10 +174,10 @@ public class OrderListService {
 	}
 
 	// 改變店家回覆客戶的評論
-	public void updateReplyById(Integer id, OrderListBean ol) {
+	public OrderListBean updateReplyById(Integer id, OrderListBean ol) {
 		OrderListBean olbean = oLRepo.findById(id).get();
 		olbean.setShopFeedbackReply(ol.getShopFeedbackReply());
-		oLRepo.save(olbean);
+		return oLRepo.save(olbean);
 	}
 
 	public OrderListBean addOrder(OrderListBean ol) {
