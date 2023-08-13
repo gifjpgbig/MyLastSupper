@@ -101,6 +101,10 @@
           >
             <i class="bi bi-trash-fill"></i> 意見回饋
           </button>
+
+          <button class="btn btn-danger me-3" @click="takeHandler(id, address, status)">
+            <i class="bi bi-trash-fill"></i> 接單
+          </button>
         </td>
       </tr>
     </tbody>
@@ -160,6 +164,15 @@ const datas = reactive({
   sortType: "id",
 });
 
+const take = reactive({
+  orderid: 0,
+  driver: 0,
+  address: "",
+  deliverID: "",
+  deliver_status: "",
+});
+
+
 const URL = import.meta.env.VITE_API_ORDER;
 const loadOrders = async () => {
   // const URLAPI = `${URL}findByCustomerId/1`;
@@ -168,16 +181,15 @@ const loadOrders = async () => {
   console.log(response.data);
   //取得所有商品放進Orders變數
   orders.value = response.data.list;
-
   //計算總共幾頁
   totalPages.value =
     +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows);
 };
+
 const closeModal = () => {
   selectedOrder.value = null;
   showModal.value = false;
   console.log('Modal closed');
-
 };
 
 const receivedData = ref(false);
@@ -185,21 +197,19 @@ const handleChildData = (data) => {
   receivedData.value = data;
 };
 
-
 watch(showModal, (newVal) => {
   if (newVal) {
     fetchODData();
     fetchDDData();
   }
 });
+
 watch(receivedData, (newVal) => {
   if (newVal) {
     loadOrders();
     receivedData = false;
   }
 });
-
-
 
 const fetchODData = async () => {
   try {
@@ -288,12 +298,8 @@ const changeHandler = (value) => {
 const updateStatus = async (id, status) => {
   const API_URL = `${URL}update/status/${id}`;
   console.log(API_URL);
-
-
   await new Promise((resolve) => setTimeout(resolve, 50));
-
   const isConfirmed = window.confirm("確定要執行這個操作嗎？");
-
   if (isConfirmed) {
     console.log("to java status" + status);
     const response = await axios.put(API_URL, { status });
@@ -323,6 +329,30 @@ const deleteHandler = async (id) => {
     if (response.data.success) {
       alert(response.data.message);
       loadOrders();
+    }
+  }
+};
+
+//接單
+const takeHandler = async (id, address, status) => {
+  if (window.confirm("確定要接單嗎?")) {
+    const take = {
+      orderid: id,
+      deliver_status: "已接單 測試vue",
+      driver: "亂講",
+      address: address,
+      deliverID: 3  
+    }
+    try{
+    const URLAPI = `${URL}takeOrders`;
+    const response = await axios.put(URLAPI, take);
+    console.log(response)
+    if (response.data.success) {
+      alert(response.data.message);
+      loadOrders();
+    }}catch (error){
+      console.error(error);
+      alert(error.response.data.message)
     }
   }
 };
