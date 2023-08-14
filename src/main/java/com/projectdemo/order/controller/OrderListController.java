@@ -302,20 +302,21 @@ public class OrderListController {
 	// 外送員接單的延伸功能，緊急狀況由客服人員註銷已接單的外送員詳細
 	// DeliverDetailService.java, OrderListService.java
 	// deliver_detail_id, reason, deliver_status, orderid
+	// 註銷成功之後要再推送一次訂單
 	@Transactional
 	@PutMapping("/order/terminate")
 	public String terminator(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 		if (olService.updateStatusById(json) != null) {
-			responseJson.put("message", "註銷成功");
+			responseJson.put("message", "註銷成功，已推送訂單");
 			responseJson.put("success", true);
 		} else {
-			responseJson.put("message", "註銷失敗");
+			responseJson.put("message", "註銷失敗，不存在此訂單");
 			responseJson.put("success", false);
-			throw new RuntimeException("註銷失敗"); // 拋出異常來觸發回滾
+			throw new RuntimeException("請注意，註銷失敗！不存在此訂單"); // 拋出異常來觸發回滾
 		}
 		if(ddService.terminate(json) != null) {
-			responseJson.put("message", "訂單狀態改變成功");
+			responseJson.put("message", "註銷成功，已推送訂單");
 			responseJson.put("success", true);
 		}else {
 			responseJson.put("message", "註銷失敗");
