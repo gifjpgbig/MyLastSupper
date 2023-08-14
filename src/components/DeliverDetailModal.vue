@@ -32,13 +32,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="{id, address, arriveTime, deliverTime, driverName, isCancel} in $props.deliverDetails" :key="id">
+              <tr
+                v-for="{
+                  id,
+                  address,
+                  arriveTime,
+                  deliverTime,
+                  driverName,
+                  isCancel,
+                } in $props.deliverDetails"
+                :key="id"
+              >
                 <td>{{ id }}</td>
                 <td>{{ address }}</td>
                 <td>{{ arriveTime }}</td>
                 <td>{{ deliverTime }}</td>
                 <td>{{ driverName }}</td>
                 <td>{{ isCancel }}</td>
+                <td>
+
+                <button 
+                type="button"
+                class="btn btn-danger me-4" 
+                @click="openTerminateHandler(id),(showModal = true)"
+                data-bs-dismiss="modal"
+                data-bs-toggle="modal"
+                data-bs-target="#TerminateDeliverModal"
+                >
+                  <i class="bi bi-trash-fill"></i> 註銷
+                </button>
+              </td>
               </tr>
             </tbody>
           </table>
@@ -56,23 +79,44 @@
       </div>
     </div>
   </div>
+  <TerminateDeliverModal
+    :orderid="orderid"
+    :ddid="selectedid"
+  ></TerminateDeliverModal>
 </template>
 
 <script setup>
-import { ref,onMounted, onBeforeUnmount  } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import TerminateDeliverModal from "./TerminateDeliverModal.vue";
+
+const { showModal, orderid, closeModal, deliverDetails } = defineProps([
+  "showModal",
+  "orderid",
+  "closeModal",
+  "deliverDetails",
+]);
+
+const selectedid = ref(null)
+
+const openTerminateHandler = (id) => {
+  selectedid.value = id;
+}
 
 
-const { showModal, orderid,closeModal, deliverDetails } = defineProps(['showModal', 'orderid','closeModal', 'deliverDetails']);
 
 onMounted(() => {
   // Attach event listener when the component is mounted
-  document.getElementById('deliverDetailModal').addEventListener('hidden.bs.modal', closeModalHandler );
+  document
+    .getElementById("deliverDetailModal")
+    .addEventListener("hidden.bs.modal", closeModalHandler);
 });
 
 onBeforeUnmount(() => {
   // Remove event listener when the component is unmounted
   if (closeModal) {
-  document.getElementById('deliverDetailModal').removeEventListener('hidden.bs.modal', closeModalHandler );
+    document
+      .getElementById("deliverDetailModal")
+      .removeEventListener("hidden.bs.modal", closeModalHandler);
   }
 });
 
@@ -81,8 +125,6 @@ const closeModalHandler = () => {
     closeModal();
   }
 };
-
-
 </script>
 
 <style></style>

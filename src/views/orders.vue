@@ -90,7 +90,7 @@
             type="button"
             data-bs-toggle="modal"
             data-bs-target="#deliverDetailModal"
-            @click="openDeliverDetailsModal(id), (showModal = true)"
+            @click="openDeliverDetailsModal(id, status), (showModal = true)"
           >
             <i class="bi bi-trash-fill"></i> 外送員
           </button>
@@ -144,7 +144,8 @@ import OrderDetailModal from "../components/OrderDetailModal.vue";
 import DeliverDetailModal from "../components/DeliverDetailModal.vue";
 import OrderReviewModal from "../components/OrderReviewModal.vue";
 const orders = ref([]);
-const selectedOrder = ref(null); // 這裡的數字可以是根據使用者選擇的值
+const selectedOrder = ref(null);  // 這裡的數字可以是根據使用者選擇的值
+const selectedStatus = ref(null); 
 const showModal = ref(false);
 const orderdetails = ref([]);
 const deliverDetails = ref([]);
@@ -240,8 +241,9 @@ const openOrderDetailsModal = (id) => {
 };
 
 //查詢訂單外送資訊明細
-const openDeliverDetailsModal = (id) => {
+const openDeliverDetailsModal = (id, status) => {
   selectedOrder.value = id; // 開啟 modal 同時儲存訂單資料
+  selectedStatus.value = status;
   console.log(selectedOrder);
 };
 
