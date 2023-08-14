@@ -137,9 +137,11 @@ public class ShopController {
 			// Use DTO to create suitable JSON object
 			ShopDTO shopDTO = convertToShopDTO(shop);
 //			json.put("shop", new JSONObject(shop));
-			json.put("shop", new JSONObject(shopDTO));			
+			json.put("shop", new JSONObject(shopDTO));
+			json.put("success", true);
 		}
 		else {
+			json.put("success", false);
 			json.put("message", "invalid id");
 		}
 		return json.toString();
@@ -318,7 +320,7 @@ public class ShopController {
 	@PostMapping("/login")
 	public String login(@RequestBody Map<String, String> loginData) {
 		JSONObject json = new JSONObject();
-		String username = loginData.get("username");
+		String username = loginData.get("account");
 		String password = loginData.get("password");
 		
 		boolean loginValidate = shopService.loginValidate(username, password);
