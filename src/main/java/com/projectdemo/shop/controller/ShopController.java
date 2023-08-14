@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projectdemo.shop.bean.ShopBean;
+import com.projectdemo.shop.bean.ShopDTO;
 import com.projectdemo.shop.service.ShopService;
 
 @RestController
@@ -51,19 +52,19 @@ public class ShopController {
 		return json.toString();
 	}
 
-	@GetMapping("/{id}")
-	public String findById(@PathVariable Integer id) {
-		JSONObject json = new JSONObject();
-		ShopBean shop = shopService.findById(id);
-		if(shop != null) {
-			json.put("shop", new JSONObject(shop));			
-		}
-		else {
-			json.put("message", "invalid id");
-		}
-		return json.toString();
-	}
-
+//	@GetMapping("/{id}")
+//	public String findById(@PathVariable Integer id) {
+//		JSONObject json = new JSONObject();
+//		ShopBean shop = shopService.findById(id);
+//		if(shop != null) {
+//			json.put("shop", new JSONObject(shop));			
+//		}
+//		else {
+//			json.put("message", "invalid id");
+//		}
+//		return json.toString();
+//	}
+	
 	@PutMapping("/{id}")
 	public String update(@PathVariable Integer id, @RequestBody ShopBean shopBean) {
 		JSONObject json = new JSONObject();

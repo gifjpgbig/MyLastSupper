@@ -1,5 +1,6 @@
 package com.projectdemo.manage.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projectdemo.shop.bean.ShopBean;
 
@@ -25,7 +26,7 @@ public class ShopHistoryMessageBean {
 	@ManyToOne
 	@JoinColumn(name = "fk_shop_id" ,columnDefinition = "int")
 	private ShopBean shop;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "fk_customer_service_id" ,columnDefinition = "int")
 	private CustomerServiceBean customerService;

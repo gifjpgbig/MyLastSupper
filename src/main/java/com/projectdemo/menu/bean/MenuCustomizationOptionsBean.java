@@ -1,5 +1,7 @@
 package com.projectdemo.menu.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +21,7 @@ public class MenuCustomizationOptionsBean {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_menu_customization_options_id")
+	@JoinColumn(name = "fk_menu_customization_id")
 	private MenuCustomizationBean menuCustomization;
 	
 	@Column(name = "option_name" , columnDefinition = "nvarchar(50)")

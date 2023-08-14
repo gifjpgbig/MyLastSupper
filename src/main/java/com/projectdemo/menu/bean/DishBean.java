@@ -47,7 +47,6 @@ public class DishBean {
 
 //	@JsonIgnoreProperties({"menu"})
 	@ManyToOne
-	@JsonIgnore
 	@JoinColumn(name = "fk_menu_id", columnDefinition = "int")
 	private MenuBean menu;
 

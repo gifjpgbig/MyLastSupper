@@ -68,9 +68,9 @@ public class MenuBean {
 	@JsonIgnore
 	private List<DishBean> dish;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "menu")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
 	@JsonIgnore
-	private MenuCategoryBean menuCategory;
+	private List<MenuCategoryBean> menuCategory;
 
 	public Integer getId() {
 		return id;
@@ -128,15 +128,12 @@ public class MenuBean {
 		this.dish = dish;
 	}
 
-	public MenuCategoryBean getMenuCategory() {
+	public List<MenuCategoryBean> getMenuCategory() {
 		return menuCategory;
 	}
 
-	public void setMenuCategory(MenuCategoryBean menuCategory) {
+	public void setMenuCategory(List<MenuCategoryBean> menuCategory) {
 		this.menuCategory = menuCategory;
 	}
-
-	
-	
 	
 }
