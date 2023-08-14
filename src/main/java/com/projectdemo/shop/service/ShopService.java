@@ -15,26 +15,26 @@ public class ShopService {
 
 	@Autowired
 	private ShopRepository shopRepository;
-	
+
 	public ShopBean addShop(ShopBean shopBean) {
 		return shopRepository.save(shopBean);
 	}
-	
+
 	public List<ShopBean> findAll() {
 		return shopRepository.findAll();
 	}
-	
+
 	public ShopBean findById(Integer id) {
 		Optional<ShopBean> optional = shopRepository.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			return optional.get();
 		}
 		return null;
 	}
-	
+
 	public ShopBean update(Integer id, ShopBean shopBean) {
 		Optional<ShopBean> optional = shopRepository.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			ShopBean oldShop = optional.get();
 			oldShop.setName(shopBean.getName());
 			oldShop.setAccount(shopBean.getAccount());
@@ -46,22 +46,48 @@ public class ShopService {
 			oldShop.setAddress(shopBean.getAddress());
 			oldShop.setLatitude(shopBean.getLatitude());
 			oldShop.setLongitude(shopBean.getLongitude());
-			oldShop.setReview(shopBean.getReview());			
+			oldShop.setReview(shopBean.getReview());
 			oldShop.setBank(shopBean.getBank());
 			oldShop.setOpenStatus(shopBean.getOpenStatus());
 			oldShop.setUdate(LocalDateTime.now());
-			
+
 			return shopRepository.save(oldShop);
 		}
 		return null;
 	}
-	
+
 	public boolean delete(Integer id) {
 		try {
 			shopRepository.deleteById(id);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public ShopBean findByName(String name) {
+		ShopBean bean = shopRepository.findByName(name);
+		if (bean != null) {
+			return bean;
+		}
+		return null;
+	}
+
+	public List<ShopBean> findFuzzy(String name) {
+		List<ShopBean> list = shopRepository.findFuzzy(name);
+		if (!list.isEmpty()) {
+			return list;
+		}
+		return null;
+	}
+	
+	public boolean loginValidate(String username, String password) {
+		ShopBean shopBean = shopRepository.findByAccount(username);
+		if(shopBean != null) {
+			if(password.equals(shopBean.getPassword())) {
+				return true;
+			}
 		}
 		return false;
 	}
