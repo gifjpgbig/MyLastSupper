@@ -24,11 +24,12 @@
             <thead>
               <tr>
                 <th>編號</th>
-                <th>地址</th>
+                <th>客戶地址</th>
                 <th>抵達時間</th>
                 <th>運送時間</th>
                 <th>外送員姓名</th>
                 <th>是否被棄單</th>
+                <th>棄單原因</th>
               </tr>
             </thead>
             <tbody>
@@ -40,6 +41,7 @@
                   deliverTime,
                   driverName,
                   isCancel,
+                  reason
                 } in $props.deliverDetails"
                 :key="id"
               >
@@ -49,12 +51,14 @@
                 <td>{{ deliverTime }}</td>
                 <td>{{ driverName }}</td>
                 <td>{{ isCancel }}</td>
+                <td>{{ reason }}</td>
                 <td>
 
                 <button 
+                v-if="!isCancel"
                 type="button"
                 class="btn btn-danger me-4" 
-                @click="openTerminateHandler(id),(showModal = true)"
+                @click="openTerminateHandler(id,$props.orderid),(showModal = true)"
                 data-bs-dismiss="modal"
                 data-bs-toggle="modal"
                 data-bs-target="#TerminateDeliverModal"
@@ -80,7 +84,7 @@
     </div>
   </div>
   <TerminateDeliverModal
-    :orderid="orderid"
+    :orderid="selectedorderid"
     :ddid="selectedid"
   ></TerminateDeliverModal>
 </template>
@@ -97,9 +101,13 @@ const { showModal, orderid, closeModal, deliverDetails } = defineProps([
 ]);
 
 const selectedid = ref(null)
+const selectedorderid = ref(null)
 
-const openTerminateHandler = (id) => {
-  selectedid.value = id;
+
+const openTerminateHandler = (ddid, odid) => {
+  selectedid.value = ddid;
+  selectedorderid.value = odid;
+
 }
 
 

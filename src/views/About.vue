@@ -10,22 +10,7 @@
   <starRating></starRating> -->
   <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
-                </a>
-                <hr class="sidebar-divider my-0" />
-                <ul id="accordionSidebar" class="navbar-nav text-light">
-                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Table</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
-                </ul>
-                <div class="text-center d-none d-md-inline"><button id="sidebarToggle" class="btn rounded-circle border-0" type="button"></button></div>
-            </div>
-        </nav>
+        
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
@@ -357,109 +342,7 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
-import OrderReviewToast from "../components/OrderReviewToast.vue";
-import starRating from "../components/starRating.vue";
-const success = ref("123213");
-const failed= ref("qwer");
-(function() {
-  "use strict"; // Start of use strict
 
-  var sidebar = document.querySelector('.sidebar');
-  var sidebarToggles = document.querySelectorAll('#sidebarToggle, #sidebarToggleTop');
-  
-  if (sidebar) {
-    
-    var collapseEl = sidebar.querySelector('.collapse');
-    var collapseElementList = [].slice.call(document.querySelectorAll('.sidebar .collapse'))
-    var sidebarCollapseList = collapseElementList.map(function (collapseEl) {
-      return new bootstrap.Collapse(collapseEl, { toggle: false });
-    });
-
-    for (var toggle of sidebarToggles) {
-
-      // Toggle the side navigation
-      toggle.addEventListener('click', function(e) {
-        document.body.classList.toggle('sidebar-toggled');
-        sidebar.classList.toggle('toggled');
-
-        if (sidebar.classList.contains('toggled')) {
-          for (var bsCollapse of sidebarCollapseList) {
-            bsCollapse.hide();
-          }
-        };
-      });
-    }
-
-    // Close any open menu accordions when window is resized below 768px
-    window.addEventListener('resize', function() {
-      var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-
-      if (vw < 768) {
-        for (var bsCollapse of sidebarCollapseList) {
-          bsCollapse.hide();
-        }
-      };
-    });
-  }
-
-  // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-  
-  var fixedNaigation = document.querySelector('body.fixed-nav .sidebar');
-  
-  if (fixedNaigation) {
-    fixedNaigation.on('mousewheel DOMMouseScroll wheel', function(e) {
-      var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-
-      if (vw > 768) {
-        var e0 = e.originalEvent,
-          delta = e0.wheelDelta || -e0.detail;
-        this.scrollTop += (delta < 0 ? 1 : -1) * 30;
-        e.preventDefault();
-      }
-    });
-  }
-
-  var scrollToTop = document.querySelector('.scroll-to-top');
-  
-  if (scrollToTop) {
-    
-    // Scroll to top button appear
-    window.addEventListener('scroll', function() {
-      var scrollDistance = window.pageYOffset;
-
-      //check if user is scrolling up
-      if (scrollDistance > 100) {
-        scrollToTop.style.display = 'block';
-      } else {
-        scrollToTop.style.display = 'none';
-      }
-    });
-  }
-
-})(); // End of use strict
-
-// const updateReviews = async (id) => {
-//   console.log(id);
-//   const API_URL = `${URL}update/reviews/${id}`;
-//   console.log(API_URL);
-//   const response = await axios.put(API_URL, review.value);
-//   if (response.data.success) {
-//     // alert(response.data.message);
-//     msg.success = response.data.success;
-//     msg.failed = "hehehe";
-//     console.log("父親的:" + msg);
-//   }
-
-  //  await axios.put(API_URL, review.value).then((req)=>{
-  //   alert("進入")
-  //   if (req.data.success) {
-  //   msg.success = req.data.success;
-  //   msg.failed = "hehehe";
-  //   console.log(msg)
-  // }
-  //  });
-// };
 </script>
 
 <style scoped>

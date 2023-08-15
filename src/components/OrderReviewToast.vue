@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="showSweetAlert(id, review)">Show SweetAlert</button>
+    <button class="btn btn-primary" @click="showSweetAlert(id, review)">傳送回饋</button>
   </div>
 </template>
 

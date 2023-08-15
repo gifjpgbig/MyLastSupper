@@ -47,7 +47,7 @@
               v-model="review.shopReview"
             />
           </div> -->
-          <starRating @updaterating="getRating" ></starRating>
+          <starRating @updaterating="getRating" :initialRating="review.shopReview" ></starRating>
           <p>Rating from child: {{ RatingFrom }}</p>
           <p>shopReview from child: {{ review.shopReview }}</p>
         </div>
@@ -59,10 +59,10 @@
           >
             關閉
           </button>
-          <button type="button" class="btn btn-primary" @click="updateReviews($props.orderid)"
+          <!-- <button type="button" class="btn btn-primary" @click="updateReviews($props.orderid)"
           data-bs-dismiss="modal">
             Save changes
-          </button>
+          </button> -->
           <OrderReviewToast  data-bs-dismiss="modal"  :id="$props.orderid" :review="review" @refresh="handleChildData"></OrderReviewToast>
         </div>
       </div>
@@ -118,6 +118,12 @@ onBeforeUnmount(() => {
 
 const closeModalHandler = () => {
   if (closeModal) {
+    RatingFrom.value = 0;
+    review.value.shopReview = 0;
+    review.value.dishComments = "";
+    review.value.shopComments = "";
+
+
     closeModal();
   }
 };
