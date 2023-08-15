@@ -73,7 +73,8 @@ public class DeliverDetailController {
 						.put("arriveTime", detail.getArriveTime())
 						.put("deliverTime", detail.getDeliverTime())
 						.put("driverName", detail.getDriverName())
-						.put("isCancel", detail.isCancel());
+						.put("isCancel", detail.isCancel())
+						.put("reason", detail.getCancelReason());
 				array = array.put(item);
 			}
 		}
