@@ -52,10 +52,11 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const { showModal, orderid, ddid } = defineProps([
+const { showModal, orderid, ddid, closeModal } = defineProps([
   "showModal",
   "orderid",
-  "ddid"
+  "ddid",
+  "closeModal"
 ]);
 
 onMounted(() => {
