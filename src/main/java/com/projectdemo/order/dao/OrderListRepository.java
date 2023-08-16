@@ -38,10 +38,17 @@ public interface OrderListRepository extends JpaRepository<OrderListBean, Intege
 	// 改變店家回覆客戶的評論 done
 	
 	// 讓外送員查看現在可以接的訂單 done
-		// 現在可以接的訂單邏輯是: 訂單狀態不屬於已接單、已取消
+		// 現在可以接的訂單邏輯是: 客戶、餐廳訂單狀態不屬於已棄單、外送訂單狀態不屬於已接單
 		// 還沒被其他外送員接走的訂單
 		// 被其他外送員放棄的訂單
-	@Query(value = "select * from order_list where status not like '已%'", nativeQuery = true)
+	@Query(value = "select * from order_list where shop_status not like '%棄%' and cus_status not like '%棄%' and deliver_status not like '已接%'", nativeQuery = true)
 	List<OrderListBean> findIsOrderTakable();
+	
+	
+	@Query(value = "select * from order_list where shop_status not like '%棄%' and cus_status not like '%棄%'and not deliver_status = '已完成'", nativeQuery = true)
+	Page<OrderListBean> findAllInProgress(Pageable page);
+	
+	
+	
 
 }

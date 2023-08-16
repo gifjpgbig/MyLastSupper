@@ -90,7 +90,7 @@ public class OrderListService {
 
 	// 有分頁的找到所有訂單、且可以根據不同條件查找訂單
 	// 目前被應用在客服人員查看客戶訂單以及店家訂單、也可以被應用在客戶歷史訂單與店家歷史訂單
-	public Page<OrderListBean> findAll(String json) {
+	public Page<OrderListBean> findAllInProgress(String json) {
 		JSONObject obj = new JSONObject(json);
 
 		// 生成Pageable物件
@@ -109,8 +109,31 @@ public class OrderListService {
 			return oLRepo.findByShopId(obj.getInt("shopID"), pgb);
 		}
 
-		return oLRepo.findAll(pgb);
+		return oLRepo.findAllInProgress(pgb);
 	}
+//	// 有分頁的找到所有訂單、且可以根據不同條件查找訂單
+//	// 目前被應用在客服人員查看客戶訂單以及店家訂單、也可以被應用在客戶歷史訂單與店家歷史訂單
+//	public Page<OrderListBean> findAll(String json) {
+//		JSONObject obj = new JSONObject(json);
+//		
+//		// 生成Pageable物件
+//		Integer pageNumber = obj.getInt("start");
+//		Integer rows = obj.getInt("rows") == 0 ? Integer.MAX_VALUE : obj.getInt("rows");
+//		Sort.Direction sortOrder = obj.getString("sortOrder").equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+//		String sortType = obj.getString("sortType");
+//		PageRequest pgb = PageRequest.of(pageNumber, rows, sortOrder, sortType);
+//		
+//		// 若要用客戶ID查找
+//		if (obj.has("cusID") && obj.get("cusID") != null && !obj.get("cusID").equals("")) {
+//			return oLRepo.findByCustomerId(obj.getInt("cusID"), pgb);
+//		}
+//		// 若要用店家ID查找
+//		if (obj.has("shopID") && obj.get("shopID") != null && !obj.get("shopID").equals("")) {
+//			return oLRepo.findByShopId(obj.getInt("shopID"), pgb);
+//		}
+//		
+//		return oLRepo.findAll(pgb);
+//	}
 
 	// 客戶歷史訂單
 	public List<OrderListBean> findOrderByCustomerId(Integer id) {
@@ -125,12 +148,27 @@ public class OrderListService {
 	}
 
 	// 改變訂單狀態
-	public OrderListBean updateStatusById(Integer id, OrderListBean ol) {
-		Optional<OrderListBean> optional = oLRepo.findById(id);
-		if (optional.isPresent()) {
-			OrderListBean olbean = optional.get();
-			olbean.setStatus(ol.getStatus());
-			return oLRepo.save(olbean);
+	// 依據前端傳送到這裡的json欄位變數statustype，可以得到要去更新哪個資料
+	// customer更新CusStatus
+	// shop更新ShopStatus
+	// deliver更新DeliverStatus
+	public OrderListBean updateStatusById(Integer id, OrderListBean ol, String statusType) {
+		if (!statusType.equals("") || statusType != null ) {
+			Optional<OrderListBean> optional = oLRepo.findById(id);
+			if (optional.isPresent()) {
+				OrderListBean olbean = optional.get();
+
+				if (statusType.equals("customer")) {
+					olbean.setCusStatus(ol.getCusStatus());
+				}
+				if (statusType.equals("shop")) {
+					olbean.setShopStatus(ol.getShopStatus());
+				}
+				if (statusType.equals("deliver")) {
+					olbean.setDeliverStatus(ol.getDeliverStatus());
+				}
+				return oLRepo.save(olbean);
+			}
 		}
 		return null;
 	}
@@ -144,7 +182,7 @@ public class OrderListService {
 		Optional<OrderListBean> optional = oLRepo.findById(id);
 		if (optional.isPresent()) {
 			OrderListBean olbean = optional.get();
-			olbean.setStatus(data.getString("deliver_status"));
+			olbean.setDeliverStatus(data.getString("deliver_status"));
 			return oLRepo.save(olbean);
 		}
 		return null;

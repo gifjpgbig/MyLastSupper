@@ -33,6 +33,9 @@ public class CustomerServiceBean {
     @Column(name = "password", columnDefinition = "varchar(20)")
     private String password;
     
+    @Column(name = "authorizations", columnDefinition = "varchar(4)")
+    private String authorizations;
+        
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerService")
 	@JsonIgnore
     private List<ShopHistoryMessageBean> shopHistoryMessage;
@@ -59,6 +62,14 @@ public class CustomerServiceBean {
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public String getAuthorizations() {
+		return authorizations;
+	}
+
+	public void setAuthorizations(String authorizations) {
+		this.authorizations = authorizations;
 	}
 
 	public String getPassword() {
