@@ -86,6 +86,7 @@
   <TerminateDeliverModal
     :orderid="selectedorderid"
     :ddid="selectedid"
+    :closeModal="closeModal"
   ></TerminateDeliverModal>
 </template>
 
