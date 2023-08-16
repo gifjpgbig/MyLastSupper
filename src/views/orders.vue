@@ -37,7 +37,10 @@
             @click="sortHandler('address')"
           ></i>
         </th>
-        <th>訂單狀態</th>
+        <th>客戶訂單狀態</th>
+        <th>店家訂單狀態</th>
+        <th>外送訂單狀態</th>
+        <!-- <th>訂單狀態</th> -->
         <th>客戶ID</th>
         <th>店家ID</th>
       </tr>
@@ -47,7 +50,9 @@
         v-for="{
           id,
           address,
-          status,
+          cus_status,
+          shop_status,
+          deliver_status,
           customerID,
           shopID,
           showReview,
@@ -56,7 +61,10 @@
       >
         <td>{{ id }}</td>
         <td>{{ address }}</td>
-        <td>
+        <td>{{ cus_status }}</td>
+        <td>{{ shop_status }}</td>
+        <td>{{ deliver_status }}</td>
+        <!-- <td>
           <select
             class="form-select"
             id="status"
@@ -67,7 +75,7 @@
               {{ stat.name }}
             </option>
           </select>
-        </td>
+        </td> -->
         <td>{{ customerID }}</td>
         <td>{{ shopID }}</td>
         <td>
@@ -271,7 +279,6 @@ const updateStatus = async (id, status) => {
   const isConfirmed = window.confirm("確定要執行這個操作嗎？");
 
   if (isConfirmed) {
-    console.log("to java status" + status);
     const response = await axios.put(API_URL, { status });
     if (response.data.success) {
       alert(response.data.message);

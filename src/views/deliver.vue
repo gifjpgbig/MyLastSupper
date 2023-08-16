@@ -48,12 +48,13 @@
     </thead>
     <tbody>
       <tr
-        v-for="{ id, address, status, customerID, shopID, showReview } in orders"
+        v-for="{ id, address, deliver_status, customerID, shopID, showReview } in orders"
         :key="id"
       >
         <td>{{ id }}</td>
         <td>{{ address }}</td>
-        <td>
+        <td>{{ deliver_status }}</td>
+        <!-- <td>
           <select
             class="form-select"
             id="status"
@@ -64,7 +65,7 @@
               {{ stat.name }}
             </option>
           </select>
-        </td>
+        </td> -->
         <td>{{ customerID }}</td>
         <td>{{ shopID }}</td>
         <td>
@@ -341,7 +342,7 @@ const takeHandler = async (id, address, status) => {
       deliver_status: "已接單 測試vue",
       driver: "亂講",
       address: address,
-      deliverID: 3  
+      deliverID: 1  
     }
     try{
     const URLAPI = `${URL}takeOrders`;

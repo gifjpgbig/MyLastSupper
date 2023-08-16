@@ -14,10 +14,7 @@ const emit = defineEmits(['refresh'])
 
 const showSweetAlert = async (props1, props2) => {
   let list = {
-    dishComments: props2.dishComments,
-    shopComments: props2.shopComments,
-    shopReview: props2.shopReview,
-  };
+    };
 
 
 
