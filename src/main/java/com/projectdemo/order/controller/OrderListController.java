@@ -349,8 +349,9 @@ public class OrderListController {
 	public String findInProgressByDeliver(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 		JSONObject datas = new JSONObject(json);		
-		List<OrderListBean> orders = olService.findInProgressByDeliver(1);
-		JSONArray array = new JSONArray();
+		
+//		List<OrderListBean> orders = olService.findInProgressByDeliver(1);
+//		JSONArray array = new JSONArray();
 //		if (orders != null && !orders.isEmpty()) {
 //			for (OrderListBean order : orders) {
 //

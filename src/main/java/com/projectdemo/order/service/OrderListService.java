@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.repository.CustomerRepository;
 import com.projectdemo.customer.service.CustomerService;
+import com.projectdemo.order.bean.DeliverDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
 import com.projectdemo.order.dao.OrderListRepository;
 import com.projectdemo.shop.bean.ShopBean;

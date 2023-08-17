@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.projectdemo.customer.bean.CustomerBean;
+import com.projectdemo.order.bean.DeliverDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
 import com.projectdemo.shop.bean.ShopBean;
 
@@ -52,7 +53,7 @@ public interface OrderListRepository extends JpaRepository<OrderListBean, Intege
 //	@Query(value = "select dd.address as cus_address, dd.deliver_time, ol.delivery_fee, ol.order_time, s.address as shop_address, s.name as shop_name from deliver_detail as dd, order_list as ol, shop as s where dd.fk_order_list_id = ol.id and ol.fk_shop_id = s.id  and is_cancel = 0 and is_complete = 0 and fk_deliverer_id = 1", nativeQuery = true)
 //	@Query(value = "select * from deliver_detail as dd, order_list as ol where dd.fk_order_list_id = ol.id and is_cancel = 0 and is_complete = 0 and fk_deliverer_id = 1", nativeQuery = true)
 //	@Query(value = "select * from deliver_detail as dd, order_list as ol where dd.fk_order_list_id = ol.id", nativeQuery = true)
-	@Query(value = "select * from deliver_detail", nativeQuery = true)
+	@Query(value = "select * from order_list", nativeQuery = true)
 	List<OrderListBean> findInProgressByDeliver();
 	
 	
