@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectdemo.order.bean.DeliverDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
 import com.projectdemo.order.service.DeliverDetailService;
@@ -203,8 +205,8 @@ public class OrderListController {
 	}
 
 // 外送員
-	// 讓外送員查看現在可以接的訂單，應該要放在外送員系統
-	// 現在可以接的訂單邏輯是: 訂單狀態不屬於已接單、已取消
+	// 1-1. 讓外送員查看現在可以接的訂單，應該要放在外送員系統
+	// 現在可以接的訂單邏輯是: 客戶、餐廳訂單狀態不屬於已棄單、外送訂單狀態不屬於已接單
 	// 還沒被其他外送員接走的訂單
 	// 被其他外送員放棄的訂單
 	@GetMapping("/order/Takables")
@@ -221,7 +223,8 @@ public class OrderListController {
 						.put("deliver_status", order.getDeliverStatus())
 						.put("shop_status", order.getShopStatus())
 						.put("customerID", order.getCustomer().getCustomerID())
-						.put("shopID", order.getShop().getId());
+						.put("shopID", order.getShop().getId())
+						.put("shopAddress", order.getShop().getAddress());
 				array = array.put(item);
 			}
 		}
@@ -229,7 +232,7 @@ public class OrderListController {
 		return responseJson.toString();
 	}
 
-	// 讓外送員接單，應該要放在外送員系統
+	// 1-2. 讓外送員接單，應該要放在外送員系統
 	// 接單的邏輯是:
 	// 將訂單狀態改變成為已接單
 	// 在該筆訂單的外送明細新增一筆屬於該外送員的資料
@@ -312,6 +315,7 @@ public class OrderListController {
 		return responseJson.toString();
 	}
 
+	// 2-1取消訂單
 	// 外送員接單的延伸功能，緊急狀況由客服人員註銷已接單的外送員詳細，應該要放在客服系統
 	// DeliverDetailService.java, OrderListService.java
 	// deliver_detail_id, reason, deliver_status, orderid
@@ -339,4 +343,35 @@ public class OrderListController {
 		return responseJson.toString();
 	}
 
+	
+	// 3-1外送員接受的訂單
+	@PostMapping("/order/findInProgressByDeliver")
+	public String findInProgressByDeliver(@RequestBody String json) {
+		JSONObject responseJson = new JSONObject();
+		JSONObject datas = new JSONObject(json);		
+		List<OrderListBean> orders = olService.findInProgressByDeliver(1);
+		JSONArray array = new JSONArray();
+//		if (orders != null && !orders.isEmpty()) {
+//			for (OrderListBean order : orders) {
+//
+//				JSONObject item = new JSONObject()
+//						.put("id", order.getId())
+//						.put("address", order.getAddress())
+//						.put("cus_status", order.getCusStatus())
+//						.put("deliver_status", order.getDeliverStatus())
+//						.put("shop_status", order.getShopStatus())
+//						.put("customerID", order.getCustomer().getCustomerID())
+//						.put("shopID", order.getShop().getId())
+//						.put("shopAddress", order.getShop().getAddress());
+//				array = array.put(item);
+//			}
+//		}
+//	    ObjectMapper objectMapper = new ObjectMapper();
+//	    String jsonResponse = objectMapper.writeValueAsString(orders);
+		responseJson.put("list", "dfjlf;a");
+		return responseJson.toString();
+	}
+	
+	
+	
 }

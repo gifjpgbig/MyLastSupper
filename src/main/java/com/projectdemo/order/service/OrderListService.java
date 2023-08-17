@@ -246,4 +246,9 @@ public class OrderListService {
 		return oLRepo.findById(id).get() != null;
 	}
 
+	public List<OrderListBean> findInProgressByDeliver(Integer deliverID){
+		return oLRepo.findInProgressByDeliver();
+	}
+	
+	
 }
