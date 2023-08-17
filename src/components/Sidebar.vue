@@ -1,16 +1,16 @@
 <template>
   <aside class="sidebar">
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark">
       <div class="row row flex-nowrap">
-        <div class="col col-auto col-md-3 col-xl-2 px-sm-2 px-0 ">
+        <div class="col col-auto col-md-3 col-xl-2 px-sm-2 px-0">
           <div
             class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100"
           >
-            <a
+            <!-- <a
               class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
               href="/"
               ><span class="fs-5 d-none d-sm-inline">Menu</span></a
-            >
+            > -->
             <ul
               id="menu"
               class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
@@ -25,6 +25,14 @@
                   <span class="d-none d-sm-inline">首頁</span></RouterLink
                 >
               </li>
+
+              <li class="nav-item">
+                <!-- <a class="nav-link px-0 align-middle" href="#"><i class="fa fa-table fs-4 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a> -->
+                <RouterLink class="nav-link align-middle px-0" to="/about">
+                  <i class="fa fa-table fs-4 bi-table"></i>
+                  <span class="d-none d-sm-inline">績效查核</span></RouterLink
+                >
+              </li>
               <li class="nav-item">
                 <a
                   class="nav-link px-0 align-middle dropdown-toggle"
@@ -34,53 +42,22 @@
                   aria-expanded="false"
                   aria-controls="submenu1"
                   ><i class="fa fa-bar-chart fs-4 bi-speedometer2"></i
-                  ><span class="ms-1 d-none d-sm-inline">Dashboard</span></a
+                  ><span class="ms-1 d-none d-sm-inline">客服訂單管理</span></a
                 >
                 <ul
                   id="submenu1"
                   class="nav flex-column ms-1 collapse ms-1 ms-md-3"
                 >
-                  <li class="w-100">
-                    <a class="nav-link px-0" href="#"
-                      ><span class="d-none d-sm-inline">Item</span></a
+                <li class="w-100">
+                    <!-- <a class="nav-link px-0" href="#"><span class="d-none d-sm-inline">Product</span></a> -->
+                    <RouterLink class="nav-link" to="/orders"
+                      >客服訂單</RouterLink
                     >
                   </li>
                   <li>
-                    <a class="nav-link px-0" href="#"
-                      ><span class="d-none d-sm-inline">Item</span></a
-                    >
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <!-- <a class="nav-link px-0 align-middle" href="#"><i class="fa fa-table fs-4 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a> -->
-                <RouterLink class="nav-link align-middle px-0" to="/about">
-                  <i class="fa fa-table fs-4 bi-table"></i>
-                  <span class="d-none d-sm-inline">關於</span></RouterLink
-                >
-              </li>
-              <li>
-                <a
-                  class="nav-link px-0 align-middle"
-                  href="#submenu2"
-                  data-bs-toggle="collapse"
-                  ><i class="fa fa-glass fs-4 bi-bootstrap"></i
-                  ><span class="ms-1 d-none d-sm-inline">Lounge</span></a
-                >
-                <ul
-                  id="submenu2"
-                  class="collapse nav flex-column ms-1"
-                  data-bs-parent="#menu"
-                >
-                  <li class="w-100">
-                    <!-- <a class="nav-link px-0" href="#"><span class="d-none d-sm-inline">Item</span></a> -->
-                    <RouterLink class="nav-link" to="/contact"
-                      >聯絡我們</RouterLink
-                    >
-                  </li>
-                  <li>
-                    <a class="nav-link px-0" href="#"
-                      ><span class="d-none d-sm-inline">Item</span></a
+                    <!-- <a class="nav-link px-0" href="#"><span class="d-none d-sm-inline">Product</span></a> -->
+                    <RouterLink class="nav-link" to="/deliver"
+                      >外送訂單</RouterLink
                     >
                   </li>
                 </ul>
@@ -91,7 +68,7 @@
                   href="#submenu3"
                   data-bs-toggle="collapse"
                   ><i class="fa fa-th-large fs-4 bi-grid"></i
-                  ><span class="ms-1 d-none d-sm-inline">Products</span></a
+                  ><span class="ms-1 d-none d-sm-inline">外送員管理</span></a
                 >
                 <ul
                   id="submenu3"
@@ -110,22 +87,12 @@
                       >外送訂單</RouterLink
                     >
                   </li>
-                  <li>
-                    <a class="nav-link px-0" href="#"
-                      ><span class="d-none d-sm-inline">Product</span></a
-                    >
-                  </li>
-                  <li>
-                    <a class="nav-link px-0" href="#"
-                      ><span class="d-none d-sm-inline">Product</span></a
-                    >
-                  </li>
                 </ul>
               </li>
               <li>
                 <a class="nav-link px-0 align-middle" href="#"
                   ><i class="fa fa-users fs-4 bi-people"></i
-                  ><span class="ms-1 d-none d-sm-inline">Customers</span></a
+                  ><span class="ms-1 d-none d-sm-inline">即時訊息</span></a
                 >
               </li>
             </ul>
@@ -166,7 +133,6 @@
 <script setup></script>
 
 <style scoped>
-
 .sidebar {
   position: fixed;
   top: 71.98px;
@@ -185,4 +151,16 @@
 .sidebar a {
   color: #fff; /* 設定連結的文本顏色 */
 }
+
+/* .dropdown-toggle {
+  display: none;
+} */
+
+/*
+ul#menu {
+  max-width: 100%; 
+  width: auto; 
+}
+*/
+
 </style>
