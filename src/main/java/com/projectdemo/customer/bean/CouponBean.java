@@ -30,7 +30,7 @@ public class CouponBean {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "coupon")
 	@JsonIgnore
-	private List<CustomerCouponBean> customerCoupon;
+	private List<CustomerCouponBean> cusomterCoupon;
 
 	@Column(name = "coupon_code", columnDefinition = "nvarchar(max)")
 	private String couponCode;
@@ -111,12 +111,12 @@ public class CouponBean {
 		this.id = id;
 	}
 
-	public List<CustomerCouponBean> getCustomerCoupon() {
-		return customerCoupon;
+	public List<CustomerCouponBean> getCusomterCoupon() {
+		return cusomterCoupon;
 	}
 
-	public void setCustomerCoupon(List<CustomerCouponBean> customerCoupon) {
-		this.customerCoupon = customerCoupon;
+	public void setCusomterCoupon(List<CustomerCouponBean> cusomterCoupon) {
+		this.cusomterCoupon = cusomterCoupon;
 	}
 
 	public String getDescription() {
