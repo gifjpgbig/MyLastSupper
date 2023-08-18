@@ -38,7 +38,7 @@ public class CustomerBean {
 	private String name;
 
 	// 客戶帳號
-	@Column(name = "account", columnDefinition = "nvarchar(50)")
+	@Column(name = "account", columnDefinition = "nvarchar(50)",unique = true)
 	private String account;
 
 	// 客戶密碼
@@ -106,8 +106,10 @@ public class CustomerBean {
 	public void onCreate() {
 		if (createDate == null) {
 			createDate = LocalDateTime.now();
-		}
+		} 
+		
 	}
+	
 
 	public Integer getCustomerID() {
 		return customerID;

@@ -31,6 +31,12 @@ public class AddressService {
 		
 	}
 	
+	public String sendAddressToOrderListAddress(AddressBean addressBean) {
+		System.out.println("正在傳送地址");
+		addressBean.getLocation();
+		return "送出地址成功";
+	}
+	
 	public AddressBean AddressRead(Integer id) {
 		return addressRepository.findById(id).get();
 	}
