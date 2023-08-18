@@ -20,4 +20,5 @@ public interface MenuCustomizationRepository extends JpaRepository<MenuCustomiza
 	@Query(value="SELECT * FROM menu_customization WHERE fk_dish_id = :dishId" , nativeQuery = true)
 	List<MenuCustomizationBean> findMenuCustomizationByDishId(@Param("dishId") Integer dishId);
 	
+
 }

@@ -21,3 +21,4 @@ public interface MenuCustomizationOptionsRepository extends JpaRepository<MenuCu
 	@Query(value="SELECT * FROM menu_customization_options WHERE fk_menu_customization_id = :optionsId", nativeQuery = true)
 	List<MenuCustomizationOptionsBean> findMenuCustomizationOptionsByOptionsId(@Param("optionsId") Integer optionsId);
 }
+

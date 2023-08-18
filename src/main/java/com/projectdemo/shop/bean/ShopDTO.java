@@ -11,7 +11,7 @@ public class ShopDTO {
 	private String password;
 	private String email;
 	private String phone;
-	private String photo;
+	private String photo; //Base64
 	private String district;
 	private String address;
 	private String latitude;

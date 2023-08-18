@@ -9,10 +9,6 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,10 +59,22 @@ public class ShopController {
 	//Code based on teacher's, uses RequestParam
 	//Never tested so don't know if it works
 	@PostMapping("/addWithPhoto")
-	public String addShopWithPhoto(@RequestParam("shopBean") ShopBean shopBean, @RequestParam("photoFile") MultipartFile photoFile) {
+	public String addShopWithPhoto(@RequestPart String jsonPayload, @RequestPart("photoFile") MultipartFile photoFile) {
 		JSONObject json = new JSONObject();
+		JSONObject payload = new JSONObject(jsonPayload);
 		try {
 			byte[] photo = photoFile.getBytes();
+			
+			ShopBean shopBean = new ShopBean();
+			shopBean.setName(payload.getString("name"));
+			shopBean.setAccount(payload.getString("account"));
+			shopBean.setPassword(payload.getString("password"));
+			shopBean.setEmail(payload.getString("email"));
+			shopBean.setPhone(payload.getString("phone"));
+			shopBean.setDistrict(payload.getString("district"));
+			shopBean.setAddress(payload.getString("address"));
+			shopBean.setBank(payload.getString("bank"));
+			
 			shopBean.setPhoto(photo);
 			ShopBean shop = shopService.addShop(shopBean);
 			if (shop != null) {
@@ -103,7 +112,8 @@ public class ShopController {
 	
 	//Get photo separately
 	@GetMapping("/findPhoto/{id}") //shop id
-	public ResponseEntity<byte[]> getPhoto(@PathVariable Integer id) {
+	public String getPhoto(@PathVariable Integer id) {
+		JSONObject json = new JSONObject();
 		ShopBean shop = shopService.findById(id);
 		
 		if(shop == null) {
@@ -111,9 +121,15 @@ public class ShopController {
 		}
 		
 		byte[] photo = shop.getPhoto();
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_JPEG);
-		return new ResponseEntity<byte[]>(photo, headers, HttpStatus.OK);
+		if(photo != null) {
+			String base64Image = Base64.getEncoder().encodeToString(photo);
+			json.put("success", true);
+			json.put("photo", base64Image);
+		}
+		else {
+			json.put("success", false);
+		}
+		return json.toString();
 	}
 	
 	@GetMapping("/all")
@@ -165,10 +181,21 @@ public class ShopController {
 		dto.setLongitude(bean.getLongitude());
 		dto.setReview(bean.getReview());
 		dto.setBank(bean.getBank());
-		dto.setOpenStatus(bean.getOpenStatus());
+		dto.setOpenStatus(bean.isOpenStatus());
 		dto.setCdate(bean.getCdate());
 		dto.setUdate(bean.getUdate());
-		dto.setOpenhrId(bean.getOpenhrBean().getId());
+		
+		// Open Hour
+		if(bean.getOpenhrBean() != null) {
+			dto.setOpenhrId(bean.getOpenhrBean().getId());
+		}
+		
+		// Photo
+		byte[] photo = bean.getPhoto();
+		if(photo != null) {
+			String base64Image = Base64.getEncoder().encodeToString(photo);
+			dto.setPhoto(base64Image);
+		}
 		
 		
 		//photo

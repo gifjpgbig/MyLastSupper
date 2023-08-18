@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.projectdemo.shop.service.PrepTimeService;
 
 @RestController
 @RequestMapping("/shop/preptime")
+@CrossOrigin()
 public class PrepTimeController {
 
 	@Autowired
@@ -107,6 +109,32 @@ public class PrepTimeController {
 			json.put("success", false);
 			json.put("message", "id doesn't exist");
 		}
+		return json.toString();
+	}
+	
+	@GetMapping("/allOrdered/{id}")
+	public String findAllByShopOrdered(@PathVariable("id") Integer id) {
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		List<PrepTimeBean> list = prepTimeService.findAllByShopOrdered(id);
+		
+		if (list != null && !list.isEmpty()) {
+			for (PrepTimeBean bean : list) {
+				JSONObject item = new JSONObject()
+						.put("id", bean.getId())
+						.put("prep", bean.getPrep())
+						.put("day", bean.getDay())
+						.put("startTime", bean.getStartTime())
+						.put("endTime", bean.getEndTime());
+				array.put(item);
+			}
+			json.put("list", array);
+			json.put("success", true);
+		} else {
+			json.put("success", false);
+			json.put("message", "invalid id");
+		}
+		
 		return json.toString();
 	}
 }

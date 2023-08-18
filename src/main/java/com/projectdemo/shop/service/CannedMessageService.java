@@ -65,4 +65,12 @@ public class CannedMessageService {
 		}
 		return false;
 	}
+	
+	public List<CannedMessageBean> findAllByShopOrdered(Integer id) {
+		Optional<ShopBean> optional = shopRepository.findById(id);
+		if(optional.isPresent()) {
+			return cannedMessageRepository.findAllByShopOrdered(id);
+		}
+		return null;
+	}
 }

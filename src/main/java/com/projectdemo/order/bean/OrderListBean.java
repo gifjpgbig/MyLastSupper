@@ -49,8 +49,14 @@ public class OrderListBean {
 	@Column(name = "total_price", columnDefinition = "int")
 	private Integer totalPrice;
 
-	@Column(name = "status", columnDefinition = "nvarchar(10)")
-	private String status;	
+	@Column(name = "cus_status", columnDefinition = "nvarchar(10)")
+	private String cusStatus;	
+
+	@Column(name = "shop_status", columnDefinition = "nvarchar(10)")
+	private String shopStatus;	
+	
+	@Column(name = "deliver_status", columnDefinition = "nvarchar(10)")
+	private String deliverStatus;	
 	
 	@Column(name = "address", columnDefinition = "nvarchar(50)")
 	private String address;
@@ -77,131 +83,149 @@ public class OrderListBean {
 	@Column(name = "shop_feedback_reply", columnDefinition = "nvarchar(200)")
 	private String shopFeedbackReply;
 
-	public Integer getId() {
-		return id;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public String getCusStatus() {
+		return cusStatus;
 	}
 
 	public CustomerBean getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerBean customer) {
-		this.customer = customer;
-	}
-
-	public ShopBean getShop() {
-		return shop;
-	}
-
-	public void setShop(ShopBean shop) {
-		this.shop = shop;
-	}
-
-	public List<OrderDetailBean> getOrderDetails() {
-		return orderDetails;
-	}
-
-	public void setOrderDetails(List<OrderDetailBean> orderDetails) {
-		this.orderDetails = orderDetails;
-	}
-
-
 	public List<DeliverDetailBean> getDeliverDetail() {
 		return deliverDetail;
 	}
 
-	public void setDeliverDetail(List<DeliverDetailBean> deliverDetail) {
-		this.deliverDetail = deliverDetail;
-	}
-
-	public Integer getTotalPrice() {
-		return totalPrice;
-	}
-
-	public void setTotalPrice(Integer totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
+	public String getDeliverStatus() {
+		return deliverStatus;
 	}
 
 	public Integer getDeliveryFee() {
 		return deliveryFee;
 	}
 
-	public void setDeliveryFee(Integer deliveryFee) {
-		this.deliveryFee = deliveryFee;
-	}
-
-	public LocalDateTime getOrderTime() {
-		return orderTime;
-	}
-
-	public void setOrderTime(LocalDateTime orderTime) {
-		this.orderTime = orderTime;
-	}
-
 	public Integer getDiscount() {
 		return discount;
-	}
-
-	public void setDiscount(Integer discount) {
-		this.discount = discount;
-	}
-
-	public Integer getShopReview() {
-		return shopReview;
-	}
-
-	public void setShopReview(Integer shopReview) {
-		this.shopReview = shopReview;
-	}
-
-	public String getShopComments() {
-		return shopComments;
-	}
-
-	public void setShopComments(String shopComments) {
-		this.shopComments = shopComments;
 	}
 
 	public String getDishComments() {
 		return dishComments;
 	}
 
-	public void setDishComments(String dishComments) {
-		this.dishComments = dishComments;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public List<OrderDetailBean> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public LocalDateTime getOrderTime() {
+		return orderTime;
+	}
+
+	public ShopBean getShop() {
+		return shop;
+	}
+
+	
+
+	public String getShopComments() {
+		return shopComments;
 	}
 
 	public String getShopFeedbackReply() {
 		return shopFeedbackReply;
 	}
 
+	public Integer getShopReview() {
+		return shopReview;
+	}
+
+	public String getShopStatus() {
+		return shopStatus;
+	}
+
+	public Integer getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setCusStatus(String cusStatus) {
+		this.cusStatus = cusStatus;
+	}
+
+	public void setCustomer(CustomerBean customer) {
+		this.customer = customer;
+	}
+
+	public void setDeliverDetail(List<DeliverDetailBean> deliverDetail) {
+		this.deliverDetail = deliverDetail;
+	}
+
+	public void setDeliverStatus(String deliverStatus) {
+		this.deliverStatus = deliverStatus;
+	}
+
+	public void setDeliveryFee(Integer deliveryFee) {
+		this.deliveryFee = deliveryFee;
+	}
+
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
+
+	public void setDishComments(String dishComments) {
+		this.dishComments = dishComments;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setOrderDetails(List<OrderDetailBean> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+
+	public void setOrderTime(LocalDateTime orderTime) {
+		this.orderTime = orderTime;
+	}
+
+	public void setShop(ShopBean shop) {
+		this.shop = shop;
+	}
+
+	public void setShopComments(String shopComments) {
+		this.shopComments = shopComments;
+	}
+
 	public void setShopFeedbackReply(String shopFeedbackReply) {
 		this.shopFeedbackReply = shopFeedbackReply;
+	}
+
+	public void setShopReview(Integer shopReview) {
+		this.shopReview = shopReview;
+	}
+
+	public void setShopStatus(String shopStatus) {
+		this.shopStatus = shopStatus;
+	}
+
+	public void setTotalPrice(Integer totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	@Override
 	public String toString() {
 		return "OrderListBean [id=" + id + ", customer=" + customer + ", shop=" + shop + ", totalPrice=" + totalPrice
-				+ ", status=" + status + ", address=" + address + ", deliveryFee=" + deliveryFee + ", orderTime="
+				+  ", address=" + address + ", deliveryFee=" + deliveryFee + ", orderTime="
 				+ orderTime + ", discount=" + discount + ", shopReview=" + shopReview + ", shopComments=" + shopComments
 				+ ", dishComments=" + dishComments + ", shopFeedbackReply=" + shopFeedbackReply + "]";
 	}

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projectdemo.shop.bean.OpenHrBean;
+import com.projectdemo.shop.bean.ShopBean;
 import com.projectdemo.shop.dao.OpenHrRepository;
 import com.projectdemo.shop.dao.ShopRepository;
 
@@ -66,5 +67,15 @@ public class OpenHrService {
 			 e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public OpenHrBean findByShop(Integer id) {
+		Optional<ShopBean> optional = shopRepository.findById(id);
+		if(optional.isPresent()) {
+			return openHrRepository.findByShop(optional.get());
+		}
+		else {
+			return null;
+		}
 	}
 }

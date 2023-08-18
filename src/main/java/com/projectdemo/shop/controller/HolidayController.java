@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.projectdemo.shop.service.HolidayService;
 
 @RestController
 @RequestMapping("/shop/holiday")
+@CrossOrigin()
 public class HolidayController {
 
 	@Autowired
@@ -106,6 +108,30 @@ public class HolidayController {
 		} else {
 			json.put("success", false);
 			json.put("message", "id doesn't exist");
+		}
+		return json.toString();
+	}
+	
+	@GetMapping("/active/{id}")
+	public String findActiveHolidays(@PathVariable Integer id) {
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		
+		List<HolidayBean> list = holidayService.findActiveHolidays(id);
+		if (list != null && !list.isEmpty()) {
+			for (HolidayBean bean : list) {
+				JSONObject item = new JSONObject()
+						.put("id", bean.getId())
+						.put("restDate", bean.getRestDate())
+						.put("wholeDay", bean.isWholeDay())
+						.put("startTime", bean.getStartTime())
+						.put("endTime", bean.getEndTime());
+				array.put(item);
+			}
+			json.put("list", array);
+			json.put("success", true);
+		} else {
+			json.put("success", false);
 		}
 		return json.toString();
 	}

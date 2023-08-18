@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.projectdemo.shop.service.CannedMessageService;
 
 @RestController
 @RequestMapping("/shop/can")
+@CrossOrigin()
 public class CannedMessageController {
 
 	@Autowired
@@ -99,6 +101,29 @@ public class CannedMessageController {
 		} else {
 			json.put("success", false);
 			json.put("message", "id doesn't exist");
+		}
+		return json.toString();
+	}
+	
+	@GetMapping("/allOrdered/{id}")
+	public String findAllByShopOrdered(@PathVariable("id") Integer id) {
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		List<CannedMessageBean> list = cannedMessageService.findAllByShopOrdered(id);
+		
+		if (list != null && !list.isEmpty()) {
+			for (CannedMessageBean bean : list) {
+				JSONObject item = new JSONObject().put("id", bean.getId()).put("messageCDate", bean.getMessageCDate())
+						.put("messageUDate", bean.getMessageUDate()).put("moneyRange", bean.getMoneyRange())
+						.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime())
+						.put("messageText", bean.getMessageText());
+				array.put(item);
+			}
+			json.put("list", array);
+			json.put("success", true);
+		} else {
+			json.put("success", false);
+			json.put("message", "invalid id");
 		}
 		return json.toString();
 	}

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import com.projectdemo.deliver.dao.DelivererRepository;
 import com.projectdemo.order.bean.DeliverDetailBean;
 import com.projectdemo.order.bean.OrderDetailBean;
+import com.projectdemo.order.bean.OrderProgressDTO;
 import com.projectdemo.order.dao.DeliverDetailRepository;
 import com.projectdemo.order.dao.OrderListRepository;
 
@@ -65,7 +66,10 @@ public class DeliverDetailService {
 		}
 	}
 	
-	
+	public List<Object[]> findInProgressByDeliver(){
+//	public List<OrderProgressDTO> findInProgressByDeliver(){
+		return ddRepo.findInProgressByDeliver();
+	}
 
 	public DeliverDetailBean findDDById(Integer id) {
 		return ddRepo.findById(id).get();
