@@ -1,7 +1,7 @@
-package com.projectdemo.customer.bean;
+package com.projectdemo.model.bean.menu;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.projectdemo.model.bean.shop.ShopBean;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,43 +13,46 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "favorites")
+@Table(name = "menu_category")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-public class FavoritesBean {
+public class MenuCategoryBean {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "int")
+	@Column(name = "id")
 	private Integer id;
-
-	@ManyToOne
-	@JoinColumn(name = "fk_shop_id", nullable = false)
-	private ShopBean shop;
-
-	@ManyToOne
-	@JoinColumn(name = "customerid", columnDefinition = "int")
-	private CustomerBean customer;
 	
+	@ManyToOne
+	@JoinColumn(name = "fk_menu_id")
+	private MenuBean menu; 
 	
+	@Column(name = "name")
+	private String name;
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public ShopBean getShop() {
-		return shop;
-	}
-	public void setShop(ShopBean shop) {
-		this.shop = shop;
-	}
-	public CustomerBean getCustomer() {
-		return customer;
-	}
-	public void setCustomer(CustomerBean customer) {
-		this.customer = customer;
+
+	public MenuBean getMenu() {
+		return menu;
 	}
 
+	public void setMenu(MenuBean menu) {
+		this.menu = menu;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	
 	
 	

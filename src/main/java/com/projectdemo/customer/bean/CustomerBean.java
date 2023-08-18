@@ -2,12 +2,11 @@ package com.projectdemo.customer.bean;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.projectdemo.order.bean.OrderListBean;
+import com.projectdemo.model.bean.order.OrderListBean;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,7 +38,7 @@ public class CustomerBean {
 	private String name;
 
 	// 客戶帳號
-	@Column(name = "account", columnDefinition = "nvarchar(50)")
+	@Column(name = "account", columnDefinition = "nvarchar(50)",unique = true)
 	private String account;
 
 	// 客戶密碼
@@ -97,7 +96,6 @@ public class CustomerBean {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 	@JsonIgnore
-	@JsonIgnoreProperties("orderList")
 	private List<OrderListBean> orderList;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
@@ -108,8 +106,10 @@ public class CustomerBean {
 	public void onCreate() {
 		if (createDate == null) {
 			createDate = LocalDateTime.now();
-		}
+		} 
+		
 	}
+	
 
 	public Integer getCustomerID() {
 		return customerID;

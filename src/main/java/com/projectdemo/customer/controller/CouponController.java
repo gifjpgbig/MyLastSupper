@@ -1,6 +1,9 @@
 package com.projectdemo.customer.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +14,7 @@ import com.projectdemo.customer.bean.CouponBean;
 import com.projectdemo.customer.service.CouponService;
 
 @RestController
+@CrossOrigin()
 public class CouponController {
 	
 	@Autowired
@@ -24,5 +28,10 @@ public class CouponController {
 	@GetMapping("/coupon/findByID/{id}")
 	public CouponBean findCouponByID(@PathVariable Integer id) {
 		return couponService.findCouponByID(id);
+	}
+	
+	@GetMapping("/coupon/findAll")
+	public List<CouponBean> findAll(){
+		return couponService.findAllCoupon();
 	}
 }
