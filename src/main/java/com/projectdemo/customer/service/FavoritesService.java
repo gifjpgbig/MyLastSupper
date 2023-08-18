@@ -10,8 +10,8 @@ import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.bean.FavoritesBean;
 import com.projectdemo.customer.repository.CustomerRepository;
 import com.projectdemo.customer.repository.FavoritesRepository;
-import com.projectdemo.model.bean.shop.ShopBean;
-import com.projectdemo.model.repository.ShopRepository;
+import com.projectdemo.shop.bean.ShopBean;
+import com.projectdemo.shop.dao.ShopRepository;
 
 @Service
 public class FavoritesService {

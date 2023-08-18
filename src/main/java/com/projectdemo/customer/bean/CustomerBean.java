@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.projectdemo.model.bean.order.OrderListBean;
+import com.projectdemo.order.bean.OrderListBean;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

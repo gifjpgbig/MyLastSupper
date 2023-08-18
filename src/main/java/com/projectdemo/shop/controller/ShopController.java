@@ -164,7 +164,7 @@ public class ShopController {
 		dto.setLongitude(bean.getLongitude());
 		dto.setReview(bean.getReview());
 		dto.setBank(bean.getBank());
-		dto.setOpenStatus(bean.isOpenStatus());
+		dto.setOpenStatus(bean.getOpenStatus());
 		dto.setCdate(bean.getCdate());
 		dto.setUdate(bean.getUdate());
 		dto.setOpenhrId(bean.getOpenhrBean().getId());

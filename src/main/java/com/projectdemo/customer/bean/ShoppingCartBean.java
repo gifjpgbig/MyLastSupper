@@ -2,8 +2,8 @@ package com.projectdemo.customer.bean;
 
 import java.time.LocalDateTime;
 
-import com.projectdemo.model.bean.menu.DishBean;
-import com.projectdemo.model.bean.shop.ShopBean;
+import com.projectdemo.menu.bean.DishBean;
+import com.projectdemo.shop.bean.ShopBean;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

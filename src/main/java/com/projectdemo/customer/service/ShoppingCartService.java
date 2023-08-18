@@ -10,10 +10,10 @@ import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.bean.ShoppingCartBean;
 import com.projectdemo.customer.repository.CustomerRepository;
 import com.projectdemo.customer.repository.ShoppingCartRepository;
-import com.projectdemo.model.bean.menu.DishBean;
-import com.projectdemo.model.bean.shop.ShopBean;
-import com.projectdemo.model.repository.DishRepository;
-import com.projectdemo.model.repository.ShopRepository;
+import com.projectdemo.menu.bean.DishBean;
+import com.projectdemo.menu.dao.DishRepository;
+import com.projectdemo.shop.bean.ShopBean;
+import com.projectdemo.shop.dao.ShopRepository;
 
 @Service
 public class ShoppingCartService {
