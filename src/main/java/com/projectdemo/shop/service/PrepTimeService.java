@@ -63,4 +63,12 @@ public class PrepTimeService {
 		}
 		return false;
 	}
+	
+	public List<PrepTimeBean> findAllByShopOrdered(Integer id) {
+		Optional<ShopBean> optional = shopRepository.findById(id);
+		if(optional.isPresent()) {
+			return prepTimeRepository.findAllByShopOrdered(id);
+		}
+		return null;
+	}
 }

@@ -28,6 +28,7 @@ public class OpenHrController {
 	@PostMapping("/add")
 	public String addCategory(@RequestBody OpenHrBean bean) {
 		JSONObject json = new JSONObject();
+		//maybe put check to see if already exists		
 		OpenHrBean add = openHrService.add(bean);
 		if (add != null) {
 			json.put("success", true);

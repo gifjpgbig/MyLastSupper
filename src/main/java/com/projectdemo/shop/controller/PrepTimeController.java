@@ -111,4 +111,30 @@ public class PrepTimeController {
 		}
 		return json.toString();
 	}
+	
+	@GetMapping("/allOrdered/{id}")
+	public String findAllByShopOrdered(@PathVariable("id") Integer id) {
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		List<PrepTimeBean> list = prepTimeService.findAllByShopOrdered(id);
+		
+		if (list != null && !list.isEmpty()) {
+			for (PrepTimeBean bean : list) {
+				JSONObject item = new JSONObject()
+						.put("id", bean.getId())
+						.put("prep", bean.getPrep())
+						.put("day", bean.getDay())
+						.put("startTime", bean.getStartTime())
+						.put("endTime", bean.getEndTime());
+				array.put(item);
+			}
+			json.put("list", array);
+			json.put("success", true);
+		} else {
+			json.put("success", false);
+			json.put("message", "invalid id");
+		}
+		
+		return json.toString();
+	}
 }
