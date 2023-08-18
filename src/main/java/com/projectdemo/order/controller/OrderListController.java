@@ -2,13 +2,8 @@ package com.projectdemo.order.controller;
 
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,21 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectdemo.order.bean.DeliverDetailBean;
+
 import com.projectdemo.order.bean.OrderListBean;
-import com.projectdemo.order.service.DeliverDetailService;
 import com.projectdemo.order.service.OrderListService;
 
-import jakarta.transaction.Transactional;
-
 @RestController
-@CrossOrigin()
 public class OrderListController {
 
 	@Autowired
 	private OrderListService olService;
+
 
 	@Autowired
 	private DeliverDetailService ddService;
@@ -54,11 +48,12 @@ public class OrderListController {
 		}
 		responseJson.put("list", array);
 		return responseJson.toString();
+
 	}
 
 	// 用店家id去搜尋，暫時沒用到
 	@PostMapping("/order/findByShopId/{id}")
-	public List<OrderListBean> findByShopId(@PathVariable Integer id) {
+	public List<OrderListBean> findByShopId(@PathVariable Integer id){
 		return olService.findOrderByShopId(id);
 	}
 
@@ -79,16 +74,19 @@ public class OrderListController {
 	}
 
 	// 在edit.vue載入的同時，拿到該筆資料
+
 	@PostMapping("/order/findById/{id}")
-	public OrderListBean findById(@PathVariable Integer id) {
+	public OrderListBean find(@PathVariable Integer id) {
 		return olService.findOrderById(id);
 	}
 
 	// 目前沒用到
+
 	@PutMapping("/order/update1/{id}")
 	public void update1(@PathVariable Integer id, @RequestBody OrderListBean ol) {
 		olService.updateOrderById(id, ol);
 	}
+
 
 	// 改變訂單狀態，可以被應用在許多地方
 	// orders.vue
@@ -163,42 +161,8 @@ public class OrderListController {
 	// shopReview: props2.shopReview,
 	// 先判斷輸入資料是否完整，再根據狀態回覆對應的訊息，也做到對不雅字眼的偵測
 	@PutMapping("/order/update/reviews/{id}")
-	public String updateReviews(@PathVariable Integer id, @RequestBody OrderListBean ol) {
-		JSONObject responseJson = new JSONObject();
-
-		if (ol.getDishComments().equals("") || ol.getShopComments().equals("") || ol.getShopReview() == null) {
-			responseJson.put("message", "請輸入資料");
-			responseJson.put("text", "不可以有空白的欄位唷");
-			responseJson.put("success", false);
-			return responseJson.toString();
-		}
-
-		if (!olService.exists(id)) {
-			responseJson.put("message", "資料不存在");
-			responseJson.put("success", false);
-			return responseJson.toString();
-		}
-
-		OrderListBean olb = olService.findOrderById(id);
-
-		if ((olb.getShopComments() != null || olb.getDishComments() != null || olb.getShopReview() != null)) {
-			responseJson.put("message", "已填寫過評論");
-			responseJson.put("text", "本平台不允許過度批判");
-			responseJson.put("success", false);
-		} else {
-			OrderListBean result = olService.updateReviewsById(id, ol);
-			if (result != null && !ol.getDishComments().contains("幹") && !ol.getShopComments().contains("幹")) {
-				responseJson.put("message", "評論回覆成功");
-				responseJson.put("text", "謝謝您的熱情回覆");
-				responseJson.put("success", true);
-			} else {
-				responseJson.put("message", "評論回覆失敗");
-				responseJson.put("text", "本平台禁止不雅字眼");
-				responseJson.put("success", false);
-			}
-		}
-		return responseJson.toString();
-
+	public void updateReviews(@PathVariable Integer id, @RequestBody OrderListBean ol) {
+		olService.updateReviewsById(id, ol);
 	}
 
 // 外送員
@@ -387,5 +351,6 @@ public class OrderListController {
 		}
 		return responseJson.toString();
 	}
+
 
 }

@@ -1,6 +1,5 @@
 package com.projectdemo.customer.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projectdemo.shop.bean.ShopBean;
 

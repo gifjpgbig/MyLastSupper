@@ -48,7 +48,7 @@ public class ShopService {
 			oldShop.setLongitude(shopBean.getLongitude());
 			oldShop.setReview(shopBean.getReview());			
 			oldShop.setBank(shopBean.getBank());
-			oldShop.setOpenStatus(shopBean.getOpenStatus());
+			oldShop.setOpenStatus(shopBean.isOpenStatus());
 			oldShop.setUdate(LocalDateTime.now());
 			
 			return shopRepository.save(oldShop);

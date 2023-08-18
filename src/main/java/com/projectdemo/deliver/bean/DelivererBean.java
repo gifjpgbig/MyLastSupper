@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -39,7 +40,7 @@ public class DelivererBean {
 	@Column(name = "password", columnDefinition = "varchar(20)")
 	private String password;
 
-	@Column(name = "email", columnDefinition = "varchar(20)")
+	@Column(name = "email", columnDefinition = "varchar(30)")
 	private String email;
 
 	@Column(name = "phone", columnDefinition = "varchar(10)")
@@ -50,7 +51,24 @@ public class DelivererBean {
 
 	@Column(name = "photo", columnDefinition = "varbinary(max)" )
 	private byte[] photo;
-
+	
+	//總接單次數
+	@Column(name="totalordercount")
+	private Integer totalOrderCount;
+	
+	//總共棄單次數
+	@Column(name="totaldeclinecount")
+	private Integer totalDeclineCount;
+	
+	//棄單日期
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "declineDate", columnDefinition = "datetime")
+	private LocalDateTime declineDate;
+	
+	//連續棄單次數
+	@Column(name="continuedeclinecount")
+	private Integer continueDeclineCount;
+	
 	// 創建日期
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", columnDefinition = "datetime")
@@ -74,6 +92,11 @@ public class DelivererBean {
 		if (createDate == null) {
 			createDate = LocalDateTime.now();
 		}
+	}
+	
+	@PreUpdate
+	public void onUpdate() {
+		updateDate = LocalDateTime.now();
 	}
 
 	public Integer getId() {
@@ -162,6 +185,38 @@ public class DelivererBean {
 
 	public void setTransportations(List<TransportationBean> transportations) {
 		this.transportations = transportations;
+	}
+
+	public Integer getTotalOrderCount() {
+		return totalOrderCount;
+	}
+
+	public void setTotalOrderCount(Integer totalOrderCount) {
+		this.totalOrderCount = totalOrderCount;
+	}
+
+	public Integer getTotalDeclineCount() {
+		return totalDeclineCount;
+	}
+
+	public void setTotalDeclineCount(Integer totalDeclineCount) {
+		this.totalDeclineCount = totalDeclineCount;
+	}
+
+	public LocalDateTime getDeclineDate() {
+		return declineDate;
+	}
+
+	public void setDeclineDate(LocalDateTime declineDate) {
+		this.declineDate = declineDate;
+	}
+
+	public Integer getContinueDeclineCount() {
+		return continueDeclineCount;
+	}
+
+	public void setContinueDeclineCount(Integer continueDeclineCount) {
+		this.continueDeclineCount = continueDeclineCount;
 	}
 
 	public List<DelivererHistoryMessageBean> getDelivererHistoryMessage() {

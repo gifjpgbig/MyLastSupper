@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projectdemo.customer.bean.FavoritesBean;
 import com.projectdemo.customer.bean.ShoppingCartBean;
 import com.projectdemo.manage.bean.ShopHistoryMessageBean;
@@ -91,8 +90,8 @@ public class ShopBean {
 	@JsonIgnore
 	private List<ShoppingCartBean> shoppingCart;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
 	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
 	private List<CannedMessageBean> cannedMessage;
 	
 
@@ -111,7 +110,6 @@ public class ShopBean {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
 	@JsonIgnore
-	 @JsonIgnoreProperties("orderList")
 	private List<OrderListBean> orderList;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
@@ -123,6 +121,7 @@ public class ShopBean {
 	private List<FavoritesBean> favorites;
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "shop")
+	@JsonIgnore
 	private OpenHrBean openhrBean;
 	
 	@PrePersist
@@ -237,7 +236,7 @@ public class ShopBean {
 		this.bank = bank;
 	}
 
-	public boolean getOpenStatus() {
+	public boolean isOpenStatus() {
 		return openStatus;
 	}
 

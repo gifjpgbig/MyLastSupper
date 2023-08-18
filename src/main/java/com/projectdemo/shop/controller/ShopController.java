@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.projectdemo.shop.bean.ShopBean;
 import com.projectdemo.shop.bean.ShopDTO;
 import com.projectdemo.shop.service.ShopService;
@@ -133,6 +131,7 @@ public class ShopController {
 		json.put("list", array);
 		return json.toString();
 	}
+
 
 //	@GetMapping("/{id}")
 //	public String findById(@PathVariable Integer id) {

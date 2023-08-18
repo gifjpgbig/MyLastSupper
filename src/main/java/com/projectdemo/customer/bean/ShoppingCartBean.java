@@ -2,7 +2,6 @@ package com.projectdemo.customer.bean;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projectdemo.menu.bean.DishBean;
 import com.projectdemo.shop.bean.ShopBean;
 
