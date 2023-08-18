@@ -3,6 +3,7 @@ package com.projectdemo.shop.controller;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.projectdemo.shop.service.OpenHrService;
 
 @RestController
 @RequestMapping("/shop/openhr")
+@CrossOrigin()
 public class OpenHrController {
 
 	@Autowired
@@ -61,9 +63,11 @@ public class OpenHrController {
 					.put("sunClose", find.getSunClose());
 			JSONObject shop = new JSONObject().put("shopName", fk_shop.getName()).put("shopId", fk_shop.getId());
 			array = array.put(item).put(shop);
-			json.put("prepTime", array);
+			json.put("openHr", array);
+			json.put("success", true);
 		}
 		else {
+			json.put("success", false);
 			json.put("message", "invalid id");
 		}
 		return json.toString();
@@ -92,6 +96,42 @@ public class OpenHrController {
 		} else {
 			json.put("success", false);
 			json.put("message", "id doesn't exist");
+		}
+		return json.toString();
+	}
+	
+	@GetMapping("/findByShop/{id}")
+	public String findByShop(@PathVariable("id") Integer id) {
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		
+		OpenHrBean bean = openHrService.findByShop(id);
+		if(bean != null) {
+			json.put("success", true);
+			
+			ShopBean fk_shop = bean.getShop();
+			JSONObject item = new JSONObject()
+					.put("id", bean.getId())
+					.put("MonOpen", bean.getMonOpen())
+					.put("MonClose", bean.getMonClose())
+					.put("tueOpen", bean.getTueOpen())
+					.put("tueClose", bean.getTueClose())
+					.put("wedOpen", bean.getWedOpen())
+					.put("wedClose", bean.getWedClose())
+					.put("thrOpen", bean.getThrOpen())
+					.put("thrClose", bean.getThrClose())
+					.put("friOpen", bean.getFriOpen())
+					.put("friClose", bean.getFriClose())
+					.put("satOpen", bean.getSatOpen())
+					.put("satClose", bean.getSatClose())
+					.put("sunOpen", bean.getSunOpen())
+					.put("sunClose", bean.getSunClose());
+			JSONObject shop = new JSONObject().put("shopName", fk_shop.getName()).put("shopId", fk_shop.getId());
+			array = array.put(item).put(shop);
+			json.put("openHr", array);
+		}
+		else {
+			json.put("success", false);
 		}
 		return json.toString();
 	}

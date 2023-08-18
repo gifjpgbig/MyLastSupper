@@ -63,4 +63,14 @@ public class HolidayService {
 		}
 		return false;
 	}
+	
+	public List<HolidayBean> findActiveHolidays(Integer id) {
+		Optional<ShopBean> optional = shopRepository.findById(id);
+		if(optional.isPresent()) {
+			return holidayRepository.findActiveHoliday(id);
+		}
+		else {
+			return null;
+		}
+	}
 }
