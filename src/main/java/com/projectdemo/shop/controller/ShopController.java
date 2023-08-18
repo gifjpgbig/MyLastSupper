@@ -2,6 +2,7 @@ package com.projectdemo.shop.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ import com.projectdemo.shop.service.ShopService;
 @RequestMapping("/shop")
 @CrossOrigin()
 public class ShopController {
-
+	
 	@Autowired
 	private ShopService shopService;
 
@@ -128,7 +129,8 @@ public class ShopController {
 		json.put("list", array);
 		return json.toString();
 	}
-
+	
+	//查詢單筆商店
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -157,7 +159,6 @@ public class ShopController {
 		dto.setPassword(bean.getPassword());
 		dto.setEmail(bean.getEmail());
 		dto.setPhone(bean.getPhone());
-		dto.setPhoto(bean.getPhoto());
 		dto.setDistrict(bean.getDistrict());
 		dto.setAddress(bean.getAddress());
 		dto.setLatitude(bean.getLatitude());
@@ -168,6 +169,21 @@ public class ShopController {
 		dto.setCdate(bean.getCdate());
 		dto.setUdate(bean.getUdate());
 		dto.setOpenhrId(bean.getOpenhrBean().getId());
+		
+		
+		//photo
+		byte[] photo = bean.getPhoto();
+		if(photo != null) {
+			String base64Image = Base64.getEncoder().encodeToString(photo);
+			dto.setPhoto(base64Image);
+		}
+		
+		
+		//openhr null exception
+		if(bean.getOpenhrBean() != null) {
+			dto.setOpenhrId(bean.getOpenhrBean().getId());
+		}
+		
 		
 		// Prep Time
 		List<PrepTimeBean> prepTime = bean.getPrepTime();

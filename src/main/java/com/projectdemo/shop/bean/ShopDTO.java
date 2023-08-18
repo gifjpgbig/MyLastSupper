@@ -11,7 +11,7 @@ public class ShopDTO {
 	private String password;
 	private String email;
 	private String phone;
-	private byte[] photo;
+	private String photo;
 	private String district;
 	private String address;
 	private String latitude;
@@ -68,10 +68,10 @@ public class ShopDTO {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public byte[] getPhoto() {
+	public String getPhoto() {
 		return photo;
 	}
-	public void setPhoto(byte[] photo) {
+	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
 	public String getDistrict() {

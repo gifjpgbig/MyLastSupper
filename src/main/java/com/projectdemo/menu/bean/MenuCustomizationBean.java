@@ -41,6 +41,7 @@ public class MenuCustomizationBean {
 	private boolean repeatable;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "menuCustomization")
+	@JsonIgnore
 	private List<MenuCustomizationOptionsBean> menuCustomizationOptions;
 
 	public Integer getId() {

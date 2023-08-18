@@ -18,31 +18,31 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "menu")
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class MenuBean {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "int")
 	private Integer id;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "fk_shop_id" , columnDefinition = "int")
+	@JoinColumn(name = "fk_shop_id", columnDefinition = "int")
 	private ShopBean shop;
-	
-//	@ManyToOne
-//	@JoinColumn(name = "fk_supply_id" , columnDefinition = "int")
-//	private ShopBean shop;
-	
-	@Column(name = "name" , columnDefinition = "nvarchar(MAX)")
+
+	@Column(name = "supply", columnDefinition = "bit")
+	private boolean Supply;
+
+	@Column(name = "name", columnDefinition = "nvarchar(MAX)")
 	private String name;
-	
+
 	// 創建日期
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", columnDefinition = "datetime")
@@ -52,22 +52,27 @@ public class MenuBean {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updateDate", columnDefinition = "datetime")
 	private LocalDateTime updateDate;
-	
+
+	@PreUpdate
+	public void onUpdate() {
+		updateDate = LocalDateTime.now();
+	}
+
 	@PrePersist
 	public void onCreate() {
 		if (createDate == null) {
 			createDate = LocalDateTime.now();
 		}
 	}
-	
+
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "menu")
 	@JsonIgnore
 	private MenuHrBean MenuHr;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
 	@JsonIgnore
 	private List<DishBean> dish;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
 	@JsonIgnore
 	private List<MenuCategoryBean> menuCategory;
@@ -128,6 +133,14 @@ public class MenuBean {
 		this.dish = dish;
 	}
 
+	public boolean isSupply() {
+		return Supply;
+	}
+
+	public void setSupply(boolean supply) {
+		Supply = supply;
+	}
+
 	public List<MenuCategoryBean> getMenuCategory() {
 		return menuCategory;
 	}
@@ -135,5 +148,7 @@ public class MenuBean {
 	public void setMenuCategory(List<MenuCategoryBean> menuCategory) {
 		this.menuCategory = menuCategory;
 	}
+
 	
+
 }
