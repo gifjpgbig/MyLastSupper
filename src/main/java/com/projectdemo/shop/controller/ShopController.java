@@ -39,7 +39,8 @@ import com.projectdemo.shop.service.ShopService;
 @RequestMapping("/shop")
 @CrossOrigin()
 public class ShopController {
-	
+
+
 	@Autowired
 	private ShopService shopService;
 
@@ -196,14 +197,7 @@ public class ShopController {
 			String base64Image = Base64.getEncoder().encodeToString(photo);
 			dto.setPhoto(base64Image);
 		}
-		
-		
-		//photo
-		byte[] photo = bean.getPhoto();
-		if(photo != null) {
-			String base64Image = Base64.getEncoder().encodeToString(photo);
-			dto.setPhoto(base64Image);
-		}
+	
 		
 		
 		//openhr null exception
