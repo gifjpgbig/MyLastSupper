@@ -47,8 +47,7 @@ public class CannedMessageController {
 			ShopBean fk_shop = bean.getShop();
 			JSONObject item = new JSONObject().put("id", bean.getId()).put("messageCDate", bean.getMessageCDate())
 					.put("messageUDate", bean.getMessageUDate()).put("moneyRange", bean.getMoneyRange())
-					.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime())
-					.put("messageText", bean.getMessageText());
+					.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime());
 			JSONObject shop = new JSONObject().put("shopName", fk_shop.getName()).put("shopId", fk_shop.getId());
 			array = array.put(item).put(shop);
 		}
@@ -65,8 +64,7 @@ public class CannedMessageController {
 			for (CannedMessageBean bean : list) {
 				JSONObject item = new JSONObject().put("id", bean.getId()).put("messageCDate", bean.getMessageCDate())
 						.put("messageUDate", bean.getMessageUDate()).put("moneyRange", bean.getMoneyRange())
-						.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime())
-						.put("messageText", bean.getMessageText());
+						.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime());
 				array.put(item);
 			}
 			json.put("list", array);

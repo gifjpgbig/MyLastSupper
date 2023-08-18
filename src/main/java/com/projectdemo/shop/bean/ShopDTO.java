@@ -32,160 +32,160 @@ public class ShopDTO {
 	private List<Integer> favoritesId;
 	private Integer openhrId;
 	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public String getAccount() {
 		return account;
-	}
-	public void setAccount(String account) {
-		this.account = account;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public byte[] getPhoto() {
-		return photo;
-	}
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
-	}
-	public String getDistrict() {
-		return district;
-	}
-	public void setDistrict(String district) {
-		this.district = district;
 	}
 	public String getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-	public String getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-	public Integer getReview() {
-		return review;
-	}
-	public void setReview(Integer review) {
-		this.review = review;
-	}
 	public String getBank() {
 		return bank;
-	}
-	public void setBank(String bank) {
-		this.bank = bank;
-	}
-	public boolean isOpenStatus() {
-		return openStatus;
-	}
-	public void setOpenStatus(boolean openStatus) {
-		this.openStatus = openStatus;
-	}
-	public LocalDateTime getCdate() {
-		return cdate;
-	}
-	public void setCdate(LocalDateTime cdate) {
-		this.cdate = cdate;
-	}
-	public LocalDateTime getUdate() {
-		return udate;
-	}
-	public void setUdate(LocalDateTime udate) {
-		this.udate = udate;
-	}
-	public List<Integer> getPrepTimeId() {
-		return prepTimeId;
-	}
-	public void setPrepTimeId(List<Integer> prepTimeId) {
-		this.prepTimeId = prepTimeId;
-	}
-	public List<Integer> getShoppingCartId() {
-		return shoppingCartId;
-	}
-	public void setShoppingCartId(List<Integer> shoppingCartId) {
-		this.shoppingCartId = shoppingCartId;
 	}
 	public List<Integer> getCannedMessageId() {
 		return cannedMessageId;
 	}
-	public void setCannedMessageId(List<Integer> cannedMessageId) {
-		this.cannedMessageId = cannedMessageId;
+	public LocalDateTime getCdate() {
+		return cdate;
 	}
-	public List<Integer> getShopCategoryId() {
-		return shopCategoryId;
+	public String getDistrict() {
+		return district;
 	}
-	public void setShopCategoryId(List<Integer> shopCategoryId) {
-		this.shopCategoryId = shopCategoryId;
-	}
-	public List<Integer> getHolidayId() {
-		return holidayId;
-	}
-	public void setHolidayId(List<Integer> holidayId) {
-		this.holidayId = holidayId;
-	}
-	public List<Integer> getMenuId() {
-		return menuId;
-	}
-	public void setMenuId(List<Integer> menuId) {
-		this.menuId = menuId;
-	}
-	public List<Integer> getOrderListId() {
-		return orderListId;
-	}
-	public void setOrderListId(List<Integer> orderListId) {
-		this.orderListId = orderListId;
-	}
-	public List<Integer> getShopHistoryMessageId() {
-		return shopHistoryMessageId;
-	}
-	public void setShopHistoryMessageId(List<Integer> shopHistoryMessageId) {
-		this.shopHistoryMessageId = shopHistoryMessageId;
+	public String getEmail() {
+		return email;
 	}
 	public List<Integer> getFavoritesId() {
 		return favoritesId;
 	}
-	public void setFavoritesId(List<Integer> favoritesId) {
-		this.favoritesId = favoritesId;
+	public List<Integer> getHolidayId() {
+		return holidayId;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public String getLatitude() {
+		return latitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public List<Integer> getMenuId() {
+		return menuId;
+	}
+	public String getName() {
+		return name;
 	}
 	public Integer getOpenhrId() {
 		return openhrId;
 	}
+	public List<Integer> getOrderListId() {
+		return orderListId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public byte[] getPhoto() {
+		return photo;
+	}
+	public List<Integer> getPrepTimeId() {
+		return prepTimeId;
+	}
+	public Integer getReview() {
+		return review;
+	}
+	public List<Integer> getShopCategoryId() {
+		return shopCategoryId;
+	}
+	public List<Integer> getShopHistoryMessageId() {
+		return shopHistoryMessageId;
+	}
+	public List<Integer> getShoppingCartId() {
+		return shoppingCartId;
+	}
+	public LocalDateTime getUdate() {
+		return udate;
+	}
+	public boolean isOpenStatus() {
+		return openStatus;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public void setBank(String bank) {
+		this.bank = bank;
+	}
+	public void setCannedMessageId(List<Integer> cannedMessageId) {
+		this.cannedMessageId = cannedMessageId;
+	}
+	public void setCdate(LocalDateTime cdate) {
+		this.cdate = cdate;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public void setFavoritesId(List<Integer> favoritesId) {
+		this.favoritesId = favoritesId;
+	}
+	public void setHolidayId(List<Integer> holidayId) {
+		this.holidayId = holidayId;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	public void setMenuId(List<Integer> menuId) {
+		this.menuId = menuId;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public void setOpenhrId(Integer openhrId) {
 		this.openhrId = openhrId;
+	}
+	public void setOpenStatus(boolean openStatus) {
+		this.openStatus = openStatus;
+	}
+	public void setOrderListId(List<Integer> orderListId) {
+		this.orderListId = orderListId;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
+	public void setPrepTimeId(List<Integer> prepTimeId) {
+		this.prepTimeId = prepTimeId;
+	}
+	public void setReview(Integer review) {
+		this.review = review;
+	}
+	public void setShopCategoryId(List<Integer> shopCategoryId) {
+		this.shopCategoryId = shopCategoryId;
+	}
+	public void setShopHistoryMessageId(List<Integer> shopHistoryMessageId) {
+		this.shopHistoryMessageId = shopHistoryMessageId;
+	}
+	public void setShoppingCartId(List<Integer> shoppingCartId) {
+		this.shoppingCartId = shoppingCartId;
+	}
+	public void setUdate(LocalDateTime udate) {
+		this.udate = udate;
 	}
 }
