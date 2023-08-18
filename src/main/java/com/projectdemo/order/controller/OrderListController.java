@@ -44,11 +44,8 @@ public class OrderListController {
 		JSONArray array = new JSONArray();
 		if (orders != null && !orders.isEmpty()) {
 			for (OrderListBean order : orders) {
-				JSONObject item = new JSONObject()
-						.put("id", order.getId())
-						.put("address", order.getAddress())
-						.put("cus_status", order.getCusStatus())
-						.put("deliver_status", order.getDeliverStatus())
+				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
+						.put("cus_status", order.getCusStatus()).put("deliver_status", order.getDeliverStatus())
 						.put("shop_status", order.getShopStatus())
 						.put("customerID", order.getCustomer().getCustomerID())
 						.put("customer", order.getCustomer().toString());
@@ -216,14 +213,10 @@ public class OrderListController {
 		JSONArray array = new JSONArray();
 		if (orders != null && !orders.isEmpty()) {
 			for (OrderListBean order : orders) {
-				JSONObject item = new JSONObject()
-						.put("id", order.getId())
-						.put("address", order.getAddress())
-						.put("cus_status", order.getCusStatus())
-						.put("deliver_status", order.getDeliverStatus())
+				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
+						.put("cus_status", order.getCusStatus()).put("deliver_status", order.getDeliverStatus())
 						.put("shop_status", order.getShopStatus())
-						.put("customerID", order.getCustomer().getCustomerID())
-						.put("shopID", order.getShop().getId())
+						.put("customerID", order.getCustomer().getCustomerID()).put("shopID", order.getShop().getId())
 						.put("shopAddress", order.getShop().getAddress());
 				array = array.put(item);
 			}
@@ -298,14 +291,9 @@ public class OrderListController {
 						&& order.getShopReview() == null) {
 					show = !show;
 				}
-				JSONObject item = new JSONObject()
-						.put("id", order.getId())
-						.put("address", order.getAddress())
-						.put("cus_status", order.getCusStatus())
-						.put("deliver_status", order.getDeliverStatus())
-						.put("shop_status", order.getShopStatus())
-						.put("customerID", cusID)
-						.put("shopID", shopID)
+				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
+						.put("cus_status", order.getCusStatus()).put("deliver_status", order.getDeliverStatus())
+						.put("shop_status", order.getShopStatus()).put("customerID", cusID).put("shopID", shopID)
 						.put("showReview", show);
 
 				array = array.put(item);
@@ -343,36 +331,61 @@ public class OrderListController {
 		return responseJson.toString();
 	}
 
-	
-	// 3-1外送員接受的訂單
-	@PostMapping("/order/findInProgressByDeliver")
-	public String findInProgressByDeliver(@RequestBody String json) {
+	// 4-1外送員接受的訂單
+	// 讓外送員查看自己接到的訂單
+	// 這個邏輯是，查看自己已接單的訂單，且有選擇六個欄位
+	// 外送地址，運送時間、運費、下單時間、店家地址、店名
+	// dd.address as cus_address, dd.deliver_time, ol.delivery_fee,
+	// ol.order_time, s.address as shop_address, s.name as shop_name,
+	// 請注意，資料型態是object
+	@PostMapping("/order/findInProgressByDeliver/{id}")
+	public String findInProgressByDeliver(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
-		JSONObject datas = new JSONObject(json);		
-		
-//		List<OrderListBean> orders = olService.findInProgressByDeliver(1);
-//		JSONArray array = new JSONArray();
-//		if (orders != null && !orders.isEmpty()) {
-//			for (OrderListBean order : orders) {
-//
-//				JSONObject item = new JSONObject()
-//						.put("id", order.getId())
-//						.put("address", order.getAddress())
-//						.put("cus_status", order.getCusStatus())
-//						.put("deliver_status", order.getDeliverStatus())
-//						.put("shop_status", order.getShopStatus())
-//						.put("customerID", order.getCustomer().getCustomerID())
-//						.put("shopID", order.getShop().getId())
-//						.put("shopAddress", order.getShop().getAddress());
-//				array = array.put(item);
-//			}
-//		}
-//	    ObjectMapper objectMapper = new ObjectMapper();
-//	    String jsonResponse = objectMapper.writeValueAsString(orders);
-		responseJson.put("list", "dfjlf;a");
+		List<Object[]> myOrder = ddService.findInProgressByDeliver();
+		JSONArray array = new JSONArray();
+		for (Object order : myOrder) {
+			JSONObject item = new JSONObject();
+			item.put("order", order);
+			array.put(item);
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
+//	{
+//	    "list": [
+//	        {
+//	            "order": [
+//	                "萬華產業園區幸福路一段update成功!",
+//	                null,
+//	                null,
+//	                null,
+//	                "酷狗路熊空街我沒K",
+//	                "酷狗餐廳"
+//	            ]
+//	        }
+//	        ]
+//	}
+	}
+
+	// 5-1外送員完成訂單
+	// 讓外送員可以把訂單完成
+	// 這個邏輯是，把訂單的外送狀態改成已完成
+	@PutMapping("/order/complete/{id}")
+	public String complete(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		JSONObject datas = new JSONObject();
+		datas
+		.put("orderid", id)
+		.put("deliver_status", "已完成");
+
+		if (olService.updateStatusById(datas.toString()) != null) {
+			responseJson.put("message", "更正成功，已完成訂單");
+			responseJson.put("success", true);
+		} else {
+			responseJson.put("message", "更正失敗，不存在此訂單");
+			responseJson.put("success", false);
+			throw new RuntimeException("請注意，註銷失敗！不存在此訂單"); // 拋出異常來觸發回滾
+		}
 		return responseJson.toString();
 	}
-	
-	
-	
+
 }
