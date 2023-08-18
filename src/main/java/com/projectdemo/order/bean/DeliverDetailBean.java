@@ -2,6 +2,7 @@ package com.projectdemo.order.bean;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projectdemo.deliver.bean.DelivererBean;
 
@@ -48,84 +49,107 @@ public class DeliverDetailBean {
 	@Column(name = "driver_name", columnDefinition = "nvarchar(MAX)")
 	private String driverName;
 
+	@Column(name = "cancel_reason", columnDefinition = "nvarchar(MAX)")
+	private String cancelReason;
+	
 	@Column(name = "is_cancel", columnDefinition = "bit")
 	private boolean isCancel;
+	
+	@Column(name = "is_complete", columnDefinition = "bit")
+	private boolean isComplete;
 
 	@Column(name = "deliver_review", columnDefinition = "int")
 	private Integer deliverReview;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public OrderListBean getOrderList() {
-		return orderList;
-	}
-
-	public void setOrderList(OrderListBean orderList) {
-		this.orderList = orderList;
-	}
-
-
-
-	public DelivererBean getDeliverer() {
-		return deliverer;
-	}
-
-	public void setDeliverer(DelivererBean deliverer) {
-		this.deliverer = deliverer;
-	}
-
-	public LocalDateTime getDeliverTime() {
-		return deliverTime;
-	}
-
-	public void setDeliverTime(LocalDateTime deliverTime) {
-		this.deliverTime = deliverTime;
-	}
-
-	public LocalDateTime getArriveTime() {
-		return arriveTime;
-	}
-
-	public void setArriveTime(LocalDateTime arriveTime) {
-		this.arriveTime = arriveTime;
-	}
 
 	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public LocalDateTime getArriveTime() {
+		return arriveTime;
+	}
+	
+
+	public String getCancelReason() {
+		return cancelReason;
 	}
 
-	public String getDriverName() {
-		return driverName;
-	}
-
-	public void setDriverName(String driverName) {
-		this.driverName = driverName;
-	}
-
-	public boolean isCancel() {
-		return isCancel;
-	}
-
-	public void setCancel(boolean isCancel) {
-		this.isCancel = isCancel;
+	public DelivererBean getDeliverer() {
+		return deliverer;
 	}
 
 	public Integer getDeliverReview() {
 		return deliverReview;
 	}
 
+	public LocalDateTime getDeliverTime() {
+		return deliverTime;
+	}
+
+	public String getDriverName() {
+		return driverName;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+
+
+	public OrderListBean getOrderList() {
+		return orderList;
+	}
+
+	public boolean isCancel() {
+		return isCancel;
+	}
+
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setArriveTime(LocalDateTime arriveTime) {
+		this.arriveTime = arriveTime;
+	}
+
+	public void setCancel(boolean isCancel) {
+		this.isCancel = isCancel;
+	}
+
+	public void setCancelReason(String cancelReason) {
+		this.cancelReason = cancelReason;
+	}
+
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
+	}
+
+	public void setDeliverer(DelivererBean deliverer) {
+		this.deliverer = deliverer;
+	}
+
 	public void setDeliverReview(Integer deliverReview) {
 		this.deliverReview = deliverReview;
+	}
+
+	public void setDeliverTime(LocalDateTime deliverTime) {
+		this.deliverTime = deliverTime;
+	}
+
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setOrderList(OrderListBean orderList) {
+		this.orderList = orderList;
 	}
 
 }

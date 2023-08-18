@@ -1,5 +1,6 @@
 package com.projectdemo.order.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projectdemo.menu.bean.DishBean;
 
@@ -25,12 +26,10 @@ public class OrderDetailBean {
 
 
 	@ManyToOne
-//	@JsonIgnore
 	@JoinColumn(name = "fk_dish_id", columnDefinition = "int", referencedColumnName = "id")
 	private DishBean dish;
 
 	@ManyToOne
-//	@JsonIgnore
 	@JoinColumn(name = "fk_order_list_id", columnDefinition = "int", referencedColumnName = "id")
 	private OrderListBean orderList;
 

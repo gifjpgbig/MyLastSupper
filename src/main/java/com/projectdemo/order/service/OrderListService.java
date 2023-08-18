@@ -1,10 +1,17 @@
 package com.projectdemo.order.service;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Session;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.repository.CustomerRepository;
@@ -16,25 +23,38 @@ import com.projectdemo.shop.bean.ShopBean;
 import com.projectdemo.shop.dao.ShopRepository;
 import com.projectdemo.shop.service.ShopService;
 
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Configuration
 public class OrderListService {
-	
+
+	// 模仿馬老師的criterial配置
+	@PersistenceContext
+	private Session session;
+
+	public Session getSession() {
+		return session;
+	}
+
 	@Autowired
 	private OrderListRepository oLRepo;
-	
+
 	@Autowired
 	private CustomerRepository cusRepo;
-	
+
 	@Autowired
 	private ShopRepository shopRepo;
-	
+
 	@Autowired
 	private ShopService shopService;
-	
+
 	@Autowired
 	private CustomerService customerService;
-
 
 	// 計算查詢語法取得的資料總筆數
 	public long count(JSONObject obj) {
@@ -118,16 +138,15 @@ public class OrderListService {
 
 	// 客戶歷史訂單
 	public List<OrderListBean> findOrderByCustomerId(Integer id) {
-
 		CustomerBean bean = customerService.findCustomerById(id);
 		return oLRepo.findByCustomer(bean);
 	}
-	//店家歷史訂單
-	public List<OrderListBean> findOrderByShopId(Integer id){
+
+	// 店家歷史訂單
+	public List<OrderListBean> findOrderByShopId(Integer id) {
 		ShopBean bean = shopService.findById(id);
 		return oLRepo.findByShop(bean);
 	}
-
 
 	// 改變訂單狀態
 	// 依據前端傳送到這裡的json欄位變數statustype，可以得到要去更新哪個資料
@@ -190,34 +209,42 @@ public class OrderListService {
 		olbean.setShopReview(ol.getShopReview());
 		olbean.setShopComments(ol.getShopComments());
 		olbean.setDishComments(ol.getDishComments());
-		oLRepo.save(olbean);
+		return oLRepo.save(olbean);
 	}
-	//改變店家回覆客戶的評論
-	public void updateReplyById(Integer id, OrderListBean ol) {
+
+	// 改變店家回覆客戶的評論
+	public OrderListBean updateReplyById(Integer id, OrderListBean ol) {
 		OrderListBean olbean = oLRepo.findById(id).get();
 		olbean.setShopFeedbackReply(ol.getShopFeedbackReply());
-		oLRepo.save(olbean);
+		return oLRepo.save(olbean);
 	}
-	
-	
+
 	public OrderListBean addOrder(OrderListBean ol) {
 		return oLRepo.save(ol);
 	}
-	
+
 	public OrderListBean findOrderById(Integer id) {
 		return oLRepo.findById(id).get();
 	}
-	
+
 	public OrderListBean updateOrderById(Integer id, OrderListBean updatedOd) {
-	    Optional<OrderListBean> optional = oLRepo.findById(id);
-	    if (optional.isPresent()) {
-	        return oLRepo.save(updatedOd);
-	    }
-	    return null;
+		Optional<OrderListBean> optional = oLRepo.findById(id);
+		if (optional.isPresent()) {
+			return oLRepo.save(updatedOd);
+		}
+		return null;
 	}
-	
-	public void deleteODById(Integer id) {
-		oLRepo.deleteById(id);
+
+	public boolean deleteODById(Integer id) {
+		if (exists(id)) {
+			oLRepo.deleteById(id);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean exists(Integer id) {
+		return oLRepo.findById(id).get() != null;
 	}
 
 	public List<OrderListBean> findInProgressByDeliver(Integer deliverID){

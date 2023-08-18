@@ -2,7 +2,10 @@ package com.projectdemo.order.controller;
 
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +19,7 @@ import com.projectdemo.order.bean.OrderDetailBean;
 import com.projectdemo.order.service.OrderDetailService;
 
 @RestController
+@CrossOrigin()
 public class OrderDetailController {
 
 	@Autowired
@@ -36,8 +40,35 @@ public class OrderDetailController {
 		return findOrderDetailById;
 	}
 
-	
-	
+	@PostMapping("/order/detail/findAllByOrderId/{id}")
+	public String findAllByOrderId(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		List<OrderDetailBean> orders = odService.findODByOrderId(id);
+		
+		JSONArray array = new JSONArray();
+		if(orders != null && !orders.isEmpty()) {
+			for(OrderDetailBean order : orders) {
+				Integer dishID = 0;
+				Integer detailID = 0;
+				if (order.getDish().getId() != null) {
+					dishID = order.getDish().getId();
+				}
+				if (order.getOrderList().getId() != null) {
+					detailID = order.getOrderList().getId();
+				}
+				JSONObject item = new JSONObject()
+						.put("id", order.getId())
+						.put("amount", order.getAmount())
+						.put("customization", order.getCustomization())
+						.put("dishID", dishID)
+						.put("detailID", detailID)
+						.put("total_price", order.getTotalPrice());
+				array = array.put(item);
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();		
+	}
 	
 	
 	@PostMapping("/order/detail/insert1")

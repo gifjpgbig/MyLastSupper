@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +16,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.projectdemo.customer.bean.FavoritesBean;
+import com.projectdemo.customer.bean.ShoppingCartBean;
+import com.projectdemo.manage.bean.ShopHistoryMessageBean;
+import com.projectdemo.menu.bean.MenuBean;
+import com.projectdemo.order.bean.OrderListBean;
+import com.projectdemo.shop.bean.CannedMessageBean;
+import com.projectdemo.shop.bean.HolidayBean;
+import com.projectdemo.shop.bean.PrepTimeBean;
 import com.projectdemo.shop.bean.ShopBean;
+import com.projectdemo.shop.bean.ShopCategoryBean;
 import com.projectdemo.shop.bean.ShopDTO;
 import com.projectdemo.shop.service.ShopService;
 
@@ -162,7 +172,7 @@ public class ShopController {
 		dto.setLongitude(bean.getLongitude());
 		dto.setReview(bean.getReview());
 		dto.setBank(bean.getBank());
-		dto.setOpenStatus(bean.getOpenStatus());
+		dto.setOpenStatus(bean.isOpenStatus());
 		dto.setCdate(bean.getCdate());
 		dto.setUdate(bean.getUdate());
 		
