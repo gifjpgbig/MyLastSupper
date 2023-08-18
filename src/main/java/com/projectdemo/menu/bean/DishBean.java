@@ -19,50 +19,52 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "dish")
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class DishBean {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "int")
 	private Integer id;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "dish", fetch= FetchType.EAGER)
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "dish", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<OrderDetailBean> orderDetail;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "dish")
 	@JsonIgnore
 	private List<ShoppingCartBean> shoppingCart;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "dish")
 	@JsonIgnore
 	private List<MenuCustomizationBean> menuCustomization;
 
 //	@JsonIgnoreProperties({"menu"})
 	@ManyToOne
+//	@JsonIgnore
 	@JoinColumn(name = "fk_menu_id", columnDefinition = "int")
 	private MenuBean menu;
 
 	@Column(name = "name", columnDefinition = "nvarchar(MAX)")
 	private String name;
-
+//	餐點介紹
 	@Column(name = "description", columnDefinition = "nvarchar(MAX)")
 	private String Description;
-
+//  餐點價格
 	@Column(name = "price", columnDefinition = "int")
 	private Integer Price;
 
-	// 客戶大頭貼
+//	餐點照片
 	@Column(name = "picture", columnDefinition = "varbinary(max)")
 	private byte[] picture;
-
+//	額外資訊
 	@Column(name = "extra_info", columnDefinition = "nvarchar(MAX)")
 	private String ExtraInfo;
 
@@ -78,23 +80,28 @@ public class DishBean {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updateDate", columnDefinition = "datetime")
 	private LocalDateTime updateDate;
-	
-	//飲食限制
-	@Column(name = "dietary_restrictions" , columnDefinition = "nvarchar(MAX)")
+//	自動更新
+	@PreUpdate
+	public void onUpdate() {
+		updateDate = LocalDateTime.now();
+	}
+
+	// 飲食限制
+	@Column(name = "dietary_restrictions", columnDefinition = "nvarchar(MAX)")
 	private String dietaryRestrictions;
-	
-	@Column(name = "likes" , columnDefinition = "int")
+
+	@Column(name = "likes", columnDefinition = "int")
 	private Integer likes;
-	
-	@Column(name = "dislikes" , columnDefinition = "int")
+
+	@Column(name = "dislikes", columnDefinition = "int")
 	private Integer dislikes;
-	
-	@Column(name = "likerate" , columnDefinition = "float")
+
+	@Column(name = "likerate", columnDefinition = "float")
 	private float likerate;
-	
-	@Column(name = "sold_out" , columnDefinition = "bit")
+
+	@Column(name = "sold_out", columnDefinition = "bit")
 	private boolean soldOut;
-	
+//	建立自動建立時間
 	@PrePersist
 	public void onCreate() {
 		if (createDate == null) {
