@@ -41,7 +41,7 @@ public class ShopBean {
 	@Column(name = "password", columnDefinition = "varchar(20)")
 	private String password;
 
-	@Column(name = "email", columnDefinition = "varchar(20)")
+	@Column(name = "email", columnDefinition = "varchar(50)")
 	private String email;
 
 	@Column(name = "phone", columnDefinition = "varchar(10)")
