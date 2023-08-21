@@ -213,10 +213,17 @@ public class OrderListController {
 		JSONArray array = new JSONArray();
 		if (orders != null && !orders.isEmpty()) {
 			for (OrderListBean order : orders) {
-				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
-						.put("cus_status", order.getCusStatus()).put("deliver_status", order.getDeliverStatus())
+				JSONObject item = new JSONObject()
+						.put("id", order.getId())
+						.put("address", order.getAddress())
+						.put("cus_status", order.getCusStatus())
+						.put("deliver_status", order.getDeliverStatus())
 						.put("shop_status", order.getShopStatus())
-						.put("customerID", order.getCustomer().getCustomerID()).put("shopID", order.getShop().getId())
+						.put("customerID", order.getCustomer().getCustomerID())
+						.put("shopID", order.getShop().getId())
+						.put("shopName", order.getShop().getName())
+						.put("deliverFee", order.getDeliveryFee())
+						.put("orderTime", order.getOrderTime())
 						.put("shopAddress", order.getShop().getAddress());
 				array = array.put(item);
 			}
