@@ -35,6 +35,7 @@ public class ShoppingCartService {
 			CustomerBean customerBean = customerOptional.get();
 			DishBean dishBean = dishOptional.get();
 			ShopBean shopBean = shopOptional.get();
+			shoppingCart.setPurchased(false);
 			shoppingCart.setCustomer(customerBean);
 			shoppingCart.setDish(dishBean);
 			shoppingCart.setShop(shopBean);
