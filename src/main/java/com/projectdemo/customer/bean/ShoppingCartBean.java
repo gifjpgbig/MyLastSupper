@@ -2,6 +2,7 @@ package com.projectdemo.customer.bean;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projectdemo.menu.bean.DishBean;
 import com.projectdemo.shop.bean.ShopBean;
 
@@ -29,14 +30,17 @@ public class ShoppingCartBean {
 	private Integer id;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "fk_customer_id",referencedColumnName = "id", columnDefinition = "int")
 	private CustomerBean customer;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "fk_dish_id",referencedColumnName = "id",columnDefinition = "int")
 	private DishBean dish;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "fk_shop_id",referencedColumnName = "id",columnDefinition = "int")
 	private ShopBean shop;
 
