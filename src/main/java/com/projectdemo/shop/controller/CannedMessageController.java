@@ -27,6 +27,12 @@ public class CannedMessageController {
 	@Autowired
 	private CannedMessageService cannedMessageService;
 
+	/**
+	 * CREATE
+	 * 
+	 * @param bean CannedMessageBean
+	 * @return json success
+	 */
 	@PostMapping("/add")
 	public String addCannedMessage(@RequestBody CannedMessageBean bean) {
 		JSONObject json = new JSONObject();
@@ -39,6 +45,12 @@ public class CannedMessageController {
 		return json.toString();
 	}
 
+	/**
+	 * FIND BY ID
+	 * 
+	 * @param id Canned Message ID
+	 * @return CannedMessageBean, Shop ID & name
+	 */
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -58,6 +70,12 @@ public class CannedMessageController {
 		return json.toString();
 	}
 
+	/**
+	 * FIND ALL SHOP CANNED MESSAGES BY SHOP ID
+	 * 
+	 * @param id Shop ID
+	 * @return Canned Message json array
+	 */
 	@GetMapping("/all/{id}")
 	public String findAllByShop(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -78,6 +96,13 @@ public class CannedMessageController {
 		return json.toString();
 	}
 
+	/**
+	 * UPDATE
+	 * 
+	 * @param id Canned Message ID
+	 * @param msgBean CannedMessageBean
+	 * @return json success
+	 */
 	@PutMapping("/{id}")
 	public String update(@PathVariable Integer id, @RequestBody CannedMessageBean msgBean) {
 		JSONObject json = new JSONObject();
@@ -91,6 +116,12 @@ public class CannedMessageController {
 		return json.toString();
 	}
 
+	/**
+	 * DELETE
+	 * 
+	 * @param id Canned Message ID
+	 * @return json success
+	 */
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -105,6 +136,12 @@ public class CannedMessageController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND ALL CANNED MESSAGES BY SHOP ID ORDERED BY DATE & TIME
+	 * 
+	 * @param id Shop ID
+	 * @return Canned Message array
+	 */
 	@GetMapping("/allOrdered/{id}")
 	public String findAllByShopOrdered(@PathVariable("id") Integer id) {
 		JSONObject json = new JSONObject();

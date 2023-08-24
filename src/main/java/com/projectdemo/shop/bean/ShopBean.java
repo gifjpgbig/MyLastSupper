@@ -32,7 +32,7 @@ public class ShopBean {
 	@Column(name = "id")
 	private Integer id;
 	
-	@Column(name = "name", columnDefinition = "nvarchar(12)")
+	@Column(name = "name", columnDefinition = "nvarchar(50)")
 	private String name;
 
 	@Column(name = "account", columnDefinition = "varchar(20)")
@@ -41,7 +41,7 @@ public class ShopBean {
 	@Column(name = "password", columnDefinition = "varchar(20)")
 	private String password;
 
-	@Column(name = "email", columnDefinition = "varchar(20)")
+	@Column(name = "email", columnDefinition = "varchar(50)")
 	private String email;
 
 	@Column(name = "phone", columnDefinition = "varchar(10)")
@@ -53,7 +53,7 @@ public class ShopBean {
 	@Column(name = "district", columnDefinition = "nvarchar(50)")
 	private String district;
 	
-	@Column(name = "address", columnDefinition = "nvarchar(50)")
+	@Column(name = "address", columnDefinition = "nvarchar(max)")
 	private String address;
 
 	@Column(name = "latitude" , columnDefinition = "nvarchar(50)")

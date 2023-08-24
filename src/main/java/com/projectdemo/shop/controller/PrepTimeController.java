@@ -27,6 +27,12 @@ public class PrepTimeController {
 	@Autowired
 	private PrepTimeService prepTimeService;
 	
+	/**
+	 * CREATE
+	 * 
+	 * @param bean
+	 * @return
+	 */
 	@PostMapping("/add")
 	public String addCategory(@RequestBody PrepTimeBean bean) {
 		JSONObject json = new JSONObject();
@@ -39,6 +45,12 @@ public class PrepTimeController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND BY ID
+	 * 
+	 * @param id PrepTime ID
+	 * @return PrepTime, Shop ID & name
+	 */
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -63,6 +75,12 @@ public class PrepTimeController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND ALL PrepTime BY SHOP ID
+	 * 
+	 * @param id Shop ID
+	 * @return PrepTime array
+	 */
 	@GetMapping("/all/{id}")
 	public String findAllByShop(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -85,6 +103,13 @@ public class PrepTimeController {
 		return json.toString();
 	}
 	
+	/**
+	 * UPDATE 
+	 * 
+	 * @param id PrepTime ID
+	 * @param bean
+	 * @return
+	 */
 	@PutMapping("/{id}")
 	public String update(@PathVariable Integer id, @RequestBody PrepTimeBean bean) {
 		JSONObject json = new JSONObject();
@@ -98,6 +123,12 @@ public class PrepTimeController {
 		return json.toString();
 	}
 	
+	/**
+	 * DELETE
+	 * 
+	 * @param id PrepTime ID
+	 * @return
+	 */
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -112,6 +143,12 @@ public class PrepTimeController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND ALL PrepTime BY SHOP ID, ORDERED BY DAY & START TIME
+	 * 
+	 * @param id Shop ID
+	 * @return PrepTime array
+	 */
 	@GetMapping("/allOrdered/{id}")
 	public String findAllByShopOrdered(@PathVariable("id") Integer id) {
 		JSONObject json = new JSONObject();
