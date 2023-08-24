@@ -25,7 +25,7 @@ public class InviteCodeService {
 			userInviteCode.setCustomer(customerOptional.get());
 			userInviteCode.setAmount(id);
 			Integer code = 123456 + id;
-			userInviteCode.setCode(String.valueOf(code));
+			userInviteCode.setCode("InviteCode" + String.valueOf(code));
 			userInviteCode.setInvitedQuota(200);
 			userInviteCode.setInviteQuota(150);
 			return inviteCodeRepository.save(userInviteCode);
@@ -33,8 +33,9 @@ public class InviteCodeService {
 		return null;
 	}
 	
-	public void findInviteCodeByID(Integer id) {
-		inviteCodeRepository.findInviteCodeByID(id);
+	
+	public UserInviteCodeBean findInviteCodeByCusID(Integer cid) {
+		return inviteCodeRepository.findInviteCodeByCusID(cid);
 	}
 
 	public String InviteCodeUpdate(Integer id) {

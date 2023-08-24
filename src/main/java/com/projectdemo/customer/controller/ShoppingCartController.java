@@ -44,8 +44,22 @@ public class ShoppingCartController {
 	}
 
 	@GetMapping("/shoppingCart/findByCusID/{cid}")
-	public List<ShoppingCartBean> findShoppingCartByCusID(@PathVariable("cid") Integer cid) {
-		return shoppingCartService.findShoppingCartByCusID(cid);
+	public String findShoppingCartByCusID(@PathVariable("cid") Integer cid) {
+		JSONObject responseJson = new JSONObject();
+		JSONArray shoppingCartArray = new JSONArray();
+		List<ShoppingCartBean> shoppingCartList = shoppingCartService.findShoppingCartByCusID(cid);
+		for(ShoppingCartBean shoppingCart:shoppingCartList) {
+			shoppingCart.getDish().getName();
+			JSONObject jsonShoppingCart = new JSONObject()
+			.put("dish_name",shoppingCart.getDish().getName())
+			.put("amount",shoppingCart.getAmount())
+			.put("customization",shoppingCart.getCustomization())
+			.put("dish_price",shoppingCart.getDishPrice())
+			.put("total_price",shoppingCart.getTotalPrice());
+			shoppingCartArray.put(jsonShoppingCart);
+		}
+		responseJson.put("shoppingCartList",shoppingCartArray);
+		return responseJson.toString(); 
 	}
 //	<---------------------------------------------------------------------------------------------->
 //	update	
