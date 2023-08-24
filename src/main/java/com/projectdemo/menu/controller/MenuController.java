@@ -33,6 +33,24 @@ public class MenuController {
 	@Autowired
 	private DishService dishService;
 	
+	@PostMapping("/getAllMenu")
+	public String getMenuByDhopId(@RequestBody MenuBean menuBean) {
+	    JSONObject responseJson = new JSONObject();
+	    JSONArray array = new JSONArray();
+	    ShopBean shop = menuBean.getShop();
+	    List<MenuBean> menuList = menuService.findMenuByShopId(shop.getId());
+	    for(MenuBean menu :menuList) {
+	    	JSONObject menuJson = new JSONObject()
+	    			.put("id", menu.getId())
+	    			.put("name", menu.getName())
+	    			.put("supply", menu.isSupply());
+	    	array.put(menuJson);
+	    }
+	    responseJson.put("menus", array);
+	    return responseJson.toString();
+	}
+	
+	
 	@PostMapping("/findAllMenu")
 		public String findMenuByShopId(@RequestBody MenuBean menuBean) {
 	    JSONObject responseJson = new JSONObject();
