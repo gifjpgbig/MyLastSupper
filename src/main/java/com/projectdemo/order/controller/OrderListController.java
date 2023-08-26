@@ -1,5 +1,6 @@
 package com.projectdemo.order.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -16,12 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projectdemo.customer.bean.CustomerBean;
+import com.projectdemo.customer.service.CustomerService;
+import com.projectdemo.menu.bean.DishBean;
+import com.projectdemo.menu.service.DishService;
 import com.projectdemo.order.bean.DeliverDetailBean;
+import com.projectdemo.order.bean.OrderDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
 import com.projectdemo.order.service.DeliverDetailService;
+import com.projectdemo.order.service.OrderDetailService;
 import com.projectdemo.order.service.OrderListService;
+import com.projectdemo.shop.bean.ShopBean;
+import com.projectdemo.shop.service.ShopService;
 
 import jakarta.transaction.Transactional;
 
@@ -35,6 +42,19 @@ public class OrderListController {
 	@Autowired
 	private DeliverDetailService ddService;
 
+	@Autowired
+	private OrderDetailService odService;
+	
+	@Autowired
+	private ShopService shopService;
+	
+	@Autowired
+	private CustomerService cusService;
+	
+	@Autowired
+	private DishService dishService;
+	
+	
 	// 未分類
 	// 用客戶id去搜尋，暫時沒用到
 	@PostMapping("/order/findByCustomerId/{id}")
@@ -67,6 +87,7 @@ public class OrderListController {
 	@PostMapping("/order/insert1")
 	public String insert1(@RequestBody OrderListBean ol) {
 		JSONObject responseJson = new JSONObject();
+		System.out.println(ol.toString());	
 		OrderListBean order = olService.addOrder(ol);
 		if (order != null) {
 			responseJson.put("message", "新增成功");
@@ -93,6 +114,7 @@ public class OrderListController {
 	// 改變訂單狀態，可以被應用在許多地方
 	// orders.vue
 	// edit.vue
+	// 餐廳接單、退單、棄單
 	@PutMapping("/order/update/status/{id}")
 	public String updateStatus(@PathVariable Integer id, @RequestBody OrderListBean ol, @RequestParam String type) {
 		JSONObject responseJson = new JSONObject();
@@ -395,4 +417,89 @@ public class OrderListController {
 		return responseJson.toString();
 	}
 
+	
+	//客戶下單功能
+	//同時使用兩個新增方法，沒有成功就rollback
+	//前端將資料格式打包成json包兩個json，一個jobj,一個jarray?
+	@Transactional
+	@PostMapping("/order/placeAnOrder")
+	public String placeOrder(@RequestBody String json) {
+		JSONObject responseJson = new JSONObject();
+		JSONObject datas = new JSONObject(json);
+		System.out.println(datas);
+		System.out.println(datas.toString());
+		
+		//把datas內的ol data提出，轉換成olbean
+		JSONObject orderJson = datas.getJSONObject("orderList");
+		System.out.println(orderJson);
+		System.out.println(orderJson.toString());
+		OrderListBean newOl = new OrderListBean();
+		
+		ShopBean shop = shopService.findById(orderJson.getInt("shop"));
+		CustomerBean customer = cusService.findCustomerById(orderJson.getInt("customer"));
+		
+		newOl.setShop(shop);
+		newOl.setCustomer(customer);
+		newOl.setTotalPrice(orderJson.getInt("totalPrice"));
+		newOl.setCusStatus(orderJson.getString("cusStatus"));
+		newOl.setShopStatus(orderJson.getString("shopStatus"));
+		newOl.setDeliverStatus(orderJson.getString("deliverStatus"));
+		newOl.setAddress(orderJson.getString("Address"));
+		newOl.setDeliveryFee(orderJson.getInt("deliveryFee"));
+		newOl.setDiscount(orderJson.getInt("discount"));
+		
+		OrderListBean addOrder = olService.addOrder(newOl);
+		
+		//把datas內的od datas提出，轉換成odbean，batch insert
+		//先得到jsonObj，需要再研究一些小細節
+		List<OrderDetailBean> odlist = new ArrayList<>();
+		JSONArray array = datas.getJSONArray("orderDetail");
+		System.out.println(array);
+		for(Object detail: array) {
+			System.out.println(detail);
+			//這一層轉換出現問題，odJson沒有拿到資料!
+			JSONObject odJson = new JSONObject(detail.toString());
+			System.out.println(odJson);
+			OrderDetailBean od = new OrderDetailBean();
+			
+			DishBean dish = dishService.findDishById(odJson.getInt("dish"));
+			od.setDish(dish);
+			od.setOrderList(addOrder);
+			od.setAmount(odJson.getInt("Amount"));
+			od.setCustomization(odJson.getString("customization"));
+			od.setTotalPrice(odJson.getInt("totalPrice"));
+			
+			odlist.add(od);
+		}
+		
+		boolean success = odService.addAll(odlist);
+		if(success == true) {
+			responseJson.put("message", "明細新增成功");
+			responseJson.put("success", true);
+		}else {
+			responseJson.put("message", "明細新增失敗");
+			responseJson.put("success", false);
+			throw new RuntimeException("新增明細失敗"); // 拋出異常來觸發回滾
+		}
+				
+		return responseJson.toString();
+	}
+	
+	//客戶查看歷史訂單功能
+	//讓顧客進入頁面就一次拿到所有資料，訂單+訂單明細
+	//結構為: json{ "orderlist:{ol1:{"oldata","orderdetail:{od1, od2, od3,...}"}, 
+	//                       ,ol2:{"oldata","orderdetail:{od1, od2, od3,...}"}}", 
+	//在前端頁面控制資料流，可以用modal顯示，也可以直接顯示在該筆訂單下方
+	//傳入參數需要客戶的id
+	@PostMapping("/order/customerHistory")
+	public String customerHistory(@RequestBody String json) {
+		JSONObject responseJson = new JSONObject();
+		JSONObject data = new JSONObject(json);
+		List<OrderListBean> ols = olService.findOrderByCustomerId(data.getInt("id"));
+		
+		
+		return responseJson.toString();
+	}
+	
+	
 }

@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -83,6 +84,14 @@ public class OrderListBean {
 	@Column(name = "shop_feedback_reply", columnDefinition = "nvarchar(200)")
 	private String shopFeedbackReply;
 
+	
+	@PrePersist
+	public void onCreate() {
+		if (orderTime == null) {
+			orderTime = LocalDateTime.now();
+		}
+	}
+	
 	public String getAddress() {
 		return address;
 	}
@@ -224,11 +233,14 @@ public class OrderListBean {
 
 	@Override
 	public String toString() {
-		return "OrderListBean [id=" + id + ", customer=" + customer + ", shop=" + shop + ", totalPrice=" + totalPrice
-				+  ", address=" + address + ", deliveryFee=" + deliveryFee + ", orderTime="
-				+ orderTime + ", discount=" + discount + ", shopReview=" + shopReview + ", shopComments=" + shopComments
-				+ ", dishComments=" + dishComments + ", shopFeedbackReply=" + shopFeedbackReply + "]";
+		return "OrderListBean [id=" + id + ", customer=" + customer + ", shop=" + shop + ", orderDetails="
+				+ orderDetails + ", deliverDetail=" + deliverDetail + ", totalPrice=" + totalPrice + ", cusStatus="
+				+ cusStatus + ", shopStatus=" + shopStatus + ", deliverStatus=" + deliverStatus + ", address=" + address
+				+ ", deliveryFee=" + deliveryFee + ", orderTime=" + orderTime + ", discount=" + discount
+				+ ", shopReview=" + shopReview + ", shopComments=" + shopComments + ", dishComments=" + dishComments
+				+ ", shopFeedbackReply=" + shopFeedbackReply + "]";
 	}
+
 
 
 	

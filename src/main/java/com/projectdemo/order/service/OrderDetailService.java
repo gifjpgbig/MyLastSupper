@@ -20,6 +20,15 @@ public class OrderDetailService {
 		return odRepo.save(od);
 	}
 	
+	public boolean addAll(List<OrderDetailBean> odlist) {
+		List<OrderDetailBean> saveAll = odRepo.saveAll(odlist);
+		if(saveAll != null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	
 	public OrderDetailBean findODById(Integer id) {
 		return odRepo.findById(id).get();

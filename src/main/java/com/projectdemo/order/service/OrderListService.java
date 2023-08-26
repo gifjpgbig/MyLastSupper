@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.repository.CustomerRepository;
@@ -250,6 +251,5 @@ public class OrderListService {
 	public List<OrderListBean> findInProgressByDeliver(Integer deliverID){
 		return oLRepo.findInProgressByDeliver();
 	}
-	
 	
 }
