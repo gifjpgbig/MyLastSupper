@@ -53,6 +53,7 @@ public class ShoppingCartService {
 		return shoppingCartRepository.findShoppingCartByCusID(cid);
 	}
 	
+	
 
 	public ShoppingCartBean shoppingCartUpdateAmount(Integer id, Integer amount) {
 		shoppingCartRepository.ShoppingCartUpdate(id, amount);

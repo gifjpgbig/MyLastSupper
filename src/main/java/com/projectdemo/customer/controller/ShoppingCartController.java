@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projectdemo.customer.bean.AddressBean;
 import com.projectdemo.customer.bean.ShoppingCartBean;
 import com.projectdemo.customer.service.AddressService;
 import com.projectdemo.customer.service.ShoppingCartService;
@@ -49,23 +49,39 @@ public class ShoppingCartController {
 		JSONArray shoppingCartArray = new JSONArray();
 		List<ShoppingCartBean> shoppingCartList = shoppingCartService.findShoppingCartByCusID(cid);
 		for(ShoppingCartBean shoppingCart:shoppingCartList) {
-			shoppingCart.getDish().getName();
 			JSONObject jsonShoppingCart = new JSONObject()
+			.put("id",shoppingCart.getId())
 			.put("dish_name",shoppingCart.getDish().getName())
 			.put("amount",shoppingCart.getAmount())
 			.put("customization",shoppingCart.getCustomization())
 			.put("dish_price",shoppingCart.getDishPrice())
-			.put("total_price",shoppingCart.getTotalPrice());
+			.put("total_price",shoppingCart.getTotalPrice())
+			.put("fk_shop_id",shoppingCart.getShop().getId())
+			.put("shop_name",shoppingCart.getShop().getName());
 			shoppingCartArray.put(jsonShoppingCart);
 		}
 		responseJson.put("shoppingCartList",shoppingCartArray);
 		return responseJson.toString(); 
 	}
+	
 //	<---------------------------------------------------------------------------------------------->
 //	update	
 	@PutMapping("/shoppingCart/update/{id}/{amount}")
 	public ShoppingCartBean shoppingCartUpdateAmount(@PathVariable Integer id, @PathVariable Integer amount) {
 		return shoppingCartService.shoppingCartUpdateAmount(id, amount);
+	}
+	
+	@PutMapping("shoppingCart/checkout")
+	public String shoppingCartCheckOut(
+			@RequestParam("selectedProduct")List<String> selectedProduct,
+			@RequestParam("totalPrice")Integer totalPrice,
+			@RequestParam("customerID")Integer customerID,
+			@RequestParam("shopID")Integer shopID) {
+
+		System.out.println("總金額" + totalPrice);
+		System.out.println("customerID: " +customerID);
+		System.out.println("shopID: " +shopID);
+		return "結帳成功";
 	}
 
 //	<---------------------------------------------------------------------------------------------->

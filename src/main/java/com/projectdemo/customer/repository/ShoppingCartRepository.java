@@ -22,6 +22,7 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartBean, 
 	@Query(value = "SELECT * FROM shopping_cart where fk_customer_id = :cid", nativeQuery = true)
 	List<ShoppingCartBean> findShoppingCartByCusID(@Param("cid")Integer cid);
 	
+	
 	@Transactional
 	@Modifying
 	@Query(value = "update shopping_cart set amount = :amount where id = :id" , nativeQuery = true)
