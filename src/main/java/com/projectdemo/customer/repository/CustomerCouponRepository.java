@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.projectdemo.customer.bean.CustomerCouponBean;
 
-public interface CustomerCouponRepository extends JpaRepository<CustomerCouponBean, Integer>{
-	
+public interface CustomercouponRepository extends JpaRepository<CustomerCouponBean, Integer>{
+
 }

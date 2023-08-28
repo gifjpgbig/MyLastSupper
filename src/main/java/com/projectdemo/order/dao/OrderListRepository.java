@@ -29,6 +29,9 @@ public interface OrderListRepository extends JpaRepository<OrderListBean, Intege
 	 */
 	@Query(value = "select * from order_list where fk_shop_id=:id and (shop_status='未接單' or shop_status='已接單')", nativeQuery = true)
 	List<OrderListBean> findByShopIdActiveOrders(@Param("id") Integer id);
+	
+	@Query(value = "select * from order_list where fk_shop_id=:id and shop_status='已完成'", nativeQuery = true)
+	List<OrderListBean> findByShopIdCompleteOrders(@Param("id") Integer id);
 
 //	@Query(value = "select * from order_list", nativeQuery = true)
 //	List<OrderListBean> testAll();

@@ -160,6 +160,14 @@ public class OrderListService {
 		}
 		return null;
 	}
+	
+	public List<OrderListBean> findCompleteOrderByShopId(Integer id) {
+		ShopBean bean = shopService.findById(id);
+		if(bean != null) {
+			return oLRepo.findByShopIdCompleteOrders(id);			
+		}
+		return null;
+	}
 
 	// 改變訂單狀態
 	// 依據前端傳送到這裡的json欄位變數statustype，可以得到要去更新哪個資料
@@ -244,6 +252,23 @@ public class OrderListService {
 		Optional<OrderListBean> optional = oLRepo.findById(id);
 		if (optional.isPresent()) {
 			return oLRepo.save(updatedOd);
+		}
+		return null;
+	}
+	
+	/**
+	 * MEEEEEEEEEE
+	 * 
+	 * @param id
+	 * @param reply
+	 * @return
+	 */
+	public OrderListBean updateShopFeedback(Integer id, String reply) {
+		Optional<OrderListBean> optional = oLRepo.findById(id);
+		if(optional.isPresent()) {
+			OrderListBean old = optional.get();
+			old.setShopFeedbackReply(reply);
+			return oLRepo.save(old);
 		}
 		return null;
 	}

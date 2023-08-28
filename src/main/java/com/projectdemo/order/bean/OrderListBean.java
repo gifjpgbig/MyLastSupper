@@ -80,7 +80,7 @@ public class OrderListBean {
 	@Column(name = "dish_comments", columnDefinition = "nvarchar(200)")
 	private String dishComments;
 
-	@Column(name = "shop_feedback_reply", columnDefinition = "nvarchar(200)")
+	@Column(name = "shop_feedback_reply", columnDefinition = "nvarchar(max)")
 	private String shopFeedbackReply;
 
 	public String getAddress() {

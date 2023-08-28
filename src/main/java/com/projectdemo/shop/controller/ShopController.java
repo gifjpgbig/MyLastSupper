@@ -12,6 +12,7 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -660,6 +661,7 @@ public class ShopController {
 	public List<ShopBean> saveAll(List<String[]> list) {
 		List<ShopBean> shops = new ArrayList<ShopBean>();
 		Iterator<String[]> iterator = list.iterator();
+		Random random = new Random();
 		
 		iterator.next(); // skip column names
 		while(iterator.hasNext()) {
@@ -670,6 +672,7 @@ public class ShopController {
 			shopBean.setAddress(next[2]);
 			shopBean.setLatitude(next[3]);
 			shopBean.setLongitude(next[4]);
+			shopBean.setReview(random.nextInt(5) + 1);
 			
 			shops.add(shopBean);
 		}
