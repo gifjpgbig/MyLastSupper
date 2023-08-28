@@ -176,6 +176,9 @@ const stats = ref([
   },
 ]);
 const totalPages = ref(0);
+
+
+
 const datas = reactive({
   start: 0,
   rows: 0,
@@ -185,6 +188,10 @@ const datas = reactive({
   sortOrder: "asc",
   sortType: "id",
 });
+
+
+
+
 
 const URL = import.meta.env.VITE_API_ORDER;
 const loadOrders = async () => {
