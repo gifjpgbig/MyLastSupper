@@ -95,6 +95,20 @@
                   ><span class="ms-1 d-none d-sm-inline">即時訊息</span></a
                 >
               </li>
+
+              <li class="nav-item">
+                <!-- <a class="nav-link px-0 align-middle" href="#"><i class="fa fa-table fs-4 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a> -->
+                <RouterLink class="nav-link align-middle px-0" to="/contact">
+                  <i class="fa fa-table fs-4 bi-people"></i>
+                  <span class="d-none d-sm-inline">關於我們</span></RouterLink
+                >
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link align-middle px-0" to="/toast">
+                  <i class="fa fa-table fs-4 bi-people"></i>
+                  <span class="d-none d-sm-inline">吐司測試</span></RouterLink
+                >
+              </li>
             </ul>
             <hr />
             <div class="dropdown pb-4">

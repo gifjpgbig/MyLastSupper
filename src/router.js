@@ -7,6 +7,8 @@ import Add from './views/Add.vue';
 import Edit from './views/Edit.vue';
 import Deliver from './views/deliver.vue'
 import Login from './views/login.vue'
+import Toast from './views/Toast.vue';
+
 const routes = [
     {
         //http://localhost/
@@ -50,6 +52,13 @@ const routes = [
         path: '/login',
         component: Login,
         meta: { showNavbar: false } // 显示导航栏
+
+    },
+    {
+        //http://localhost/login
+        path: '/toast',
+        component: Toast,
+        meta: { showNavbar: true } // 显示导航栏
 
     },
 ]
