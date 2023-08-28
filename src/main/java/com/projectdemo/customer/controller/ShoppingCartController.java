@@ -67,8 +67,10 @@ public class ShoppingCartController {
 //	<---------------------------------------------------------------------------------------------->
 //	update	
 	@PutMapping("/shoppingCart/update/{id}/{amount}")
-	public ShoppingCartBean shoppingCartUpdateAmount(@PathVariable Integer id, @PathVariable Integer amount) {
-		return shoppingCartService.shoppingCartUpdateAmount(id, amount);
+	public String shoppingCartUpdateAmount(@RequestBody ShoppingCartBean shoppingCart) {
+		return shoppingCartService.shoppingCartUpdateAmount(shoppingCart);
+		
+//		return shoppingCartService.shoppingCartUpdateAmount(id, amount);
 	}
 	
 	@PutMapping("shoppingCart/checkout")

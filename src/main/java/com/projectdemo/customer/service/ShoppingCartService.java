@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.bean.ShoppingCartBean;
@@ -55,9 +56,13 @@ public class ShoppingCartService {
 	
 	
 
-	public ShoppingCartBean shoppingCartUpdateAmount(Integer id, Integer amount) {
-		shoppingCartRepository.ShoppingCartUpdate(id, amount);
-		return shoppingCartRepository.findById(id).get();
+	public String shoppingCartUpdateAmount(ShoppingCartBean shoppingCart) {
+		ShoppingCartBean shoppingCartBean = shoppingCartRepository.findById(shoppingCart.getId()).get();
+		Integer oldAmount = shoppingCartBean.getAmount();
+		Integer newAmount = shoppingCart.getAmount();
+		Integer totalPrice = (newAmount - oldAmount) * (shoppingCart.getDishPrice()) + shoppingCart.getTotalPrice();
+		shoppingCartRepository.ShoppingCartUpdate(shoppingCart.getId(),shoppingCart.getAmount(),totalPrice);
+		return "更改成功，請重新點擊商家名稱確認";
 	}
 
 

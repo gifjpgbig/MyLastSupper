@@ -25,6 +25,6 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartBean, 
 	
 	@Transactional
 	@Modifying
-	@Query(value = "update shopping_cart set amount = :amount where id = :id" , nativeQuery = true)
-	void ShoppingCartUpdate(@Param("id")Integer id,@Param("amount") Integer amount);
+	@Query(value = "update shopping_cart set amount = :amount,totalPrice = :totalPrice where id = :id" , nativeQuery = true)
+	void ShoppingCartUpdate(@Param("id")Integer id,@Param("amount") Integer amount,@Param("totalPrice")Integer totalPrice);
 }
