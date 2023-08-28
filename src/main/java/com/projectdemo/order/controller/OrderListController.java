@@ -348,7 +348,7 @@ public class OrderListController {
 	@PostMapping("/order/findInProgressByDeliver/{id}")
 	public String findInProgressByDeliver(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
-		List<Object[]> myOrder = ddService.findInProgressByDeliver();
+		List<Object[]> myOrder = ddService.findInProgressByDeliver(id);
 		JSONArray array = new JSONArray();
 		for (Object order : myOrder) {
 			JSONObject item = new JSONObject();
