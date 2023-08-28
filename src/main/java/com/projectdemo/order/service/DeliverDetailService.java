@@ -66,9 +66,9 @@ public class DeliverDetailService {
 		}
 	}
 	
-	public List<Object[]> findInProgressByDeliver(){
+	public List<Object[]> findInProgressByDeliver(Integer id){
 //	public List<OrderProgressDTO> findInProgressByDeliver(){
-		return ddRepo.findInProgressByDeliver();
+		return ddRepo.findInProgressByDeliver(id);
 	}
 
 	public DeliverDetailBean findDDById(Integer id) {
