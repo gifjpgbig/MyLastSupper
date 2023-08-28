@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.projectdemo.order.bean.Note;
+import com.projectdemo.order.bean.NoteWithToken;
 import com.projectdemo.order.service.FirebaseMessagingService;
 
 @RestController
@@ -21,9 +22,8 @@ public class FirebaseMessagingController {
 	
 	@PostMapping("/send-notification")
 	@ResponseBody
-	public String sendNotification(@RequestBody Note note,
-	                               @RequestParam String token) throws FirebaseMessagingException {
-	    return firebaseService.sendNotification(note, token);
+	public String sendNotification(@RequestBody NoteWithToken nwt) throws FirebaseMessagingException {
+	    return firebaseService.sendNotification(nwt.getNote(), nwt.getToken());
 	}
 	
 }

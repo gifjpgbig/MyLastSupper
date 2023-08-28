@@ -320,7 +320,7 @@ public class OrderListController {
 		// driver、address、deliverID、orderid
 		DeliverDetailBean ddb = ddService.addDD(json);
 		if (ddb != null) {
-			responseJson.put("message", responseJson.getString("message") + "訂單已處理");
+			responseJson.put("message", responseJson.getString("message") + "，訂單已處理");
 		} else {
 			responseJson.put("success", false);
 			throw new RuntimeException("新增外送明細失敗，已有外送員接單"); // 拋出異常來觸發回滾
