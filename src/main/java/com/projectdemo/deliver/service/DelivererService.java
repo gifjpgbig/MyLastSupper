@@ -40,15 +40,15 @@ public class DelivererService {
 	//馬老寫getSession，需要了解差異
 	private EntityManager entityManager;
 	
-//	Exist by Name
-	public boolean checkIfDelivererExist(String name) {
-		DelivererBean dbDeliverer = delivererRepo.findByName2(name);
-		if (dbDeliverer != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+////	Exist by Name 檢查外送員登入使用
+//	public boolean checkIfDelivererExist(String name) {
+//		DelivererBean dbDeliverer = delivererRepo.findByName2(name);
+//		if (dbDeliverer != null) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}	
 //	id search
 	public DelivererBean findDelerById(Integer id) {
 		Optional<DelivererBean> optional = delivererRepo.findById(id);
@@ -288,31 +288,32 @@ public class DelivererService {
 		TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
 		return typedQuery.getSingleResult().longValue();
 	}
-//	不做【會員登入】&【改密碼】
+
 //	外送員登入å
-//	public DelivererBean login(String delername, String password) {
-//		DelivererBean deler=delivererRepo.findByName2(delername);
-//			if(deler!=null) {
-//				if(password!=null) {
-//					String fromDB = deler.getPassword();
-//					if(fromDB.equals(password)) {
-//						return deler;
-//					}
-//				}
-//			}
-//			return null;
-//	}
-////	外送員改密碼
-//	public boolean changePassword(String delername,String oldPassword,String newPassword) {
-//		DelivererBean deler = this.login(delername, oldPassword);
-//		if(deler!=null) {
-//			if(newPassword!=null) {
-//				deler.onUpdate();
-//				deler.setPassword(newPassword);
-//				delivererRepo.save(deler);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
+	public DelivererBean login(String delername, String password) {
+		DelivererBean deler=delivererRepo.findByName2(delername);
+			if(deler!=null) {
+				if(password!=null) {
+					String fromDB = deler.getPassword();
+					if(fromDB.equals(password)) {
+						return deler;
+					}
+				}
+			}
+			return null;
+	}
+//	外送員改密碼
+	public boolean changePassword(String delername,String oldPassword,String newPassword) {
+		DelivererBean deler = this.login(delername, oldPassword);
+		if(deler!=null) {
+			if(newPassword!=null) {
+				deler.onUpdate();
+				deler.setPassword(newPassword);
+				delivererRepo.save(deler);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

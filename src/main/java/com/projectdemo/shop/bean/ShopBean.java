@@ -32,7 +32,7 @@ public class ShopBean {
 	@Column(name = "id")
 	private Integer id;
 	
-	@Column(name = "name", columnDefinition = "nvarchar(12)")
+	@Column(name = "name", columnDefinition = "nvarchar(50)")
 	private String name;
 
 	@Column(name = "account", columnDefinition = "varchar(20)")
