@@ -54,7 +54,7 @@ public class MenuCustomizationOptionsController {
 	
 	
 	
-	@GetMapping("/findMenuCustomizationOptionsByOptionsId")
+	@PostMapping("/findMenuCustomizationOptionsByOptionsId")
 	public String findMenuCustomizationOptionsByOptionsId(@RequestBody MenuCustomizationOptionsBean menuCustomizationOptionsBean) {
 //		先建立一個array準備把全部的加點項目放進去
 		JSONObject json = new JSONObject();
@@ -74,7 +74,7 @@ public class MenuCustomizationOptionsController {
 			}
 			json.put("MenuCustomizationOptions", array);
 		}else {
-			json.put("MenuCustomizationOptions", "查無資料");
+			json.put("MenuCustomizationOptions", "false");
 		}
 		return json.toString();
 	}

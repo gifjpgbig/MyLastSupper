@@ -62,8 +62,8 @@ public class DishBean {
 	private Integer Price;
 
 //	餐點照片
-	@Column(name = "picture", columnDefinition = "varbinary(max)")
-	private byte[] picture;
+	@Column(name = "picture", columnDefinition = "nvarchar(max)")
+	private String picture;
 //	額外資訊
 	@Column(name = "extra_info", columnDefinition = "nvarchar(MAX)")
 	private String ExtraInfo;
@@ -150,11 +150,11 @@ public class DishBean {
 		Price = price;
 	}
 
-	public byte[] getPicture() {
+	public String getPicture() {
 		return picture;
 	}
 
-	public void setPicture(byte[] picture) {
+	public void setPicture(String picture) {
 		this.picture = picture;
 	}
 

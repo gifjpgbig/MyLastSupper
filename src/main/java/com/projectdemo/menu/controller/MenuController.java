@@ -33,6 +33,24 @@ public class MenuController {
 	@Autowired
 	private DishService dishService;
 	
+	@PostMapping("/getAllMenu")
+	public String getMenuByDhopId(@RequestBody MenuBean menuBean) {
+	    JSONObject responseJson = new JSONObject();
+	    JSONArray array = new JSONArray();
+	    ShopBean shop = menuBean.getShop();
+	    List<MenuBean> menuList = menuService.findMenuByShopId(shop.getId());
+	    for(MenuBean menu :menuList) {
+	    	JSONObject menuJson = new JSONObject()
+	    			.put("id", menu.getId())
+	    			.put("name", menu.getName())
+	    			.put("supply", menu.isSupply());
+	    	array.put(menuJson);
+	    }
+	    responseJson.put("menus", array);
+	    return responseJson.toString();
+	}
+	
+	
 	@PostMapping("/findAllMenu")
 		public String findMenuByShopId(@RequestBody MenuBean menuBean) {
 	    JSONObject responseJson = new JSONObject();
@@ -48,7 +66,7 @@ public class MenuController {
 	    for(int i = 0;i<menuIDList.size();i++) {
 	    	List<DishBean> dishList = dishService.findDishByMenuId(menuIDList.get(i));
 	    	for (DishBean dish : dishList) {
-            	byte[] photo = dish.getPicture();
+            	
                 JSONObject dishJson = new JSONObject()
                         .put("id", dish.getId())
                         .put("name", dish.getName())
@@ -62,13 +80,8 @@ public class MenuController {
                         .put("dislikes", dish.getDislikes())
                         .put("likerate", dish.getLikerate())
                         .put("soldOut", dish.isSoldOut())
-                        .put("fk_menu_id", menuIDList.get(i));
-                if (photo != null && photo.length > 0) {
-    				String base64Photo = Base64.getEncoder().encodeToString(photo);
-    				dishJson.put("picture", base64Photo);
-    			} else {
-    				dishJson.put("picture", "");
-    			}
+                        .put("fk_menu_id", menuIDList.get(i))
+                        .put("picture", dish.getPicture());
                 array.put(dishJson);           
 	    }
 	    responseJson.put("menus", array);
