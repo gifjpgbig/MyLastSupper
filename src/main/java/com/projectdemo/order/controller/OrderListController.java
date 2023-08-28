@@ -1,5 +1,8 @@
 package com.projectdemo.order.controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +57,43 @@ public class OrderListController {
 	@Autowired
 	private DishService dishService;
 	
+	
+//	@GetMapping("/order/testpush")
+//	public String testpush() {
+//		FileInputStream serviceAccount = null;
+//		try {
+//		    serviceAccount = new FileInputStream("剛剛下載的金鑰json檔路徑");
+//		} catch (FileNotFoundException e) {
+//		    e.printStackTrace();
+//		}
+//
+//		FirebaseOptions options = null;
+//				
+//		try {
+//		    options = new FirebaseOptions.Builder()
+//		        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+//		        .setDatabaseUrl("https://<Datebase.Domain>.firebaseio.com")
+//		        .build();
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		}
+//
+//		FirebaseApp.initializeApp(options);
+//				
+//		String registrationToken = "你要推播裝置的push token";
+//		Message message = Message.builder()
+//		    .putData("title", "運用Firebase Admin SDK發送Notification")
+//		    .putData("author", "Greg")
+//		    .setToken(registrationToken)
+//		    .build();
+//		String response = null;
+//		try {
+//		    response = FirebaseMessaging.getInstance().send(message);
+//		} catch (FirebaseMessagingException e) {
+//		    e.printStackTrace();
+//		}
+//		System.out.println("Successfully sent message: " + response);
+//	}
 	
 	// 未分類
 	// 用客戶id去搜尋，暫時沒用到

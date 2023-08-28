@@ -38,13 +38,7 @@ public class DeliverDetailController {
 		return ddService.findDDById(id);
 	}
 
-	
 
-	
-
-	
-	
-	
 	//讓外送員查看自己接到的訂單
 		//這個邏輯是，查看自己已接單的訂單
 		//請注意，資料型態是object
