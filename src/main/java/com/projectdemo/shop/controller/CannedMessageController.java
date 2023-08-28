@@ -59,9 +59,14 @@ public class CannedMessageController {
 
 		if (bean != null) {
 			ShopBean fk_shop = bean.getShop();
-			JSONObject item = new JSONObject().put("id", bean.getId()).put("messageCDate", bean.getMessageCDate())
-					.put("messageUDate", bean.getMessageUDate()).put("moneyRange", bean.getMoneyRange())
-					.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime())
+			JSONObject item = new JSONObject()
+					.put("id", bean.getId())
+					.put("moneyStart", bean.getMoneyStart())
+					.put("moneyEnd", bean.getMoneyEnd())
+					.put("scoreStart", bean.getScoreStart())
+					.put("scoreEnd", bean.getScoreEnd())
+					.put("timeStart", bean.getTimeStart())
+					.put("timeEnd", bean.getTimeEnd())
 					.put("messageText", bean.getMessageText());
 			JSONObject shop = new JSONObject().put("shopName", fk_shop.getName()).put("shopId", fk_shop.getId());
 			array = array.put(item).put(shop);
@@ -83,9 +88,14 @@ public class CannedMessageController {
 		List<CannedMessageBean> list = cannedMessageService.findAllByShopId(id);
 		if (list != null && !list.isEmpty()) {
 			for (CannedMessageBean bean : list) {
-				JSONObject item = new JSONObject().put("id", bean.getId()).put("messageCDate", bean.getMessageCDate())
-						.put("messageUDate", bean.getMessageUDate()).put("moneyRange", bean.getMoneyRange())
-						.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime())
+				JSONObject item = new JSONObject()
+						.put("id", bean.getId())
+						.put("moneyStart", bean.getMoneyStart())
+						.put("moneyEnd", bean.getMoneyEnd())
+						.put("scoreStart", bean.getScoreStart())
+						.put("scoreEnd", bean.getScoreEnd())
+						.put("timeStart", bean.getTimeStart())
+						.put("timeEnd", bean.getTimeEnd())
 						.put("messageText", bean.getMessageText());
 				array.put(item);
 			}
@@ -150,9 +160,14 @@ public class CannedMessageController {
 		
 		if (list != null && !list.isEmpty()) {
 			for (CannedMessageBean bean : list) {
-				JSONObject item = new JSONObject().put("id", bean.getId()).put("messageCDate", bean.getMessageCDate())
-						.put("messageUDate", bean.getMessageUDate()).put("moneyRange", bean.getMoneyRange())
-						.put("scoreRange", bean.getScoreRange()).put("messageSendTime", bean.getMessageSendTime())
+				JSONObject item = new JSONObject()
+						.put("id", bean.getId())
+						.put("moneyStart", bean.getMoneyStart())
+						.put("moneyEnd", bean.getMoneyEnd())
+						.put("scoreStart", bean.getScoreStart())
+						.put("scoreEnd", bean.getScoreEnd())
+						.put("timeStart", bean.getTimeStart())
+						.put("timeEnd", bean.getTimeEnd())
 						.put("messageText", bean.getMessageText());
 				array.put(item);
 			}

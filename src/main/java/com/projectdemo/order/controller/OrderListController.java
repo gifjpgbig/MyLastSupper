@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.order.bean.DeliverDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
 import com.projectdemo.order.service.DeliverDetailService;
@@ -58,9 +59,54 @@ public class OrderListController {
 
 	// 用店家id去搜尋，暫時沒用到
 	@PostMapping("/order/findByShopId/{id}")
-	public List<OrderListBean> findByShopId(@PathVariable Integer id) {
-		return olService.findOrderByShopId(id);
+	public String findByShopId(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		List<OrderListBean> orders = olService.findOrderByShopId(id);
+		JSONArray array = new JSONArray();
+		if(orders != null && ! orders.isEmpty()) {
+			for(OrderListBean order : orders) {
+				CustomerBean customer = order.getCustomer();
+				JSONObject item = new JSONObject()
+						.put("id", order.getId()).put("address", order.getAddress()).put("cus_status", order.getCusStatus())
+						.put("shop_status", order.getShopStatus()).put("deliverStatus", order.getDeliverStatus())
+						.put("customerID", customer.getCustomerID()).put("custName", customer.getName())
+						.put("total_price", order.getTotalPrice()).put("deliveryFee", order.getDeliveryFee());
+				array = array.put(item);
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
 	}
+	
+	/**
+	 * MEEEEEEEEE
+	 * @param id
+	 * @return
+	 */
+	@PostMapping("/order/findByShopIdActiveOrders/{id}")
+	public String findByShopIdActiveOrders(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		List<OrderListBean> orders = olService.findActiveOrderByShopId(id);
+		JSONArray array = new JSONArray();
+		if(orders != null && ! orders.isEmpty()) {
+			for(OrderListBean order : orders) {
+				CustomerBean customer = order.getCustomer();
+				JSONObject item = new JSONObject()
+						.put("id", order.getId()).put("address", order.getAddress()).put("cus_status", order.getCusStatus())
+						.put("shop_status", order.getShopStatus()).put("deliverStatus", order.getDeliverStatus())
+						.put("customerID", customer.getCustomerID()).put("custName", customer.getName())
+						.put("total_price", order.getTotalPrice()).put("deliveryFee", order.getDeliveryFee());
+				array = array.put(item);
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
+	}
+	
+//	@PostMapping("/order/findByShopId/{id}")
+//	public List<OrderListBean> findByShopId(@PathVariable Integer id) {
+//		return olService.findOrderByShopId(id);
+//	}
 
 	// 寫在add.vue的測試新增訂單，目前有bug尚未解決
 	// 操作方法是在vue project裡面寫一個model: order.js

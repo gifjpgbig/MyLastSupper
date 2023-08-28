@@ -46,9 +46,12 @@ public class CannedMessageService {
 		if(optional.isPresent()) {
 			CannedMessageBean oldMsg = optional.get();
 			oldMsg.setMessageUDate(LocalDateTime.now());
-			oldMsg.setMoneyRange(msg.getMoneyRange());
-			oldMsg.setScoreRange(msg.getScoreRange());
-			oldMsg.setMessageSendTime(msg.getMessageSendTime());
+			oldMsg.setMoneyStart(msg.getMoneyStart());
+			oldMsg.setMoneyEnd(msg.getMoneyEnd());
+			oldMsg.setScoreStart(msg.getScoreStart());
+			oldMsg.setScoreEnd(msg.getScoreEnd());
+			oldMsg.setTimeStart(msg.getTimeStart());
+			oldMsg.setTimeEnd(msg.getTimeEnd());
 			oldMsg.setMessageText(msg.getMessageText());
 			
 			return cannedMessageRepository.save(oldMsg);

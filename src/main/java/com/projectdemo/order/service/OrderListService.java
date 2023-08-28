@@ -148,6 +148,19 @@ public class OrderListService {
 		return oLRepo.findByShop(bean);
 	}
 
+	/**
+	 * MEEEEEEEEEE
+	 * @param id
+	 * @return
+	 */
+	public List<OrderListBean> findActiveOrderByShopId(Integer id) {
+		ShopBean bean = shopService.findById(id);
+		if(bean != null) {
+			return oLRepo.findByShopIdActiveOrders(id);			
+		}
+		return null;
+	}
+
 	// 改變訂單狀態
 	// 依據前端傳送到這裡的json欄位變數statustype，可以得到要去更新哪個資料
 	// customer更新CusStatus

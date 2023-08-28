@@ -72,8 +72,7 @@ public class ShopController {
 	
 	/**
 	 * CREATE (WITH PHOTO)
-	 * code based on teacher's, uses RequestParam
-	 * never tested so don't know if it works
+	 * uses RequestPart
 	 * 
 	 * @param jsonPayload ShopBean
 	 * @param photoFile image file (jpg, png, etc)

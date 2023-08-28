@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.projectdemo.customer.bean.CustomerBean;
-import com.projectdemo.order.bean.DeliverDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
 import com.projectdemo.shop.bean.ShopBean;
 
@@ -22,6 +21,14 @@ public interface OrderListRepository extends JpaRepository<OrderListBean, Intege
 	// 用店家ID找
 	@Query(value = "select * from order_list where fk_shop_id =:n", nativeQuery = true)
 	Page<OrderListBean> findByShopId(@Param("n") Integer shopId, Pageable page);
+	
+	/**
+	 * MEEEEEEE
+	 * @param id
+	 * @return
+	 */
+	@Query(value = "select * from order_list where fk_shop_id=:id and (shop_status='未接單' or shop_status='已接單')", nativeQuery = true)
+	List<OrderListBean> findByShopIdActiveOrders(@Param("id") Integer id);
 
 //	@Query(value = "select * from order_list", nativeQuery = true)
 //	List<OrderListBean> testAll();
