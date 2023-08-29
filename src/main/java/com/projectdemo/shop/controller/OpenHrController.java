@@ -25,9 +25,16 @@ public class OpenHrController {
 	@Autowired
 	private OpenHrService openHrService;
 	
+	/**
+	 * CREATE
+	 * 
+	 * @param bean
+	 * @return
+	 */
 	@PostMapping("/add")
 	public String addCategory(@RequestBody OpenHrBean bean) {
 		JSONObject json = new JSONObject();
+		//maybe put check to see if already exists		
 		OpenHrBean add = openHrService.add(bean);
 		if (add != null) {
 			json.put("success", true);
@@ -37,6 +44,12 @@ public class OpenHrController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND BY ID
+	 * 
+	 * @param id OpenHr ID
+	 * @return
+	 */
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -73,6 +86,13 @@ public class OpenHrController {
 		return json.toString();
 	}
 	
+	/**
+	 * UPDATE
+	 * 
+	 * @param id OpenHr ID
+	 * @param bean
+	 * @return
+	 */
 	@PutMapping("/{id}")
 	public String update(@PathVariable Integer id, @RequestBody OpenHrBean bean) {
 		JSONObject json = new JSONObject();
@@ -86,6 +106,12 @@ public class OpenHrController {
 		return json.toString();
 	}
 	
+	/**
+	 * DELETE
+	 * 
+	 * @param id OpenHr ID
+	 * @return
+	 */
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -100,6 +126,12 @@ public class OpenHrController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND OpenHr BY SHOP ID
+	 * 
+	 * @param id Shop ID
+	 * @return
+	 */
 	@GetMapping("/findByShop/{id}")
 	public String findByShop(@PathVariable("id") Integer id) {
 		JSONObject json = new JSONObject();

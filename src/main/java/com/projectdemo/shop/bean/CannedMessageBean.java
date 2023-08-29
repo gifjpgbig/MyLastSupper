@@ -32,14 +32,32 @@ public class CannedMessageBean {
 	@Column(name = "message_udate", columnDefinition = "datetime")
 	private LocalDateTime messageUDate;
 
-	@Column(name = "money_range", columnDefinition = "int")
-	private Integer moneyRange;
+//	@Column(name = "money_range", columnDefinition = "nvarchar(max)")
+//	private String moneyRange;
+	
+	@Column(name = "money_start", columnDefinition = "int")
+	private Integer moneyStart;
+	
+	@Column(name = "money_end", columnDefinition = "int")
+	private Integer moneyEnd;
 
-	@Column(name = "score_range", columnDefinition = "int")
-	private Integer scoreRange;
+//	@Column(name = "score_range", columnDefinition = "nvarchar(max)")
+//	private String scoreRange;
+	
+	@Column(name = "score_start", columnDefinition = "int")
+	private Integer scoreStart;
+	
+	@Column(name = "score_end", columnDefinition = "int")
+	private Integer scoreEnd;
 
-	@Column(name = "message_send_time", columnDefinition = "time")
-	private LocalTime messageSendTime;
+//	@Column(name = "message_send_time", columnDefinition = "nvarchar(max)")
+//	private String messageSendTime;
+	
+	@Column(name = "time_start", columnDefinition = "time")
+	private LocalTime timeStart;
+	
+	@Column(name = "time_end", columnDefinition = "time")
+	private LocalTime timeEnd;
 
 	@Column(name = "message_text", columnDefinition = "nvarchar(max)")
 	private String messageText;
@@ -83,28 +101,52 @@ public class CannedMessageBean {
 		this.messageUDate = messageUDate;
 	}
 
-	public Integer getMoneyRange() {
-		return moneyRange;
+	public Integer getMoneyStart() {
+		return moneyStart;
 	}
 
-	public void setMoneyRange(Integer moneyRange) {
-		this.moneyRange = moneyRange;
+	public void setMoneyStart(Integer moneyStart) {
+		this.moneyStart = moneyStart;
 	}
 
-	public Integer getScoreRange() {
-		return scoreRange;
+	public Integer getMoneyEnd() {
+		return moneyEnd;
 	}
 
-	public void setScoreRange(Integer scoreRange) {
-		this.scoreRange = scoreRange;
+	public void setMoneyEnd(Integer moneyEnd) {
+		this.moneyEnd = moneyEnd;
 	}
 
-	public LocalTime getMessageSendTime() {
-		return messageSendTime;
+	public Integer getScoreStart() {
+		return scoreStart;
 	}
 
-	public void setMessageSendTime(LocalTime messageSendTime) {
-		this.messageSendTime = messageSendTime;
+	public void setScoreStart(Integer scoreStart) {
+		this.scoreStart = scoreStart;
+	}
+
+	public Integer getScoreEnd() {
+		return scoreEnd;
+	}
+
+	public void setScoreEnd(Integer scoreEnd) {
+		this.scoreEnd = scoreEnd;
+	}
+
+	public LocalTime getTimeStart() {
+		return timeStart;
+	}
+
+	public void setTimeStart(LocalTime timeStart) {
+		this.timeStart = timeStart;
+	}
+
+	public LocalTime getTimeEnd() {
+		return timeEnd;
+	}
+
+	public void setTimeEnd(LocalTime timeEnd) {
+		this.timeEnd = timeEnd;
 	}
 
 	public String getMessageText() {
@@ -114,5 +156,4 @@ public class CannedMessageBean {
 	public void setMessageText(String messageText) {
 		this.messageText = messageText;
 	}
-
 }

@@ -27,6 +27,12 @@ public class ShopCategoryController {
 	@Autowired
 	private ShopCategoryService shopCategoryService;
 	
+	/**
+	 * CREATE
+	 * 
+	 * @param bean
+	 * @return
+	 */
 	@PostMapping("/add")
 	public String addCategory(@RequestBody ShopCategoryBean bean) {
 		JSONObject json = new JSONObject();
@@ -39,6 +45,12 @@ public class ShopCategoryController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND BY ShopCategory ID
+	 * 
+	 * @param id ShopCategory ID
+	 * @return ShopCategory, Shop ID & name
+	 */
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -60,6 +72,12 @@ public class ShopCategoryController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND ALL ShopCategory BY SHOP ID
+	 * 
+	 * @param id Shop ID
+	 * @return ShopCategory array
+	 */
 	@GetMapping("/all/{id}")
 	public String findAllByShop(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -72,13 +90,22 @@ public class ShopCategoryController {
 						.put("name", bean.getName());
 				array.put(item);
 			}
+			json.put("success", true);
 			json.put("list", array);
 		} else {
+			json.put("success", false);
 			json.put("message", "invalid id");
 		}
 		return json.toString();
 	}
 	
+	/**
+	 * UPDATE
+	 * 
+	 * @param id ShopCategory ID
+	 * @param bean
+	 * @return
+	 */
 	@PutMapping("/{id}")
 	public String update(@PathVariable Integer id, @RequestBody ShopCategoryBean bean) {
 		JSONObject json = new JSONObject();
@@ -92,6 +119,12 @@ public class ShopCategoryController {
 		return json.toString();
 	}
 	
+	/**
+	 * DELETE
+	 * 
+	 * @param id ShopCategory ID
+	 * @return
+	 */
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();

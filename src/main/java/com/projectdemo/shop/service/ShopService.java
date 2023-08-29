@@ -7,7 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
+import com.projectdemo.shop.bean.OpenHrBean;
 import com.projectdemo.shop.bean.ShopBean;
+import com.projectdemo.shop.bean.ShopCategoryBean;
+import com.projectdemo.shop.dao.OpenHrRepository;
+import com.projectdemo.shop.dao.ShopCategoryRepository;
 import com.projectdemo.shop.dao.ShopRepository;
 
 @Configuration
@@ -16,25 +20,31 @@ public class ShopService {
 	@Autowired
 	private ShopRepository shopRepository;
 	
+	@Autowired
+	private ShopCategoryRepository shopCategoryRepository;
+	
+	@Autowired
+	private OpenHrRepository openHrRepository;
+
 	public ShopBean addShop(ShopBean shopBean) {
 		return shopRepository.save(shopBean);
 	}
-	
+
 	public List<ShopBean> findAll() {
 		return shopRepository.findAll();
 	}
-	
+
 	public ShopBean findById(Integer id) {
 		Optional<ShopBean> optional = shopRepository.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			return optional.get();
 		}
 		return null;
 	}
-	
+
 	public ShopBean update(Integer id, ShopBean shopBean) {
 		Optional<ShopBean> optional = shopRepository.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			ShopBean oldShop = optional.get();
 			oldShop.setName(shopBean.getName());
 			oldShop.setAccount(shopBean.getAccount());
@@ -46,16 +56,16 @@ public class ShopService {
 			oldShop.setAddress(shopBean.getAddress());
 			oldShop.setLatitude(shopBean.getLatitude());
 			oldShop.setLongitude(shopBean.getLongitude());
-			oldShop.setReview(shopBean.getReview());			
+			oldShop.setReview(shopBean.getReview());
 			oldShop.setBank(shopBean.getBank());
 			oldShop.setOpenStatus(shopBean.isOpenStatus());
 			oldShop.setUdate(LocalDateTime.now());
-			
+
 			return shopRepository.save(oldShop);
 		}
 		return null;
 	}
-	
+
 	public boolean delete(Integer id) {
 		try {
 			shopRepository.deleteById(id);
@@ -64,5 +74,61 @@ public class ShopService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public ShopBean findByName(String name) {
+		ShopBean bean = shopRepository.findByName(name);
+		if (bean != null) {
+			return bean;
+		}
+		return null;
+	}
+
+	public List<ShopBean> findFuzzy(String name) {
+		List<ShopBean> list = shopRepository.findFuzzy(name);
+		if (!list.isEmpty()) {
+			return list;
+		}
+		return null;
+	}
+	
+	public Integer loginValidate(String username, String password) {
+		ShopBean shopBean = shopRepository.findByAccount(username);
+		if(shopBean != null) {
+			if(password.equals(shopBean.getPassword())) {
+				return shopBean.getId();
+			}
+		}
+		return -1;
+	}
+	
+	public List<ShopBean> batchInsert(List<ShopBean> list) {
+		try {
+			List<ShopBean> beans = shopRepository.saveAll(list);
+			return beans;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<ShopCategoryBean> catBatchInsert(List<ShopCategoryBean> list) {
+		try {
+			List<ShopCategoryBean> beans = shopCategoryRepository.saveAll(list);
+			return beans;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<OpenHrBean> openHrBatchInsert(List<OpenHrBean> list) {
+		try {
+			List<OpenHrBean> beans = openHrRepository.saveAll(list);
+			return beans;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
