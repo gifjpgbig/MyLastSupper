@@ -1,5 +1,6 @@
 <template>
   <h2>Home Page</h2>
+  <button @click="showToast">Show toast</button>
   <button @click="getFirebaseToken()">firebase test</button>
   <header class="bg-primary text-white py-3">
     <div class="container">
@@ -21,7 +22,6 @@
       <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
         <!-- Sidebar content here -->
       </nav>
-
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <!-- Main content here -->
       </main>
@@ -63,30 +63,29 @@ const test = async (tokenin) => {
 };
 
 const messaging = getMessaging();
-function getFirebaseToken(){
-getToken(messaging,
-{
-  vapidKey:
-    "BFQJjpHmsHR3WRRwG9ea5Xawvt8p5JwAF-JgAPDGU0Elj7UX_kjSg8rHHQhfL9OTpiIgR_YSdNl9R425RkjV8JY",
-})
-  .then((currentToken) => {
-    if (currentToken) {
-      // Send the token to your server and update the UI if necessary
-      console.log("Token is:", currentToken);
-      test(currentToken);
-      // ...
-    } else {
-      // Show permission request UI
-      console.log(
-        "No registration token available. Request permission to generate one."
-      );
-      // ...
-    }
+function getFirebaseToken() {
+  getToken(messaging, {
+    vapidKey:
+      "BFQJjpHmsHR3WRRwG9ea5Xawvt8p5JwAF-JgAPDGU0Elj7UX_kjSg8rHHQhfL9OTpiIgR_YSdNl9R425RkjV8JY",
   })
-  .catch((err) => {
-    console.log("An error occurred while retrieving token. ", err);
-    // ...
-  });
+    .then((currentToken) => {
+      if (currentToken) {
+        // Send the token to your server and update the UI if necessary
+        console.log("Token is:", currentToken);
+        test(currentToken);
+        // ...
+      } else {
+        // Show permission request UI
+        console.log(
+          "No registration token available. Request permission to generate one."
+        );
+        // ...
+      }
+    })
+    .catch((err) => {
+      console.log("An error occurred while retrieving token. ", err);
+      // ...
+    });
 }
 </script>
 
