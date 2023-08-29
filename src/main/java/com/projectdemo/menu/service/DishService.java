@@ -90,7 +90,7 @@ public class DishService {
 		return null;
 	}
 	
-	public DishBean updatePicture(Integer id , byte[] photo) {
+	public DishBean updatePicture(Integer id , String photo) {
 		Optional<DishBean> optional = dishRepository.findById(id);
 		if (optional.isPresent()) {
 			DishBean oldDish = optional.get();
