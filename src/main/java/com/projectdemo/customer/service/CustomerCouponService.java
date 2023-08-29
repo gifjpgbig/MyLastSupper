@@ -7,14 +7,14 @@ import com.projectdemo.customer.bean.CouponBean;
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.bean.CustomerCouponBean;
 import com.projectdemo.customer.repository.CouponRepository;
+import com.projectdemo.customer.repository.CustomerCouponRepository;
 import com.projectdemo.customer.repository.CustomerRepository;
-import com.projectdemo.customer.repository.CustomercouponRepository;
 
 @Service
 public class CustomerCouponService {
 	
 	@Autowired
-	private CustomercouponRepository customerCouponRepository;
+	private CustomerCouponRepository customerCouponRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
 	@Autowired
