@@ -58,30 +58,7 @@ public class DeliverDetailController {
 		}
 		responseJson.put("list", array);
 		return responseJson.toString();
-//		{
-//		    "list": [
-//		        {
-//		            "order": [
-//		                "萬華產業園區幸福路一段update成功!",
-//		                null,
-//		                null,
-//		                null,
-//		                "酷狗路熊空街我沒K",
-//		                "酷狗餐廳"
-//		            ]
-//		        },
-//		        {
-//		            "order": [
-//		                "萬華產業園區test",
-//		                null,
-//		                null,
-//		                null,
-//		                "酷狗路熊空街我沒K",
-//		                "酷狗餐廳"
-//		            ]
-//		        },
-//		        ]
-//		}
+
 	}
 	
 	

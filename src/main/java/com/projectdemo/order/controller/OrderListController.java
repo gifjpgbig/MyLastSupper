@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -118,9 +119,97 @@ public class OrderListController {
 
 	// 用店家id去搜尋，暫時沒用到
 	@PostMapping("/order/findByShopId/{id}")
-	public List<OrderListBean> findByShopId(@PathVariable Integer id) {
-		return olService.findOrderByShopId(id);
+	public String findByShopId(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		List<OrderListBean> orders = olService.findOrderByShopId(id);
+		JSONArray array = new JSONArray();
+		if(orders != null && ! orders.isEmpty()) {
+			for(OrderListBean order : orders) {
+				CustomerBean customer = order.getCustomer();
+				JSONObject item = new JSONObject()
+						.put("id", order.getId()).put("address", order.getAddress()).put("cus_status", order.getCusStatus())
+						.put("shop_status", order.getShopStatus()).put("deliverStatus", order.getDeliverStatus())
+						.put("customerID", customer.getCustomerID()).put("custName", customer.getName())
+						.put("total_price", order.getTotalPrice()).put("deliveryFee", order.getDeliveryFee());
+				array = array.put(item);
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
 	}
+	
+	/**
+	 * MEEEEEEEEE
+	 * @param id
+	 * @return
+	 */
+	@PostMapping("/order/findByShopIdActiveOrders/{id}")
+	public String findByShopIdActiveOrders(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		List<OrderListBean> orders = olService.findActiveOrderByShopId(id);
+		JSONArray array = new JSONArray();
+		if(orders != null && ! orders.isEmpty()) {
+			for(OrderListBean order : orders) {
+				CustomerBean customer = order.getCustomer();
+				JSONObject item = new JSONObject()
+						.put("id", order.getId())
+						.put("cus_status", order.getCusStatus())
+						.put("shop_status", order.getShopStatus())
+						.put("deliverStatus", order.getDeliverStatus())
+						.put("customerID", customer.getCustomerID())
+						.put("custName", customer.getName())
+						.put("total_price", order.getTotalPrice())
+						.put("deliveryFee", order.getDeliveryFee())
+						.put("orderTime", order.getOrderTime());
+				array = array.put(item);
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
+	}
+	
+	@PostMapping("/order/findByShopIdCompleteOrders/{id}")
+	public String findByShopIdCompleteOrders(@PathVariable Integer id) {
+		JSONObject responseJson = new JSONObject();
+		List<OrderListBean> orders = olService.findCompleteOrderByShopId(id);
+		JSONArray array = new JSONArray();
+		if(orders != null && ! orders.isEmpty()) {
+			for(OrderListBean order : orders) {
+				CustomerBean customer = order.getCustomer();
+				JSONObject item = new JSONObject()
+						.put("id", order.getId())
+						.put("customerID", customer.getCustomerID())
+						.put("custName", customer.getName())
+						.put("total_price", order.getTotalPrice())
+						.put("orderTime", order.getOrderTime())
+						.put("shopReview", order.getShopReview())
+						.put("shopComments", order.getShopComments())
+						.put("dishComments", order.getDishComments())
+						.put("shopFeedbackReply", order.getShopFeedbackReply());
+				array = array.put(item);
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
+	}
+	
+	@PutMapping("/order/shopfeedback/{id}")
+	public String shopFeedback(@PathVariable Integer id, @RequestBody OrderListBean orderListBean) {
+		JSONObject json = new JSONObject();
+		OrderListBean bean = olService.updateShopFeedback(id, orderListBean.getShopFeedbackReply());
+		if(bean != null) {
+			json.put("success", true);
+		}
+		else {
+			json.put("success", false);
+		}
+		return json.toString();
+	}
+	
+//	@PostMapping("/order/findByShopId/{id}")
+//	public List<OrderListBean> findByShopId(@PathVariable Integer id) {
+//		return olService.findOrderByShopId(id);
+//	}
 
 	// 寫在add.vue的測試新增訂單，目前有bug尚未解決
 	// 操作方法是在vue project裡面寫一個model: order.js

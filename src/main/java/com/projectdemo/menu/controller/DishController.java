@@ -62,7 +62,7 @@ public class DishController {
 
 				for (DishBean dish : dishList) {
 					// 將每個 DishBean 轉換成 JSONObject，放進 JSONArray 中
-					byte[] photo = dish.getPicture();
+					
 					JSONObject dishJson = new JSONObject()
 							.put("id", dish.getId())
 							.put("name", dish.getName())
@@ -76,13 +76,9 @@ public class DishController {
 							.put("dislikes", dish.getDislikes())
 							.put("likerate", dish.getLikerate())
 							.put("soldOut", dish.isSoldOut())
-							.put("fk_menu_id", dish.getMenu().getId());
-					if (photo != null && photo.length > 0) {
-						String base64Photo = Base64.getEncoder().encodeToString(photo);
-						dishJson.put("picture", base64Photo);
-					} else {
-						dishJson.put("picture", "");
-					}
+							.put("fk_menu_id", dish.getMenu().getId())
+							.put("picture", dish.getPicture());
+					
 					array.put(dishJson);
 				}
 			}
@@ -104,7 +100,7 @@ public class DishController {
 		if (dish != null) {
 			MenuBean menu = dish.getMenu();
 			MenuBean menuById = menuService.getMenuById(menu.getId());
-			byte[] photo = dish.getPicture();
+			
 			JSONObject item = new JSONObject()
 					.put("id", dish.getId())
 					.put("name", dish.getName())
@@ -120,13 +116,10 @@ public class DishController {
 					.put("soldOut", dish.isSoldOut())
 					.put("fk_menu_id", menu.getId())
 					.put("dietaryRestrictions", dish.getDietaryRestrictions())
-					.put("shopid", menuById.getShop().getId());
-			if (photo != null && photo.length > 0) {
-				String base64Photo = Base64.getEncoder().encodeToString(photo);
-				item.put("picture", base64Photo);
-			} else {
-				item.put("picture", "");
-			}
+					.put("shopid", menuById.getShop().getId())
+					.put("picture", dish.getPicture())
+					.put("menuName", menu.getName());
+			
 
 			// 取得該餐點內的選項
 			List<MenuCustomizationBean> menuCustomizations = menuCustomizationService
@@ -172,10 +165,9 @@ public class DishController {
 	}
 
 	@PutMapping("/updatePicture/{id}")
-	public String updateDishPicture(@RequestParam("photoFile") MultipartFile photoFile , @PathVariable Integer id) throws IOException {
-	    if (photoFile != null) {
-	        byte[] bytes = photoFile.getBytes();
-	        DishBean update = dishService.updatePicture(id, bytes);
+	public String updateDishPicture(@RequestParam("photoName") String photoName , @PathVariable Integer id) throws IOException {
+	    if (photoName != null) {
+	        DishBean update = dishService.updatePicture(id, photoName);
 	        JSONObject json = new JSONObject();
 	        if (update != null) {
 	            json.put("result", true);

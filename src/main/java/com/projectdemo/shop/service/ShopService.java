@@ -7,7 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
+import com.projectdemo.shop.bean.OpenHrBean;
 import com.projectdemo.shop.bean.ShopBean;
+import com.projectdemo.shop.bean.ShopCategoryBean;
+import com.projectdemo.shop.dao.OpenHrRepository;
+import com.projectdemo.shop.dao.ShopCategoryRepository;
 import com.projectdemo.shop.dao.ShopRepository;
 
 @Configuration
@@ -15,6 +19,12 @@ public class ShopService {
 
 	@Autowired
 	private ShopRepository shopRepository;
+	
+	@Autowired
+	private ShopCategoryRepository shopCategoryRepository;
+	
+	@Autowired
+	private OpenHrRepository openHrRepository;
 
 	public ShopBean addShop(ShopBean shopBean) {
 		return shopRepository.save(shopBean);
@@ -82,13 +92,43 @@ public class ShopService {
 		return null;
 	}
 	
-	public boolean loginValidate(String username, String password) {
+	public Integer loginValidate(String username, String password) {
 		ShopBean shopBean = shopRepository.findByAccount(username);
 		if(shopBean != null) {
 			if(password.equals(shopBean.getPassword())) {
-				return true;
+				return shopBean.getId();
 			}
 		}
-		return false;
+		return -1;
+	}
+	
+	public List<ShopBean> batchInsert(List<ShopBean> list) {
+		try {
+			List<ShopBean> beans = shopRepository.saveAll(list);
+			return beans;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<ShopCategoryBean> catBatchInsert(List<ShopCategoryBean> list) {
+		try {
+			List<ShopCategoryBean> beans = shopCategoryRepository.saveAll(list);
+			return beans;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<OpenHrBean> openHrBatchInsert(List<OpenHrBean> list) {
+		try {
+			List<OpenHrBean> beans = openHrRepository.saveAll(list);
+			return beans;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -61,6 +61,7 @@ public class OrderDetailController {
 						.put("amount", order.getAmount())
 						.put("customization", order.getCustomization())
 						.put("dishID", dishID)
+						.put("dishName", order.getDish().getName())
 						.put("detailID", detailID)
 						.put("total_price", order.getTotalPrice());
 				array = array.put(item);

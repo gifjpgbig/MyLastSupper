@@ -27,6 +27,12 @@ public class HolidayController {
 	@Autowired
 	private HolidayService holidayService;
 	
+	/**
+	 * CREATE
+	 * 
+	 * @param bean HolidayBean
+	 * @return json success
+	 */
 	@PostMapping("/add")
 	public String addHoliday(@RequestBody HolidayBean bean) {
 		JSONObject json = new JSONObject();
@@ -39,6 +45,12 @@ public class HolidayController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND BY ID
+	 * 
+	 * @param id Holiday ID
+	 * @return Holiday, Shop ID & name
+	 */
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -63,6 +75,12 @@ public class HolidayController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND ALL BY SHOP ID
+	 * 
+	 * @param id Shop ID
+	 * @return Holiday array
+	 */
 	@GetMapping("/all/{id}")
 	public String findAllByShop(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -85,6 +103,13 @@ public class HolidayController {
 		return json.toString();
 	}
 	
+	/**
+	 * UPDATE
+	 * 
+	 * @param id Holiday ID
+	 * @param bean HolidayBean
+	 * @return json success
+	 */
 	@PutMapping("/{id}")
 	public String update(@PathVariable Integer id, @RequestBody HolidayBean bean) {
 		JSONObject json = new JSONObject();
@@ -98,6 +123,12 @@ public class HolidayController {
 		return json.toString();
 	}
 	
+	/**
+	 * DELETE 
+	 * 
+	 * @param id Holiday ID
+	 * @return json success
+	 */
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -112,6 +143,13 @@ public class HolidayController {
 		return json.toString();
 	}
 	
+	/**
+	 * FIND ALL ACTIVE HOLIDAYS BY SHOP ID, ORDERED BY DATE
+	 * active meaning for future holidays, not dates that have already passed
+	 * 
+	 * @param id Shop ID
+	 * @return Holiday array
+	 */
 	@GetMapping("/active/{id}")
 	public String findActiveHolidays(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
