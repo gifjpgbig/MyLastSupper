@@ -44,8 +44,11 @@
 </body>
 </template>
 
-<script setup lang="ts">
-    const showNavbar = true; // 设置为 false，即不显示导航栏
+<script setup>
+  
+
+
+
 
 </script>
 

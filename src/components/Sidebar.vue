@@ -90,9 +90,9 @@
                 </ul>
               </li>
               <li>
-                <a class="nav-link px-0 align-middle" href="#"
-                  ><i class="fa fa-users fs-4 bi-people"></i
-                  ><span class="ms-1 d-none d-sm-inline">即時訊息</span></a
+                <RouterLink class="nav-link align-middle px-0" to="/chat">
+                  <i class="fa fa-table fs-4 bi-people"></i>
+                  <span class="d-none d-sm-inline">即時訊息</span></RouterLink
                 >
               </li>
 

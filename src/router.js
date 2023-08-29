@@ -8,13 +8,14 @@ import Edit from './views/Edit.vue';
 import Deliver from './views/deliver.vue'
 import Login from './views/login.vue'
 import Toast from './views/Toast.vue';
+import Chat from './views/Chat.vue';
 
 const routes = [
     {
         //http://localhost/
         path: '/',
-        component: Home
-        , meta: { showNavbar: true }
+        component: Login
+        , meta: { showNavbar: false }
 
     },
     {
@@ -58,6 +59,13 @@ const routes = [
         //http://localhost/login
         path: '/toast',
         component: Toast,
+        meta: { showNavbar: true } // 显示导航栏
+
+    },
+    {
+        //http://localhost/chat
+        path: '/chat',
+        component: Chat,
         meta: { showNavbar: true } // 显示导航栏
 
     },

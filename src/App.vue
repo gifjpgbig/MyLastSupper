@@ -6,6 +6,7 @@ import "jquery/dist/jquery.js";
 import Navbar from "./components/Navbar.vue";
 import Sidebar from "./components/Sidebar.vue";
 import MainContent from "./components/MainContent.vue";
+import MainNoNav from "./components/MainNoNav.vue";
 
 import { initializeApp } from "firebase/app";
   // Config in home 
@@ -41,11 +42,13 @@ const app = initializeApp(firebaseConfig);
 
 <template>
 
-  <Navbar></Navbar>
-  <MainContent></MainContent>
+  <Navbar v-if="$route.meta.showNavbar"></Navbar>
+  <MainContent v-if="$route.meta.showNavbar"></MainContent>
   <!-- <router-view></router-view> -->
-  <Sidebar></Sidebar>
+  <Sidebar v-if="$route.meta.showNavbar"></Sidebar>
+  <MainNoNav v-if="!$route.meta.showNavbar"></MainNoNav>
   <!-- <div class="d-flex">
+
   
     
   </div> -->
