@@ -15,38 +15,50 @@ const routes = [
         //http://localhost/
         path: '/',
         component: Login
-        , meta: { showNavbar: false }
+        , meta: { showNavbar: false, requireAuth: false }
 
     },
     {
         //http://localhost/about
         path: '/about',
-        component: About, meta: { showNavbar: true }
+        component: About,
+        name: 'about',
+         meta: { showNavbar: true, requireAuth: true }
     },
     {
         //http://localhost/contact
         path: '/contact',
-        component: Contact, meta: { showNavbar: true }
+        component: Contact, 
+        meta: { showNavbar: true, requireAuth: true }
+
     },
     {
         //http://localhost/orders
         path: '/orders',
-        component: Orders, meta: { showNavbar: true }
+        component: Orders,
+        meta: { showNavbar: true, requireAuth: true }
+
     },
     {
         //http://localhost/orders/add
         path: '/orders/add',
-        component: Add, meta: { showNavbar: true }
+        component: Add, 
+        meta: { showNavbar: true, requireAuth: true }
+
     },
     {
         //http://localhost/orders/edit/1
         path: '/orders/edit/:id',
-        component: Edit, meta: { showNavbar: true }
+        component: Edit, 
+        meta: { showNavbar: true, requireAuth: true }
+
     },
     {
         //http://localhost/deliver
         path: '/deliver',
-        component: Deliver, meta: { showNavbar: true }
+        component: Deliver, 
+        meta: { showNavbar: true, requireAuth: true }
+
     },
     {
         //http://localhost/login
@@ -59,14 +71,15 @@ const routes = [
         //http://localhost/login
         path: '/toast',
         component: Toast,
-        meta: { showNavbar: true } // 显示导航栏
+        meta: { showNavbar: true, requireAuth: true }
+
 
     },
     {
         //http://localhost/chat
         path: '/chat',
         component: Chat,
-        meta: { showNavbar: true } // 显示导航栏
+        meta: { showNavbar: true,  requireAuth: true } // 显示导航栏
 
     },
 ]
