@@ -2,6 +2,7 @@ package com.projectdemo.customer.bean;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projectdemo.menu.bean.DishBean;
 import com.projectdemo.shop.bean.ShopBean;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -28,14 +30,17 @@ public class ShoppingCartBean {
 	private Integer id;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "fk_customer_id",referencedColumnName = "id", columnDefinition = "int")
 	private CustomerBean customer;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "fk_dish_id",referencedColumnName = "id",columnDefinition = "int")
 	private DishBean dish;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "fk_shop_id",referencedColumnName = "id",columnDefinition = "int")
 	private ShopBean shop;
 
@@ -75,6 +80,11 @@ public class ShoppingCartBean {
 		if (createDate == null) {
 			createDate = LocalDateTime.now();
 		}
+	}
+	
+	@PreUpdate
+	public void onUpdate() {
+		updateDate = LocalDateTime.now();
 	}
 
 	public Integer getId() {

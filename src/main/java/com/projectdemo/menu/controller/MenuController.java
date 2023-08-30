@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,7 +89,59 @@ public class MenuController {
     } 
 //    列印出全部資料
     return responseJson.toString();
-}
+	}	
+	
+	
+	
+	//使用PathVariable shopID找出全部的dish
+	@GetMapping("/findMenuByShopIDToShoppingCart/{shopID}")
+	public String findMenuByShopIDToShoppingCart(@PathVariable("shopID")Integer shopID) {
+		JSONObject responseJson = new JSONObject();
+	    JSONArray dishArray = new JSONArray();
+	    JSONArray menuArray = new JSONArray();
+	    
+	    List<MenuBean> menuList = menuService.findMenuByShopId(shopID);
+	    List<Integer> menuIDList = new ArrayList<>();
+	    for(MenuBean menu:menuList) {
+	    	menuIDList.add(menu.getId());
+	    	JSONObject menuJson = new JSONObject()
+	    			.put("id", menu.getId())
+	    			.put("name", menu.getName());
+	    	menuArray.put(menuJson);
+	    }
+	    responseJson.put("menus",menuArray);
+	    
+	    for(int i = 0;i<menuIDList.size();i++) {
+	    	List<DishBean> dishList = dishService.findDishByMenuId(menuIDList.get(i));
+	    	for (DishBean dish : dishList) {
+            	byte[] photo = dish.getPicture();
+                JSONObject dishJson = new JSONObject()
+                        .put("id", dish.getId())
+                        .put("name", dish.getName())
+                        .put("description", dish.getDescription())
+                        .put("price", dish.getPrice())
+                        .put("extraInfo", dish.getExtraInfo())
+                        .put("review", dish.getReview())
+                        .put("createDate", dish.getCreateDate())
+                        .put("updateDate", dish.getUpdateDate())
+                        .put("likes", dish.getLikes())
+                        .put("dislikes", dish.getDislikes())
+                        .put("likerate", dish.getLikerate())
+                        .put("soldOut", dish.isSoldOut())
+                        .put("fk_menu_id", menuIDList.get(i));
+                if (photo != null && photo.length > 0) {
+    				String base64Photo = Base64.getEncoder().encodeToString(photo);
+    				dishJson.put("picture", base64Photo);
+    			} else {
+    				dishJson.put("picture", "");
+    			}
+                dishArray.put(dishJson);           
+	    }
+	    responseJson.put("dishes", dishArray);
+    } 
+//    列印出全部資料
+    return responseJson.toString();
+	}
 //	    將menu資料透過for迴圈放進去menuJson裡面
 //	    if (menuList != null && !menuList.isEmpty()) {
 //	        for (MenuBean menu : menuList) {

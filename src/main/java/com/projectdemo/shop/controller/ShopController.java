@@ -50,6 +50,7 @@ import com.projectdemo.shop.service.ShopService;
 @CrossOrigin()
 public class ShopController {
 
+
 	@Autowired
 	private ShopService shopService;
 
@@ -193,6 +194,7 @@ public class ShopController {
 	 * @param id Shop ID
 	 * @return ShopDTO, json success
 	 */
+	//查詢單筆商店
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -248,6 +250,14 @@ public class ShopController {
 			String base64Image = Base64.getEncoder().encodeToString(photo);
 			dto.setPhoto(base64Image);
 		}
+	
+		
+		
+		//openhr null exception
+		if(bean.getOpenhrBean() != null) {
+			dto.setOpenhrId(bean.getOpenhrBean().getId());
+		}
+		
 		
 		// Prep Time
 		List<PrepTimeBean> prepTime = bean.getPrepTime();

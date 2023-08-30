@@ -1,5 +1,6 @@
 package com.projectdemo.customer.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,21 @@ public class AddressService {
 		return "送出地址成功";
 	}
 	
-	public AddressBean AddressRead(Integer id) {
-		return addressRepository.findById(id).get();
+	public List<AddressBean> findAddressByCusID(Integer cid) {
+		return addressRepository.findAddressByCusID(cid);
 	}
 	
 	public AddressBean addressFindByID(Integer id) {
 		return addressRepository.findAddressByID(id);
+	}
+	
+	public void addressUpdate(AddressBean addressBean) {
+		Integer id = addressBean.getId();
+		String building = addressBean.getBuilding();
+		String deliveryInstructions = addressBean.getDeliveryInstructions();
+		String deliveryOption = addressBean.getDeliveryOption();
+		String floorNo = addressBean.getFloorNo();
+		String location = addressBean.getLocation();
+		addressRepository.addressUpdate(id, building, deliveryInstructions, deliveryOption, floorNo, location);
 	}
 }

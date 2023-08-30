@@ -16,6 +16,8 @@ public interface InviteCodeRepository extends JpaRepository<UserInviteCodeBean, 
 	@Query("SELECT u FROM UserInviteCodeBean u JOIN FETCH u.customer c WHERE u.id = :id")
 	UserInviteCodeBean findInviteCodeByID(@Param("id")Integer id);
 	
+	@Query(value = "SELECT * FROM user_invite_code WHERE fk_customer_id = :cid",nativeQuery = true)
+	UserInviteCodeBean findInviteCodeByCusID(@Param("cid") Integer cid);
 	
 	//CRUD -UPDATE
 	@Transactional
