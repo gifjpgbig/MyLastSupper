@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.opencsv.CSVReader;
+//import com.opencsv.CSVReader;
 import com.projectdemo.customer.bean.FavoritesBean;
 import com.projectdemo.customer.bean.ShoppingCartBean;
 import com.projectdemo.manage.bean.ShopHistoryMessageBean;
@@ -511,12 +511,12 @@ public class ShopController {
 	 * @return List<String[]>
 	 */
 	public List<String[]> readAllLines(Path filePath) {
-		try(Reader reader = Files.newBufferedReader(filePath);
-			CSVReader csvReader = new CSVReader(reader);) {
-			return csvReader.readAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try(Reader reader = Files.newBufferedReader(filePath);
+//			CSVReader csvReader = new CSVReader(reader);) {
+//			return csvReader.readAll();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		return null;
 	}
 	
