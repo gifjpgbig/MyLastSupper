@@ -1,5 +1,6 @@
 package com.projectdemo.shop.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -9,6 +10,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,9 @@ import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +57,9 @@ public class ShopController {
 
 	@Autowired
 	private ShopService shopService;
+	
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	/**
 	 * CREATE (NO PHOTO)
@@ -445,6 +453,22 @@ public class ShopController {
 		return json.toString();
 	}
 	
+	@GetMapping("/pagination")
+	public String findAllPagination(@RequestBody String json) {
+		JSONObject responseJson = new JSONObject();
+		JSONArray array = new JSONArray();
+		
+		Page<ShopBean> shops = shopService.findAllPage(json);
+		if(shops != null && ! shops.isEmpty()) {
+			for(ShopBean shop : shops) {
+				ShopDTO shopDTO = convertToShopDTO(shop);
+				array = array.put(new JSONObject(shopDTO));
+			}
+		}
+		responseJson.put("list", array);
+		return responseJson.toString();
+	}
+	
 	/**
 	 * Reads CSV file, uploads data to database
 	 * Currently includes, Shop, ShopCategory, OpenHr
@@ -460,11 +484,32 @@ public class ShopController {
 		JSONObject json = new JSONObject();
 		
 		// Get csv file, read into List
-		Path filePath = Paths.get("C:/temp/testcsv2.csv");
+		Path filePath = Paths.get("C:/temp/dbshop.csv");
 		List<String[]> list = readAllLines(filePath);
 		
+		// Get image folder, read into List
+		Path folderPath = Paths.get("C:/temp/dbimages");
+		File folder = folderPath.toFile();
+		//json.put("folder", folder.isDirectory());
+		List<byte[]> images = new ArrayList<byte[]>();
+		
+		
+		File[] files = folder.listFiles();
+		// File names are default sorted lexicographically, sort them numerically
+		Arrays.sort(files, Comparator.comparingInt(file -> Integer.parseInt(file.getName().split("\\.")[0])));
+		for(File file : files) {
+			String name = file.getName();
+			Resource resource = resourceLoader.getResource("file:" + folderPath + "/" + name);
+			try {
+				byte[] image = Files.readAllBytes(resource.getFile().toPath());
+				images.add(image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		// Get shop info and batch insert, return created shops
-		List<ShopBean> shops = saveAll(list);
+		List<ShopBean> shops = saveAll(list, images);
 		if(shops != null) {
 			json.put("add shops success", true);
 		}
@@ -487,10 +532,10 @@ public class ShopController {
 			json.put("add openHrs success", true);
 		}
 		
-//		json.put("fileName", filePath.getFileName());
-//		json.put("parent", filePath.getParent());
-//		json.put("root", filePath.getRoot());
-		json.put("complete", true);
+		//json.put("fileName", folderPath.getFileName());
+		//json.put("parent", folderPath.getParent());
+		//json.put("root", folderPath.getRoot());
+		json.put("finish", "finished");
 		return json.toString();
 	}
 	
@@ -658,14 +703,17 @@ public class ShopController {
 	 * @param list rows from csv file
 	 * @return
 	 */
-	public List<ShopBean> saveAll(List<String[]> list) {
+	public List<ShopBean> saveAll(List<String[]> list, List<byte[]> images) {
 		List<ShopBean> shops = new ArrayList<ShopBean>();
-		Iterator<String[]> iterator = list.iterator();
+		Iterator<String[]> iteratorList = list.iterator();
+		Iterator<byte[]> iteratorImg = images.iterator();
 		Random random = new Random();
 		
-		iterator.next(); // skip column names
-		while(iterator.hasNext()) {
-			String[] next = iterator.next();
+		iteratorList.next(); // skip column names
+		
+		int count = 1;
+		while(iteratorList.hasNext()) {
+			String[] next = iteratorList.next();
 			
 			ShopBean shopBean = new ShopBean();
 			shopBean.setName(next[1]);
@@ -673,6 +721,11 @@ public class ShopController {
 			shopBean.setLatitude(next[3]);
 			shopBean.setLongitude(next[4]);
 			shopBean.setReview(random.nextInt(5) + 1);
+			shopBean.setPhoto(iteratorImg.next());
+			
+			shopBean.setAccount("test" + Integer.toString(count));
+			count++;
+			shopBean.setPassword("1234");
 			
 			shops.add(shopBean);
 		}
