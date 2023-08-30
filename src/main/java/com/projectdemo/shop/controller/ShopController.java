@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.opencsv.CSVReader;
+//import com.opencsv.CSVReader;
 import com.projectdemo.customer.bean.FavoritesBean;
 import com.projectdemo.customer.bean.ShoppingCartBean;
 import com.projectdemo.manage.bean.ShopHistoryMessageBean;
@@ -54,6 +54,7 @@ import com.projectdemo.shop.service.ShopService;
 @RequestMapping("/shop")
 @CrossOrigin()
 public class ShopController {
+
 
 	@Autowired
 	private ShopService shopService;
@@ -201,6 +202,7 @@ public class ShopController {
 	 * @param id Shop ID
 	 * @return ShopDTO, json success
 	 */
+	//查詢單筆商店
 	@GetMapping("/{id}")
 	public String findById(@PathVariable Integer id) {
 		JSONObject json = new JSONObject();
@@ -256,6 +258,14 @@ public class ShopController {
 			String base64Image = Base64.getEncoder().encodeToString(photo);
 			dto.setPhoto(base64Image);
 		}
+	
+		
+		
+		//openhr null exception
+		if(bean.getOpenhrBean() != null) {
+			dto.setOpenhrId(bean.getOpenhrBean().getId());
+		}
+		
 		
 		// Prep Time
 		List<PrepTimeBean> prepTime = bean.getPrepTime();
@@ -546,12 +556,12 @@ public class ShopController {
 	 * @return List<String[]>
 	 */
 	public List<String[]> readAllLines(Path filePath) {
-		try(Reader reader = Files.newBufferedReader(filePath);
-			CSVReader csvReader = new CSVReader(reader);) {
-			return csvReader.readAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try(Reader reader = Files.newBufferedReader(filePath);
+//			CSVReader csvReader = new CSVReader(reader);) {
+//			return csvReader.readAll();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		return null;
 	}
 	

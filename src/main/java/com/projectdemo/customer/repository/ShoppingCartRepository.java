@@ -2,6 +2,7 @@ package com.projectdemo.customer.repository;
 
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -18,8 +19,12 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartBean, 
 	@EntityGraph(attributePaths = {"dish"})
     Optional<ShoppingCartBean> findById(Integer id);
 	
+	@Query(value = "SELECT * FROM shopping_cart where fk_customer_id = :cid", nativeQuery = true)
+	List<ShoppingCartBean> findShoppingCartByCusID(@Param("cid")Integer cid);
+	
+	
 	@Transactional
 	@Modifying
-	@Query(value = "update shopping_cart set amount = :amount where id = :id" , nativeQuery = true)
-	void ShoppingCartUpdate(@Param("id")Integer id,@Param("amount") Integer amount);
+	@Query(value = "update shopping_cart set amount = :amount,totalPrice = :totalPrice where id = :id" , nativeQuery = true)
+	void ShoppingCartUpdate(@Param("id")Integer id,@Param("amount") Integer amount,@Param("totalPrice")Integer totalPrice);
 }

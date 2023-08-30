@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.bean.ShoppingCartBean;
@@ -35,6 +36,7 @@ public class ShoppingCartService {
 			CustomerBean customerBean = customerOptional.get();
 			DishBean dishBean = dishOptional.get();
 			ShopBean shopBean = shopOptional.get();
+			shoppingCart.setPurchased(false);
 			shoppingCart.setCustomer(customerBean);
 			shoppingCart.setDish(dishBean);
 			shoppingCart.setShop(shopBean);
@@ -47,31 +49,22 @@ public class ShoppingCartService {
 	public ShoppingCartBean ShoppingCartRead(Integer id) {
 		return shoppingCartRepository.findById(id).get();
 	}
+	
+	public List<ShoppingCartBean> findShoppingCartByCusID(Integer cid){
+		return shoppingCartRepository.findShoppingCartByCusID(cid);
+	}
+	
+	
 
-	public ShoppingCartBean shoppingCartUpdateAmount(Integer id, Integer amount) {
-		shoppingCartRepository.ShoppingCartUpdate(id, amount);
-		return shoppingCartRepository.findById(id).get();
+	public String shoppingCartUpdateAmount(ShoppingCartBean shoppingCart) {
+		ShoppingCartBean shoppingCartBean = shoppingCartRepository.findById(shoppingCart.getId()).get();
+		Integer oldAmount = shoppingCartBean.getAmount();
+		Integer newAmount = shoppingCart.getAmount();
+		Integer totalPrice = (newAmount - oldAmount) * (shoppingCart.getDishPrice()) + shoppingCart.getTotalPrice();
+		shoppingCartRepository.ShoppingCartUpdate(shoppingCart.getId(),shoppingCart.getAmount(),totalPrice);
+		return "更改成功，請重新點擊商家名稱確認";
 	}
 
-	// 將購物車內容送入訂單中
-	public void SendshoppingCartToOrderList(List<ShoppingCartBean> shoppingCartList) {
-		// 處理OrderList所需的欄位
-
-		// customerID
-		Integer CustomerID = shoppingCartList.get(0).getCustomer().getCustomerID();
-		// shopID
-		shoppingCartList.get(0).getShop().getId();
-		
-		// total price
-		Integer totalPrice = null;
-		for (int i = 0; i < shoppingCartList.size(); i++) {
-			totalPrice += shoppingCartList.get(i).getTotalPrice();
-		}
-		totalPrice += shoppingCartList.get(0).getDevlieryFee();
-		// deliery fee
-		
-
-	}
 
 	public String deleteShoppingCart(Integer id) {
 		if (shoppingCartRepository.existsById(id)) {
