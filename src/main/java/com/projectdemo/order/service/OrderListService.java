@@ -100,6 +100,7 @@ public class OrderListService {
 		Integer rows = obj.getInt("rows") == 0 ? Integer.MAX_VALUE : obj.getInt("rows");
 		Sort.Direction sortOrder = obj.getString("sortOrder").equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 		String sortType = obj.getString("sortType");
+		
 		PageRequest pgb = PageRequest.of(pageNumber, rows, sortOrder, sortType);
 
 		// 若要用客戶ID查找

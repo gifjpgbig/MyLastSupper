@@ -14,21 +14,8 @@ public class CustomerServiceService {
 	@Autowired
 	private CustomerServiceRepository csRepo;
 	
-	public CustomerServiceBean addCDB(String json) {
-		JSONObject data = new JSONObject(json);
-		CustomerServiceBean csb = new CustomerServiceBean();
-		csb.setAccount(data.getString("account"));
-		csb.setAuthorizations(data.getString("auth"));
-		csb.setName(data.getString("name"));
-		csb.setPassword(data.getString("password"));
-		
-		
-		CustomerServiceBean addCsb = csRepo.save(csb);
-		if(addCsb != null) {
-			return addCsb;
-		}else {
-			return null;
-		}
+	public CustomerServiceBean addCDB(CustomerServiceBean csb) {
+		return csRepo.save(csb);
 	}
 	
 	

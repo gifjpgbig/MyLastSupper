@@ -35,53 +35,64 @@ public class CustomerServiceBean {
     
     @Column(name = "authorizations", columnDefinition = "varchar(4)")
     private String authorizations;
+    
+	@Column(name = "photo", columnDefinition = "varbinary(max)")
+	private byte[] photo;
         
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerService")
 	@JsonIgnore
     private List<ShopHistoryMessageBean> shopHistoryMessage;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getAccount() {
 		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
 	}
 
 	public String getAuthorizations() {
 		return authorizations;
 	}
 
-	public void setAuthorizations(String authorizations) {
-		this.authorizations = authorizations;
+	public Integer getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public byte[] getPhoto() {
+		return photo;
 	}
 
 	public List<ShopHistoryMessageBean> getShopHistoryMessage() {
 		return shopHistoryMessage;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public void setAuthorizations(String authorizations) {
+		this.authorizations = authorizations;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 
 	public void setShopHistoryMessage(List<ShopHistoryMessageBean> shopHistoryMessage) {
