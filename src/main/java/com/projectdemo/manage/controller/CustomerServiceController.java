@@ -31,4 +31,20 @@ public class CustomerServiceController {
 		return responseJson.toString();
 	}
 	
+	@PostMapping("/manage/cs/login")
+	public String login(@RequestBody String json) {
+		JSONObject responseJson = new JSONObject();
+		CustomerServiceBean cs = csService.checkLogin(json);
+		if(cs != null) {
+			responseJson.put("csName", cs.getName());
+			responseJson.put("auth", cs.getAuthorizations());
+			responseJson.put("message", "登入成功！");
+			responseJson.put("success", true);
+		}else {
+			responseJson.put("message", "登入失敗！");
+			responseJson.put("success", false);
+		}
+		return responseJson.toString();
+	}	
+	
 }

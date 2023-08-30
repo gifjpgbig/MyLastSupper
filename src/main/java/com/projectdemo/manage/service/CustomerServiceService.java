@@ -30,4 +30,21 @@ public class CustomerServiceService {
 			return null;
 		}
 	}
+	
+	
+	public CustomerServiceBean checkLogin(String json) {
+		JSONObject data = new JSONObject(json);
+		CustomerServiceBean csb = new CustomerServiceBean();
+		CustomerServiceBean foundCS = csRepo.findCustomerServiceByAccount(data.getString("account"));
+		if(foundCS != null) {
+			if(foundCS.getPassword().equals(data.getString("password"))) {
+				return foundCS;
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	
 }
