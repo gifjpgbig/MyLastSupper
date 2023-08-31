@@ -69,6 +69,9 @@ const loginHandler = async() => {
   if(response.data.success){
     alert(response.data.message)
     Cookies.set('login', JSON.stringify('asds32adsavrAS3Fadf5567'), { expires: 1 })
+    Cookies.set('customerServiceID', JSON.stringify(response.data.csID), { expires: 1 })
+    Cookies.set('customerServiceName', JSON.stringify(response.data.csName), { expires: 1 })
+    alert(response.data.csName)
     if (Cookies.get('login')) {
       router.push('/contact')
     }

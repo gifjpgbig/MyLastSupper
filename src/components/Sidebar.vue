@@ -20,7 +20,7 @@
                             <i class="fa fa-home fs-4 bi-house"></i>
                             <span class="ms-1 d-none d-sm-inline">首頁</span></a> -->
 
-                <RouterLink class="nav-link align-middle px-0" to="/">
+                <RouterLink class="nav-link align-middle px-0" to="/home">
                   <i class="fa fa-home fs-4 bi-house"></i>
                   <span class="d-none d-sm-inline">首頁</span></RouterLink
                 >

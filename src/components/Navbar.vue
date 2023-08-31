@@ -45,7 +45,13 @@
             class="nav-item d-flex align-items-center justify-content-center m-2"
             style="color: white; text-align: center"
           >
-            阿凡達, 早上好!
+          {{ matches[1] }}, 早上好! 
+          </li>
+          <li>
+            <label for="photo" class="form-label">Photo</label>
+            <img class="avatar" :src="photoDisplay" alt="User Avatar" />
+            <input type="file" class="form-control" id="photo" @change="fileChange($event)">
+
           </li>
           <li>
             <button
@@ -60,7 +66,8 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
             style="position: absolute; top: 100%; right: 0; left: auto;">
               <li><a class="dropdown-item" href="#">修改大頭貼</a></li>
-              <li><a class="dropdown-item" href="#">登出</a></li>
+              <!-- <li><a class="dropdown-item" href="/login">登出</a></li> -->
+              <li><a class="dropdown-item" href="javascript:void(0);" @click="logout()">登出</a></li>
             </ul>
           </li>
         </ul>
@@ -70,7 +77,61 @@
   </nav>
 </template>
 
-<script setup></script>
+<script setup>
+
+import { ref, onMounted } from "vue";
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+
+const photoFile = ref(null);
+const photoDisplay = ref(null);
+const csID = Cookies.get('customerServiceID')
+const csName = Cookies.get('customerServiceName')
+const regex = /"([^"]*)"/;
+const matches = csName.match(regex);
+
+
+
+
+const URL = import.meta.env.VITE_API_MANAGE;
+const URLAPI= `${URL}cs/findPhoto/`;
+
+const logout = function(){
+  console.log('logout')
+  Cookies.set('login',{ expires: new Date(0) });
+  Cookies.set('customerServiceID', { expires: new Date(0) });
+  Cookies.set('customerServiceName', { expires: new Date(0) });
+  router.push('/login');
+}
+
+const loadPhoto = async() => {
+  console.log('hello')
+  const response = await axios.get(URLAPI+csID);
+  console.log('photo-response', response)
+  if(response.data.success === true){
+    photoDisplay = 'data:image/png;base64,' + response.data.photo
+  }
+}
+const fileChange = function(event) {
+  console.log('Original photoDisplay is:'+photoDisplay.value)
+  photoFile.value = event.target.files[0]
+  console.log('In function photoFile is:'+photoFile.value)
+  photoDisplay.value = URL.createObjectURL(photoFile.value)
+  console.log('In function photoDisplay is:'+photoDisplay)
+
+}
+
+onMounted(
+  loadPhoto
+)
+
+
+
+</script>
+
 
 <style scoped>
 .navbar {

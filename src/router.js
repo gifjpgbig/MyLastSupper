@@ -19,6 +19,13 @@ const routes = [
 
     },
     {
+        //http://localhost/
+        path: '/home',
+        component: Home
+        , meta: { showNavbar: true, requireAuth: true }
+
+    },
+    {
         //http://localhost/about
         path: '/about',
         component: About,
