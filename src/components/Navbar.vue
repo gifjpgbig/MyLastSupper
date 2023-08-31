@@ -47,12 +47,12 @@
           >
           {{ matches[1] }}, 早上好! 
           </li>
-          <li>
+          <!-- <li>
             <label for="photo" class="form-label">Photo</label>
             <img class="avatar" :src="photoDisplay" alt="User Avatar" />
             <input type="file" class="form-control" id="photo" @change="fileChange($event)">
 
-          </li>
+          </li> -->
           <li>
             <button
               class="btn  dropdown-toggle"

@@ -2,7 +2,7 @@
   <aside class="sidebar">
     <div class="container-fluid bg-dark">
       <div class="row row flex-nowrap">
-        <div class="col col-auto col-md-3 col-xl-2 px-sm-2 px-0">
+        <!-- <div class="col col-auto col-md-3 col-xl-2 px-sm-2 px-0"> -->
           <div
             class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100"
           >
@@ -22,7 +22,7 @@
 
                 <RouterLink class="nav-link align-middle px-0" to="/home">
                   <i class="fa fa-home fs-4 bi-house"></i>
-                  <span class="d-none d-sm-inline">首頁</span></RouterLink
+                  <span class="d-none d-sm-inline"> 首頁</span></RouterLink
                 >
               </li>
 
@@ -30,11 +30,15 @@
                 <!-- <a class="nav-link px-0 align-middle" href="#"><i class="fa fa-table fs-4 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a> -->
                 <RouterLink class="nav-link align-middle px-0" to="/about">
                   <i class="fa fa-table fs-4 bi-table"></i>
-                  <span class="d-none d-sm-inline">績效查核</span></RouterLink
+                  <span class="d-none d-sm-inline"> 績效查核</span></RouterLink
                 >
               </li>
               <li class="nav-item">
-                <a
+                <RouterLink class="nav-link px-0 align-middle" to="/orders"
+                  ><i class="fa fa-bar-chart fs-4 bi-speedometer2"></i
+                  > 訂單管理</RouterLink
+                >
+                <!-- <a
                   class="nav-link px-0 align-middle dropdown-toggle"
                   href="#submenu1"
                   data-bs-toggle="collapse"
@@ -42,57 +46,36 @@
                   aria-expanded="false"
                   aria-controls="submenu1"
                   ><i class="fa fa-bar-chart fs-4 bi-speedometer2"></i
-                  ><span class="ms-1 d-none d-sm-inline">客服訂單管理</span></a
+                  ><span class="ms-1 d-none d-sm-inline">訂單管理</span></a
                 >
                 <ul
                   id="submenu1"
                   class="nav flex-column ms-1 collapse ms-1 ms-md-3"
                 >
-                <li class="w-100">
+                  <li class="w-100"> -->
                     <!-- <a class="nav-link px-0" href="#"><span class="d-none d-sm-inline">Product</span></a> -->
-                    <RouterLink class="nav-link" to="/orders"
+                    <!-- <RouterLink class="nav-link" to="/orders"
                       >客服訂單</RouterLink
                     >
                   </li>
-                  <li>
+                  <li> -->
                     <!-- <a class="nav-link px-0" href="#"><span class="d-none d-sm-inline">Product</span></a> -->
-                    <RouterLink class="nav-link" to="/deliver"
+                    <!-- <RouterLink class="nav-link" to="/deliver"
                       >外送訂單</RouterLink
                     >
                   </li>
-                </ul>
+                </ul> -->
               </li>
               <li>
-                <a
-                  class="nav-link px-0 align-middle"
-                  href="#submenu3"
-                  data-bs-toggle="collapse"
+                <RouterLink class="nav-link px-0 align-middle" to="/deliverer"
                   ><i class="fa fa-th-large fs-4 bi-grid"></i
-                  ><span class="ms-1 d-none d-sm-inline">外送員管理</span></a
+                  > 外送員管理</RouterLink
                 >
-                <ul
-                  id="submenu3"
-                  class="collapse nav flex-column ms-1"
-                  data-bs-parent="#menu"
-                >
-                  <li class="w-100">
-                    <!-- <a class="nav-link px-0" href="#"><span class="d-none d-sm-inline">Product</span></a> -->
-                    <RouterLink class="nav-link" to="/orders"
-                      >客服訂單</RouterLink
-                    >
-                  </li>
-                  <li>
-                    <!-- <a class="nav-link px-0" href="#"><span class="d-none d-sm-inline">Product</span></a> -->
-                    <RouterLink class="nav-link" to="/deliver"
-                      >外送訂單</RouterLink
-                    >
-                  </li>
-                </ul>
               </li>
               <li>
                 <RouterLink class="nav-link align-middle px-0" to="/chat">
                   <i class="fa fa-table fs-4 bi-people"></i>
-                  <span class="d-none d-sm-inline">即時訊息</span></RouterLink
+                  <span class="d-none d-sm-inline"> 即時訊息</span></RouterLink
                 >
               </li>
 
@@ -100,13 +83,13 @@
                 <!-- <a class="nav-link px-0 align-middle" href="#"><i class="fa fa-table fs-4 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a> -->
                 <RouterLink class="nav-link align-middle px-0" to="/contact">
                   <i class="fa fa-table fs-4 bi-people"></i>
-                  <span class="d-none d-sm-inline">關於我們</span></RouterLink
+                  <span class="d-none d-sm-inline"> 關於我們</span></RouterLink
                 >
               </li>
               <li class="nav-item">
                 <RouterLink class="nav-link align-middle px-0" to="/toast">
                   <i class="fa fa-table fs-4 bi-people"></i>
-                  <span class="d-none d-sm-inline">吐司測試</span></RouterLink
+                  <span class="d-none d-sm-inline"> 吐司測試</span></RouterLink
                 >
               </li>
             </ul>
@@ -139,7 +122,7 @@
           </div>
         </div>
         <!-- <p class="col py-3"><br /> Content area...<br /></p> -->
-      </div>
+      <!-- </div> -->
     </div>
   </aside>
 </template>
@@ -176,5 +159,4 @@ ul#menu {
   width: auto; 
 }
 */
-
 </style>

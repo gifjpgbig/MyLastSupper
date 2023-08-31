@@ -9,6 +9,9 @@ import Deliver from './views/deliver.vue'
 import Login from './views/login.vue'
 import Toast from './views/Toast.vue';
 import Chat from './views/Chat.vue';
+import Deliverer from './views/Deliverer.vue';
+import AddDeliverer from './views/AddDeliverer.vue';
+import EditDeliverer from './views/EditDeliverer.vue';
 
 const routes = [
     {
@@ -89,6 +92,28 @@ const routes = [
         meta: { showNavbar: true,  requireAuth: true } // 显示导航栏
 
     },
+    {
+        //http://localhost/deliverer
+        path:'/deliverer',
+        component:Deliverer,
+        meta: { showNavbar: true, requireAuth: true }
+
+    },
+    {
+        //http://localhost/deliverer/add
+        path:'/deliverer/add',
+        component:AddDeliverer,
+        meta: { showNavbar: true, requireAuth: true }
+
+    },
+    {
+        //http://localhost/deliverer/edit/1
+        path:'/deliverer/edit/:id',
+        component:EditDeliverer,
+        meta: { showNavbar: true, requireAuth: true }
+
+    },
+
 ]
 
 const router = createRouter({

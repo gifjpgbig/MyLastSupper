@@ -213,6 +213,7 @@ const handleChildData = (data) => {
 
 watch(showModal, (newVal) => {
   if (newVal) {
+    console.log("inside the watch")
     fetchODData();
     fetchDDData();
   }
@@ -225,10 +226,13 @@ watch(receivedData, (newVal) => {
 });
 
 const fetchODData = async () => {
+  console.log("inside the fetchODData")
   try {
     const URLAPI = `${URL}detail/findAllByOrderId/${selectedOrder.value}`;
     const response = await axios.post(URLAPI);
     orderdetails.value = response.data.list;
+    console.log("orderdetails"+response)
+    
   } catch (error) {
     console.error(error);
   }
