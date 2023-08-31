@@ -18,17 +18,24 @@ public class InviteCodeService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	public UserInviteCodeBean InviteCodeCreate(UserInviteCodeBean userInvitecode, Integer id) {
+	public UserInviteCodeBean InviteCodeCreate(Integer id) {
 		Optional<CustomerBean> customerOptional = customerRepository.findById(id);
+		UserInviteCodeBean userInviteCode = new UserInviteCodeBean();
 		if (customerOptional.isPresent()) {
-			userInvitecode.setCustomer(customerOptional.get());
-			return inviteCodeRepository.save(userInvitecode);
+			userInviteCode.setCustomer(customerOptional.get());
+			userInviteCode.setAmount(id);
+			Integer code = 123456 + id;
+			userInviteCode.setCode("InviteCode" + String.valueOf(code));
+			userInviteCode.setInvitedQuota(200);
+			userInviteCode.setInviteQuota(150);
+			return inviteCodeRepository.save(userInviteCode);
 		}
 		return null;
 	}
 	
-	public void findInviteCodeByID(Integer id) {
-		inviteCodeRepository.findInviteCodeByID(id);
+	
+	public UserInviteCodeBean findInviteCodeByCusID(Integer cid) {
+		return inviteCodeRepository.findInviteCodeByCusID(cid);
 	}
 
 	public String InviteCodeUpdate(Integer id) {

@@ -4,8 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.projectdemo.shop.bean.OpenHrBean;
 import com.projectdemo.shop.bean.ShopBean;
@@ -130,5 +134,18 @@ public class ShopService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public Page<ShopBean> findAllPage(String json) {
+		JSONObject obj = new JSONObject(json);
+		
+		// Create Pageable
+		Integer start = obj.getInt("start");
+		Integer rows = obj.getInt("rows") == 0 ? Integer.MAX_VALUE : obj.getInt("rows");
+		Sort.Direction sortOrder = obj.getString("sortOrder").equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+		String sortType = obj.getString("sortType");
+		PageRequest pgb = PageRequest.of(start, rows, sortOrder, sortType);
+		
+		return shopRepository.findAllPage(pgb);
 	}
 }
