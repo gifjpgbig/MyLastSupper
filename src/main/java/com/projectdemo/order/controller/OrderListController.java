@@ -1,8 +1,5 @@
 package com.projectdemo.order.controller;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projectdemo.customer.bean.CustomerBean;
@@ -28,6 +25,7 @@ import com.projectdemo.menu.service.DishService;
 import com.projectdemo.order.bean.DeliverDetailBean;
 import com.projectdemo.order.bean.OrderDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
+import com.projectdemo.order.bean.OrderRequest;
 import com.projectdemo.order.service.DeliverDetailService;
 import com.projectdemo.order.service.OrderDetailService;
 import com.projectdemo.order.service.OrderListService;
@@ -423,13 +421,14 @@ public class OrderListController {
 	// orders.vue
 	// start: 0, rows: 0, name: "", cusID: "", shopID: "", sortOrder: "asc",
 	// sortType: "id",
+	// 2023/8/31 hotfix count找的是全部訂單，要修正成進行中的訂單
 	@PostMapping("/order/find")
 	public String find(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 
 		System.out.println(json);
 		JSONObject countJson = new JSONObject(json);
-		long count = olService.count(countJson);
+		Integer count = olService.countInProgress();
 		responseJson.put("count", count);
 
 		Page<OrderListBean> orders = olService.findAllInProgress(json);
@@ -552,55 +551,63 @@ public class OrderListController {
 	//前端將資料格式打包成json包兩個json，一個jobj,一個jarray?
 	@Transactional
 	@PostMapping("/order/placeAnOrder")
-	public String placeOrder(@RequestBody String json) {
-		JSONObject responseJson = new JSONObject();
-		JSONObject datas = new JSONObject(json);
-		System.out.println(datas);
-		System.out.println(datas.toString());
+	public String placeOrder(@RequestParam("selectedProduct") String json
+			) {
+		System.out.println(json);
 		
-		//把datas內的ol data提出，轉換成olbean
-		JSONObject orderJson = datas.getJSONObject("orderList");
-		System.out.println(orderJson);
-		System.out.println(orderJson.toString());
+		
+//		System.out.println(json);
+		System.out.println("---------------------------");
+		JSONObject responseJson = new JSONObject();
+//		JSONObject datas = new JSONObject(json);
+//		System.out.println(datas.toString());
+//		System.out.println("---------------------------");
+//		System.out.println(datas);
+//		System.out.println(datas.toString());
+//		
+//		//把datas內的ol data提出，轉換成olbean
+//		JSONObject orderJson = datas.getJSONObject("orderList");
+//		System.out.println(orderJson);
+//		System.out.println(orderJson.toString());
 		OrderListBean newOl = new OrderListBean();
 		
-		ShopBean shop = shopService.findById(orderJson.getInt("shop"));
-		CustomerBean customer = cusService.findCustomerById(orderJson.getInt("customer"));
-		
-		newOl.setShop(shop);
-		newOl.setCustomer(customer);
-		newOl.setTotalPrice(orderJson.getInt("totalPrice"));
-		newOl.setCusStatus(orderJson.getString("cusStatus"));
-		newOl.setShopStatus(orderJson.getString("shopStatus"));
-		newOl.setDeliverStatus(orderJson.getString("deliverStatus"));
-		newOl.setAddress(orderJson.getString("Address"));
-		newOl.setDeliveryFee(orderJson.getInt("deliveryFee"));
-		newOl.setDiscount(orderJson.getInt("discount"));
+//		ShopBean shop = shopService.findById(orderJson.getInt("shop"));
+//		CustomerBean customer = cusService.findCustomerById(orderJson.getInt("customer"));
+//		
+//		newOl.setShop(shop);
+//		newOl.setCustomer(customer);
+//		newOl.setTotalPrice(orderJson.getInt("totalPrice"));
+//		newOl.setCusStatus("已下單");
+//		newOl.setShopStatus("未接單");
+//		newOl.setDeliverStatus("未接單");
+//		newOl.setAddress(orderJson.getString("Address"));
+//		newOl.setDeliveryFee(orderJson.getInt("deliveryFee"));
+//		newOl.setDiscount(orderJson.getInt("discount"));
 		
 		OrderListBean addOrder = olService.addOrder(newOl);
 		
 		//把datas內的od datas提出，轉換成odbean，batch insert
 		//先得到jsonObj，需要再研究一些小細節
 		List<OrderDetailBean> odlist = new ArrayList<>();
-		JSONArray array = datas.getJSONArray("orderDetail");
-		System.out.println(array);
-		for(Object detail: array) {
-			System.out.println(detail);
-			//這一層轉換出現問題，odJson沒有拿到資料!
-			JSONObject odJson = new JSONObject(detail.toString());
-			System.out.println(odJson);
-			OrderDetailBean od = new OrderDetailBean();
-			
-			DishBean dish = dishService.findDishById(odJson.getInt("dish"));
-			od.setDish(dish);
-			od.setOrderList(addOrder);
-			od.setAmount(odJson.getInt("Amount"));
-			od.setCustomization(odJson.getString("customization"));
-			od.setTotalPrice(odJson.getInt("totalPrice"));
-			
-			odlist.add(od);
-		}
-		
+//		JSONArray array = datas.getJSONArray("orderDetail");
+//		System.out.println(array);
+//		for(Object detail: array) {
+//			System.out.println(detail);
+//			//這一層轉換出現問題，odJson沒有拿到資料!
+//			JSONObject odJson = new JSONObject(detail.toString());
+//			System.out.println(odJson);
+//			OrderDetailBean od = new OrderDetailBean();
+//			
+//			DishBean dish = dishService.findDishById(odJson.getInt("dish"));
+//			od.setDish(dish);
+//			od.setOrderList(addOrder);
+//			od.setAmount(odJson.getInt("Amount"));
+//			od.setCustomization(odJson.getString("customization"));
+//			od.setTotalPrice(odJson.getInt("totalPrice"));
+//			
+//			odlist.add(od);
+//		}
+//		
 		boolean success = odService.addAll(odlist);
 		if(success == true) {
 			responseJson.put("message", "明細新增成功");

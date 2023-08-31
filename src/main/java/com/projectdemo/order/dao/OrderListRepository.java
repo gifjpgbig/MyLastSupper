@@ -60,6 +60,9 @@ public interface OrderListRepository extends JpaRepository<OrderListBean, Intege
 	Page<OrderListBean> findAllInProgress(Pageable page);
 	
 	
+	@Query(value = "select count(*) from order_list where shop_status not like '%棄%' and cus_status not like '%棄%'and not deliver_status = '已完成'", nativeQuery = true)
+	Integer findAllCountInProgress();
+	
 //	@Query(value = "select dd.address as cus_address, dd.deliver_time, ol.delivery_fee, ol.order_time, s.address as shop_address, s.name as shop_name from deliver_detail as dd, order_list as ol, shop as s where dd.fk_order_list_id = ol.id and ol.fk_shop_id = s.id  and is_cancel = 0 and is_complete = 0 and fk_deliverer_id = 1", nativeQuery = true)
 //	@Query(value = "select * from deliver_detail as dd, order_list as ol where dd.fk_order_list_id = ol.id and is_cancel = 0 and is_complete = 0 and fk_deliverer_id = 1", nativeQuery = true)
 //	@Query(value = "select * from deliver_detail as dd, order_list as ol where dd.fk_order_list_id = ol.id", nativeQuery = true)

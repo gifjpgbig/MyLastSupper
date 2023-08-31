@@ -463,7 +463,7 @@ public class ShopController {
 		return json.toString();
 	}
 	
-	@GetMapping("/pagination")
+	@PostMapping("/pagination")
 	public String findAllPagination(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 		JSONArray array = new JSONArray();

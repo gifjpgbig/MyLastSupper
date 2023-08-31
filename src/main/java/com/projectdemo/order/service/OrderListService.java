@@ -57,6 +57,11 @@ public class OrderListService {
 	@Autowired
 	private CustomerService customerService;
 
+	public Integer countInProgress() {
+		return oLRepo.findAllCountInProgress();
+	}
+	
+	
 	// 計算查詢語法取得的資料總筆數
 	public long count(JSONObject obj) {
 		// 創建criteriaBuilder、criteriaQuery
@@ -81,6 +86,13 @@ public class OrderListService {
 			predicates.add(criteriaBuilder.equal(root.get("shop").get("id"), id));
 		}
 
+//	    Predicate statusConditions = criteriaBuilder.and(
+//	            criteriaBuilder.notLike(root.get("shopStatus"), "%棄%"),
+//	            criteriaBuilder.notLike(root.get("cusStatus"), "%棄%"),
+//	            criteriaBuilder.notEqual(root.get("deliverStatus"), "已完成")
+//	        );
+//	    predicates.add(statusConditions);
+	    
 		if (!predicates.isEmpty()) {
 			criteriaQuery = criteriaQuery.where(predicates.toArray(new Predicate[0]));
 		}
