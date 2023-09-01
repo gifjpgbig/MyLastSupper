@@ -315,7 +315,7 @@ public class OrderListController {
 	// DeliverDetailService.java, OrderListService.java
 	// deliver_detail_id, reason, deliver_status, orderid
 	// 註銷成功之後要再推送一次訂單
-	@Transactional
+//	@Transactional
 	@PutMapping("/order/terminate")
 	public String terminator(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
@@ -325,16 +325,16 @@ public class OrderListController {
 		} else {
 			responseJson.put("message", "註銷失敗，不存在此訂單");
 			responseJson.put("success", false);
-			throw new RuntimeException("請注意，註銷失敗！不存在此訂單"); // 拋出異常來觸發回滾
+//			throw new RuntimeException("請注意，註銷失敗！不存在此訂單"); // 拋出異常來觸發回滾
 		}
-		if (ddService.terminate(json) != null) {
-			responseJson.put("message", "註銷成功，已推送訂單");
-			responseJson.put("success", true);
-		} else {
-			responseJson.put("message", "註銷失敗");
-			responseJson.put("success", false);
-			throw new RuntimeException("訂單狀態改變失敗，不存在該筆外送員明細"); // 拋出異常來觸發回滾
-		}
+//		if (ddService.terminate(json) != null) {
+//			responseJson.put("message", "註銷成功，已推送訂單");
+//			responseJson.put("success", true);
+//		} else {
+//			responseJson.put("message", "註銷失敗");
+//			responseJson.put("success", false);
+//			throw new RuntimeException("訂單狀態改變失敗，不存在該筆外送員明細"); // 拋出異常來觸發回滾
+//		}
 		return responseJson.toString();
 	}
 
