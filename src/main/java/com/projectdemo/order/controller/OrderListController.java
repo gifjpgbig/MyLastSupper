@@ -458,7 +458,8 @@ public class OrderListController {
 	// 2-1取消訂單
 	// 外送員接單的延伸功能，緊急狀況由客服人員註銷已接單的外送員詳細，應該要放在客服系統
 	// DeliverDetailService.java, OrderListService.java
-	// deliver_detail_id, reason, deliver_status, orderid
+	// deliver_detail_id, reason
+	// orderid          , deliver_status
 	// 註銷成功之後要再推送一次訂單
 	@Transactional
 	@PutMapping("/order/terminate")
