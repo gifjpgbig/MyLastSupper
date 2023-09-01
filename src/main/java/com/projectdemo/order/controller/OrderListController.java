@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.google.gson.JsonArray;
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.service.CustomerService;
 import com.projectdemo.menu.bean.DishBean;
@@ -46,17 +51,16 @@ public class OrderListController {
 
 	@Autowired
 	private OrderDetailService odService;
-	
+
 	@Autowired
 	private ShopService shopService;
-	
+
 	@Autowired
 	private CustomerService cusService;
-	
+
 	@Autowired
 	private DishService dishService;
-	
-	
+
 //	@GetMapping("/order/testpush")
 //	public String testpush() {
 //		FileInputStream serviceAccount = null;
@@ -93,7 +97,7 @@ public class OrderListController {
 //		}
 //		System.out.println("Successfully sent message: " + response);
 //	}
-	
+
 	// 未分類
 	// 用客戶id去搜尋，暫時沒用到
 	@PostMapping("/order/findByCustomerId/{id}")
@@ -121,23 +125,24 @@ public class OrderListController {
 		JSONObject responseJson = new JSONObject();
 		List<OrderListBean> orders = olService.findOrderByShopId(id);
 		JSONArray array = new JSONArray();
-		if(orders != null && ! orders.isEmpty()) {
-			for(OrderListBean order : orders) {
+		if (orders != null && !orders.isEmpty()) {
+			for (OrderListBean order : orders) {
 				CustomerBean customer = order.getCustomer();
-				JSONObject item = new JSONObject()
-						.put("id", order.getId()).put("address", order.getAddress()).put("cus_status", order.getCusStatus())
-						.put("shop_status", order.getShopStatus()).put("deliverStatus", order.getDeliverStatus())
-						.put("customerID", customer.getCustomerID()).put("custName", customer.getName())
-						.put("total_price", order.getTotalPrice()).put("deliveryFee", order.getDeliveryFee());
+				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
+						.put("cus_status", order.getCusStatus()).put("shop_status", order.getShopStatus())
+						.put("deliverStatus", order.getDeliverStatus()).put("customerID", customer.getCustomerID())
+						.put("custName", customer.getName()).put("total_price", order.getTotalPrice())
+						.put("deliveryFee", order.getDeliveryFee());
 				array = array.put(item);
 			}
 		}
 		responseJson.put("list", array);
 		return responseJson.toString();
 	}
-	
+
 	/**
 	 * MEEEEEEEEE
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -146,18 +151,13 @@ public class OrderListController {
 		JSONObject responseJson = new JSONObject();
 		List<OrderListBean> orders = olService.findActiveOrderByShopId(id);
 		JSONArray array = new JSONArray();
-		if(orders != null && ! orders.isEmpty()) {
-			for(OrderListBean order : orders) {
+		if (orders != null && !orders.isEmpty()) {
+			for (OrderListBean order : orders) {
 				CustomerBean customer = order.getCustomer();
-				JSONObject item = new JSONObject()
-						.put("id", order.getId())
-						.put("cus_status", order.getCusStatus())
-						.put("shop_status", order.getShopStatus())
-						.put("deliverStatus", order.getDeliverStatus())
-						.put("customerID", customer.getCustomerID())
-						.put("custName", customer.getName())
-						.put("total_price", order.getTotalPrice())
-						.put("deliveryFee", order.getDeliveryFee())
+				JSONObject item = new JSONObject().put("id", order.getId()).put("cus_status", order.getCusStatus())
+						.put("shop_status", order.getShopStatus()).put("deliverStatus", order.getDeliverStatus())
+						.put("customerID", customer.getCustomerID()).put("custName", customer.getName())
+						.put("total_price", order.getTotalPrice()).put("deliveryFee", order.getDeliveryFee())
 						.put("orderTime", order.getOrderTime());
 				array = array.put(item);
 			}
@@ -165,24 +165,19 @@ public class OrderListController {
 		responseJson.put("list", array);
 		return responseJson.toString();
 	}
-	
+
 	@PostMapping("/order/findByShopIdCompleteOrders/{id}")
 	public String findByShopIdCompleteOrders(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
 		List<OrderListBean> orders = olService.findCompleteOrderByShopId(id);
 		JSONArray array = new JSONArray();
-		if(orders != null && ! orders.isEmpty()) {
-			for(OrderListBean order : orders) {
+		if (orders != null && !orders.isEmpty()) {
+			for (OrderListBean order : orders) {
 				CustomerBean customer = order.getCustomer();
-				JSONObject item = new JSONObject()
-						.put("id", order.getId())
-						.put("customerID", customer.getCustomerID())
-						.put("custName", customer.getName())
-						.put("total_price", order.getTotalPrice())
-						.put("orderTime", order.getOrderTime())
-						.put("shopReview", order.getShopReview())
-						.put("shopComments", order.getShopComments())
-						.put("dishComments", order.getDishComments())
+				JSONObject item = new JSONObject().put("id", order.getId()).put("customerID", customer.getCustomerID())
+						.put("custName", customer.getName()).put("total_price", order.getTotalPrice())
+						.put("orderTime", order.getOrderTime()).put("shopReview", order.getShopReview())
+						.put("shopComments", order.getShopComments()).put("dishComments", order.getDishComments())
 						.put("shopFeedbackReply", order.getShopFeedbackReply());
 				array = array.put(item);
 			}
@@ -190,20 +185,19 @@ public class OrderListController {
 		responseJson.put("list", array);
 		return responseJson.toString();
 	}
-	
+
 	@PutMapping("/order/shopfeedback/{id}")
 	public String shopFeedback(@PathVariable Integer id, @RequestBody OrderListBean orderListBean) {
 		JSONObject json = new JSONObject();
 		OrderListBean bean = olService.updateShopFeedback(id, orderListBean.getShopFeedbackReply());
-		if(bean != null) {
+		if (bean != null) {
 			json.put("success", true);
-		}
-		else {
+		} else {
 			json.put("success", false);
 		}
 		return json.toString();
 	}
-	
+
 //	@PostMapping("/order/findByShopId/{id}")
 //	public List<OrderListBean> findByShopId(@PathVariable Integer id) {
 //		return olService.findOrderByShopId(id);
@@ -214,7 +208,7 @@ public class OrderListController {
 	@PostMapping("/order/insert1")
 	public String insert1(@RequestBody OrderListBean ol) {
 		JSONObject responseJson = new JSONObject();
-		System.out.println(ol.toString());	
+		System.out.println(ol.toString());
 		OrderListBean order = olService.addOrder(ol);
 		if (order != null) {
 			responseJson.put("message", "新增成功");
@@ -362,18 +356,12 @@ public class OrderListController {
 		JSONArray array = new JSONArray();
 		if (orders != null && !orders.isEmpty()) {
 			for (OrderListBean order : orders) {
-				JSONObject item = new JSONObject()
-						.put("id", order.getId())
-						.put("address", order.getAddress())
-						.put("cus_status", order.getCusStatus())
-						.put("deliver_status", order.getDeliverStatus())
+				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
+						.put("cus_status", order.getCusStatus()).put("deliver_status", order.getDeliverStatus())
 						.put("shop_status", order.getShopStatus())
-						.put("customerID", order.getCustomer().getCustomerID())
-						.put("shopID", order.getShop().getId())
-						.put("shopName", order.getShop().getName())
-						.put("deliverFee", order.getDeliveryFee())
-						.put("orderTime", order.getOrderTime())
-						.put("shopAddress", order.getShop().getAddress());
+						.put("customerID", order.getCustomer().getCustomerID()).put("shopID", order.getShop().getId())
+						.put("shopName", order.getShop().getName()).put("deliverFee", order.getDeliveryFee())
+						.put("orderTime", order.getOrderTime()).put("shopAddress", order.getShop().getAddress());
 				array = array.put(item);
 			}
 		}
@@ -492,8 +480,13 @@ public class OrderListController {
 	// 讓外送員查看自己接到的訂單
 	// 這個邏輯是，查看自己已接單的訂單，且有選擇六個欄位
 	// 外送地址，運送時間、運費、下單時間、店家地址、店名
-	// dd.address as cus_address, dd.deliver_time, ol.delivery_fee,
-	// ol.order_time, s.address as shop_address, s.name as shop_name,
+	// dd.address as cus_address,
+	// dd.deliver_time,
+	// ol.id as order_id
+	// ol.delivery_fee,
+	// ol.order_time, 
+	// s.address as shop_address,
+	// s.name as shop_name,
 	// 請注意，資料型態是object
 	@PostMapping("/order/findInProgressByDeliver/{id}")
 	public String findInProgressByDeliver(@PathVariable Integer id) {
@@ -530,9 +523,7 @@ public class OrderListController {
 	public String complete(@PathVariable Integer id) {
 		JSONObject responseJson = new JSONObject();
 		JSONObject datas = new JSONObject();
-		datas
-		.put("orderid", id)
-		.put("deliver_status", "已完成");
+		datas.put("orderid", id).put("deliver_status", "已完成");
 
 		if (olService.updateStatusById(datas.toString()) != null) {
 			responseJson.put("message", "更正成功，已完成訂單");
@@ -545,97 +536,100 @@ public class OrderListController {
 		return responseJson.toString();
 	}
 
-	
-	//客戶下單功能
-	//同時使用兩個新增方法，沒有成功就rollback
-	//前端將資料格式打包成json包兩個json，一個jobj,一個jarray?
+	// 客戶下單功能
+	// 同時使用兩個新增方法，沒有成功就rollback
+	// 前端將資料格式打包成json包兩個json，一個jobj,一個jarray?
+	private final ObjectMapper objectMapper = new ObjectMapper();
+
 	@Transactional
 	@PostMapping("/order/placeAnOrder")
-	public String placeOrder(@RequestParam("selectedProduct") String json
+	public String placeOrder(
+			@RequestParam("selectedProduct") String json,
+//			@RequestBody List<OrderRequest> or,
+			@RequestParam("address") String address,
+			@RequestParam("totalPrice") Integer totalPrice,
+			@RequestParam("customerID") Integer customerID,
+			@RequestParam("shopID") Integer shopID,
+			@RequestParam("discount") Integer discount
 			) {
-		System.out.println(json);
 		
-		
-//		System.out.println(json);
-		System.out.println("---------------------------");
 		JSONObject responseJson = new JSONObject();
-//		JSONObject datas = new JSONObject(json);
-//		System.out.println(datas.toString());
-//		System.out.println("---------------------------");
-//		System.out.println(datas);
-//		System.out.println(datas.toString());
-//		
-//		//把datas內的ol data提出，轉換成olbean
-//		JSONObject orderJson = datas.getJSONObject("orderList");
-//		System.out.println(orderJson);
-//		System.out.println(orderJson.toString());
 		OrderListBean newOl = new OrderListBean();
+
+		ShopBean shop = shopService.findById(shopID);
+		CustomerBean customer = cusService.findCustomerById(customerID);
 		
-//		ShopBean shop = shopService.findById(orderJson.getInt("shop"));
-//		CustomerBean customer = cusService.findCustomerById(orderJson.getInt("customer"));
-//		
-//		newOl.setShop(shop);
-//		newOl.setCustomer(customer);
-//		newOl.setTotalPrice(orderJson.getInt("totalPrice"));
-//		newOl.setCusStatus("已下單");
-//		newOl.setShopStatus("未接單");
-//		newOl.setDeliverStatus("未接單");
-//		newOl.setAddress(orderJson.getString("Address"));
+		newOl.setShop(shop);
+		newOl.setCustomer(customer);
+		newOl.setTotalPrice(totalPrice);
+		newOl.setCusStatus("已下單");
+		newOl.setShopStatus("未接單");
+		newOl.setDeliverStatus("未接單");
+		newOl.setAddress(address);
 //		newOl.setDeliveryFee(orderJson.getInt("deliveryFee"));
-//		newOl.setDiscount(orderJson.getInt("discount"));
-		
+		newOl.setDiscount(discount);
+
 		OrderListBean addOrder = olService.addOrder(newOl);
-		
-		//把datas內的od datas提出，轉換成odbean，batch insert
-		//先得到jsonObj，需要再研究一些小細節
-		List<OrderDetailBean> odlist = new ArrayList<>();
-//		JSONArray array = datas.getJSONArray("orderDetail");
-//		System.out.println(array);
-//		for(Object detail: array) {
-//			System.out.println(detail);
-//			//這一層轉換出現問題，odJson沒有拿到資料!
-//			JSONObject odJson = new JSONObject(detail.toString());
-//			System.out.println(odJson);
-//			OrderDetailBean od = new OrderDetailBean();
-//			
-//			DishBean dish = dishService.findDishById(odJson.getInt("dish"));
-//			od.setDish(dish);
-//			od.setOrderList(addOrder);
-//			od.setAmount(odJson.getInt("Amount"));
-//			od.setCustomization(odJson.getString("customization"));
-//			od.setTotalPrice(odJson.getInt("totalPrice"));
-//			
-//			odlist.add(od);
-//		}
-//		
-		boolean success = odService.addAll(odlist);
-		if(success == true) {
-			responseJson.put("message", "明細新增成功");
+		if (addOrder != null) {
+			responseJson.put("message", "訂單新增成功");
 			responseJson.put("success", true);
-		}else {
-			responseJson.put("message", "明細新增失敗");
+		} else {
+			responseJson.put("message", "訂單新增失敗");
 			responseJson.put("success", false);
-			throw new RuntimeException("新增明細失敗"); // 拋出異常來觸發回滾
+			throw new RuntimeException("訂單新增失敗"); // 拋出異常來觸發回滾
 		}
-				
+
+		System.out.println(json);
+		String json2 = "["+json+"]";
+		try {
+			List<OrderDetailBean> odlist = new ArrayList<>();
+			OrderRequest[] orders = objectMapper.readValue(json2, OrderRequest[].class);
+			System.out.println(orders);
+			 for (OrderRequest order : orders) {
+	                // 在這裡處理每個產品對象
+	                System.out.println(order);
+	    			OrderDetailBean od = new OrderDetailBean();
+	    			
+	    			DishBean dish = dishService.findDishById(order.getId());
+	    			od.setDish(dish);
+	    			od.setOrderList(addOrder);
+	    			od.setAmount(order.getAmount());
+	    			od.setCustomization(order.getCustomization());
+	    			od.setTotalPrice(order.getTotal_price());
+	    			
+	    			odlist.add(od);
+	            }
+			boolean success = odService.addAll(odlist);
+			if (success == true) {
+				responseJson.put("message", "明細新增成功");
+				responseJson.put("success", true);
+			} else {
+				responseJson.put("message", "明細新增失敗");
+				responseJson.put("success", false);
+				throw new RuntimeException("新增明細失敗"); // 拋出異常來觸發回滾
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
 		return responseJson.toString();
 	}
-	
-	//客戶查看歷史訂單功能
-	//讓顧客進入頁面就一次拿到所有資料，訂單+訂單明細
-	//結構為: json{ "orderlist:{ol1:{"oldata","orderdetail:{od1, od2, od3,...}"}, 
-	//                       ,ol2:{"oldata","orderdetail:{od1, od2, od3,...}"}}", 
-	//在前端頁面控制資料流，可以用modal顯示，也可以直接顯示在該筆訂單下方
-	//傳入參數需要客戶的id
+
+	// 客戶查看歷史訂單功能
+	// 讓顧客進入頁面就一次拿到所有資料，訂單+訂單明細
+	// 結構為: json{ "orderlist:{ol1:{"oldata","orderdetail:{od1, od2, od3,...}"},
+	// ,ol2:{"oldata","orderdetail:{od1, od2, od3,...}"}}",
+	// 在前端頁面控制資料流，可以用modal顯示，也可以直接顯示在該筆訂單下方
+	// 傳入參數需要客戶的id
 	@PostMapping("/order/customerHistory")
 	public String customerHistory(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 		JSONObject data = new JSONObject(json);
 		List<OrderListBean> ols = olService.findOrderByCustomerId(data.getInt("id"));
-		
-		
+
 		return responseJson.toString();
 	}
-	
-	
+
 }

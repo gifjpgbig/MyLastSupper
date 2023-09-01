@@ -23,10 +23,10 @@ public class ShopService {
 
 	@Autowired
 	private ShopRepository shopRepository;
-	
+
 	@Autowired
 	private ShopCategoryRepository shopCategoryRepository;
-	
+
 	@Autowired
 	private OpenHrRepository openHrRepository;
 
@@ -95,17 +95,17 @@ public class ShopService {
 		}
 		return null;
 	}
-	
+
 	public Integer loginValidate(String username, String password) {
 		ShopBean shopBean = shopRepository.findByAccount(username);
-		if(shopBean != null) {
-			if(password.equals(shopBean.getPassword())) {
+		if (shopBean != null) {
+			if (password.equals(shopBean.getPassword())) {
 				return shopBean.getId();
 			}
 		}
 		return -1;
 	}
-	
+
 	public List<ShopBean> batchInsert(List<ShopBean> list) {
 		try {
 			List<ShopBean> beans = shopRepository.saveAll(list);
@@ -115,7 +115,7 @@ public class ShopService {
 		}
 		return null;
 	}
-	
+
 	public List<ShopCategoryBean> catBatchInsert(List<ShopCategoryBean> list) {
 		try {
 			List<ShopCategoryBean> beans = shopCategoryRepository.saveAll(list);
@@ -125,7 +125,7 @@ public class ShopService {
 		}
 		return null;
 	}
-	
+
 	public List<OpenHrBean> openHrBatchInsert(List<OpenHrBean> list) {
 		try {
 			List<OpenHrBean> beans = openHrRepository.saveAll(list);
@@ -135,17 +135,17 @@ public class ShopService {
 		}
 		return null;
 	}
-	
+
 	public Page<ShopBean> findAllPage(String json) {
 		JSONObject obj = new JSONObject(json);
-		
+
 		// Create Pageable
 		Integer start = obj.getInt("start");
 		Integer rows = obj.getInt("rows") == 0 ? Integer.MAX_VALUE : obj.getInt("rows");
 		Sort.Direction sortOrder = obj.getString("sortOrder").equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 		String sortType = obj.getString("sortType");
 		PageRequest pgb = PageRequest.of(start, rows, sortOrder, sortType);
-		
+
 		return shopRepository.findAllPage(pgb);
 	}
 }
