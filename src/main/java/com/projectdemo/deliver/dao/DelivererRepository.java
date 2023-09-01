@@ -45,5 +45,4 @@ public interface DelivererRepository extends JpaRepository<DelivererBean, Intege
 	@Query("from DelivererBean where name like %:n%")
 	Page<DelivererBean> findByNameLike2(@Param("n") String name, Pageable pageable);
 
-	
 }

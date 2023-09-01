@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projectdemo.deliver.bean.DelivererBean;
 import com.projectdemo.deliver.service.DelivererService;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @CrossOrigin()
@@ -29,18 +33,18 @@ public class DelivererController {
 	private DelivererService deService;
 
 //	確認資料存在
-	@PostMapping("/deliverer/name/exists/{name}")
-	public String checkExistsName(@PathVariable(value = "name") String name) {
-		JSONObject responseJson = new JSONObject();
-
-		boolean check = deService.checkIfDelivererExist(name);
-		if (check) {
-			responseJson.put("message", "資料已存在");
-		} else {
-			responseJson.put("message", "資料不存在");
-		}
-		return responseJson.toString();
-	}
+//	@PostMapping("/deliverer/name/exists/{name}")
+//	public String checkExistsName(@PathVariable(value = "name") String name) {
+//		JSONObject responseJson = new JSONObject();
+//
+//		boolean check = deService.checkIfDelivererExist(name);
+//		if (check) {
+//			responseJson.put("message", "資料已存在");
+//		} else {
+//			responseJson.put("message", "資料不存在");
+//		}
+//		return responseJson.toString();
+//	}
 
 //	CRUD:C (沒處理exist問題)
 //	@PostMapping("/deliverer/adddDliverer")
@@ -48,6 +52,20 @@ public class DelivererController {
 //		return deService.addDeliverer(DB);
 //	}
 
+	//外送員登入
+	@PostMapping("/deliverer/login")
+	@ResponseBody
+	public ResponseEntity<?> postLogin(@RequestParam String loginName, @RequestParam String loginPwd, Model model, HttpSession httpSession) {
+		DelivererBean result = deService.login(loginName, loginPwd);
+		
+		if(result!=null) {
+			httpSession.setAttribute("loginMember", result);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>("帳號密碼錯誤或可能不存在", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 //	CRUD:C馬老做法
 	@PostMapping("/deliverer")
 	public ResponseEntity<String> create(@RequestBody String json) {
