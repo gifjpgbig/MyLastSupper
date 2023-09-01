@@ -22,16 +22,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.gson.JsonArray;
 import com.projectdemo.customer.bean.CustomerBean;
 import com.projectdemo.customer.service.CustomerService;
 import com.projectdemo.menu.bean.DishBean;
 import com.projectdemo.menu.service.DishService;
 import com.projectdemo.order.bean.DeliverDetailBean;
+import com.projectdemo.order.bean.Note;
 import com.projectdemo.order.bean.OrderDetailBean;
 import com.projectdemo.order.bean.OrderListBean;
 import com.projectdemo.order.bean.OrderRequest;
 import com.projectdemo.order.service.DeliverDetailService;
+import com.projectdemo.order.service.FirebaseMessagingService;
 import com.projectdemo.order.service.OrderDetailService;
 import com.projectdemo.order.service.OrderListService;
 import com.projectdemo.shop.bean.ShopBean;
@@ -60,6 +63,10 @@ public class OrderListController {
 
 	@Autowired
 	private DishService dishService;
+	
+	@Autowired 
+	private FirebaseMessagingService firebaseService;
+
 
 //	@GetMapping("/order/testpush")
 //	public String testpush() {
@@ -612,9 +619,18 @@ public class OrderListController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-
-		return responseJson.toString();
+		Note note = new Note();
+		note.setSubject(json2);
+		note.setContent(json2);
+//		note.setImage(json2);
+		try {
+			return firebaseService.sendNotification(note, json2);
+		} catch (FirebaseMessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return responseJson.toString();
+		}
+//		return responseJson.toString();
 	}
 
 	// 客戶查看歷史訂單功能
