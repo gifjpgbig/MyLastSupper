@@ -1,15 +1,24 @@
 <template>
     <body class="text-center">
   <main class="form-signin">
+    <div>
+      <img src="../img/LastSupper.png" alt="">
+    </div>
+    <h1 class="h3 mb-3 fw-normal">客服人員管理系統 登入畫面</h1>
+    <div>
+      
+      
+      <button
+      class="btn"
+      type="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+      >
+      <img class="avatar" src="../img/google.png" alt="google login" style="width: 100px; height: 100px;" />
+    </button>
+  </div>
     <form>
-      <img
-        class="mb-4"
-        src="/docs/5.0/assets/brand/bootstrap-logo.svg"
-        alt=""
-        width="72"
-        height="57"
-      />
-      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+     
 
       <div class="form-floating">
         <input
@@ -24,7 +33,7 @@
       <div class="form-floating">
         <input
           type="password"
-          class="form-control"
+          class="form-control form-size"
           id="floatingPassword"
           placeholder="Password"
           v-model="loginForm.password"
@@ -32,12 +41,12 @@
         <label for="floatingPassword">Password</label>
       </div>
 
-      <div class="checkbox mb-3">
+      <div class="checkbox mb-3 form-size">
         <label>
           <input type="checkbox" value="remember-me" /> Remember me
         </label>
       </div>
-      <button class="w-100 btn btn-lg btn-primary" type="button"
+      <button class="w-100 btn btn-lg btn-primary form-size" type="button"
       @click="loginHandler"
       >
         Sign in
