@@ -63,10 +63,9 @@ public class OrderListController {
 
 	@Autowired
 	private DishService dishService;
-	
-	@Autowired 
-	private FirebaseMessagingService firebaseService;
 
+	@Autowired
+	private FirebaseMessagingService firebaseService;
 
 //	@GetMapping("/order/testpush")
 //	public String testpush() {
@@ -114,11 +113,16 @@ public class OrderListController {
 		JSONArray array = new JSONArray();
 		if (orders != null && !orders.isEmpty()) {
 			for (OrderListBean order : orders) {
-				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
-						.put("cus_status", order.getCusStatus()).put("deliver_status", order.getDeliverStatus())
-						.put("shop_status", order.getShopStatus())
-						.put("customerID", order.getCustomer().getCustomerID())
-						.put("customer", order.getCustomer().toString());
+				JSONObject item = new JSONObject()
+						.put("id", order.getId())
+						.put("address", order.getAddress())
+						.put("deliver_status", order.getDeliverStatus())
+						.put("delivery_fee", order.getDeliveryFee())
+						.put("discount", order.getDiscount())
+						.put("order_time", order.getOrderTime())
+						.put("total_price", order.getTotalPrice())
+						.put("shop_status", order.getShopStatus());
+
 				array = array.put(item);
 			}
 		}
@@ -459,7 +463,7 @@ public class OrderListController {
 	// 外送員接單的延伸功能，緊急狀況由客服人員註銷已接單的外送員詳細，應該要放在客服系統
 	// DeliverDetailService.java, OrderListService.java
 	// deliver_detail_id, reason
-	// orderid          , deliver_status
+	// orderid , deliver_status
 	// 註銷成功之後要再推送一次訂單
 //	@Transactional
 	@PutMapping("/order/terminate")
@@ -492,7 +496,7 @@ public class OrderListController {
 	// dd.deliver_time,
 	// ol.id as order_id
 	// ol.delivery_fee,
-	// ol.order_time, 
+	// ol.order_time,
 	// s.address as shop_address,
 	// s.name as shop_name,
 	// 請注意，資料型態是object
@@ -544,29 +548,29 @@ public class OrderListController {
 		return responseJson.toString();
 	}
 
+	
+	
+	
+	
+	
 	// 客戶下單功能
 	// 同時使用兩個新增方法，沒有成功就rollback
 	// 前端將資料格式打包成json包兩個json，一個jobj,一個jarray?
 	private final ObjectMapper objectMapper = new ObjectMapper();
-
 	@Transactional
 	@PostMapping("/order/placeAnOrder")
-	public String placeOrder(
-			@RequestParam("selectedProduct") String json,
+	public String placeOrder(@RequestParam("selectedProduct") String json,
 //			@RequestBody List<OrderRequest> or,
-			@RequestParam("address") String address,
-			@RequestParam("totalPrice") Integer totalPrice,
-			@RequestParam("customerID") Integer customerID,
-			@RequestParam("shopID") Integer shopID,
-			@RequestParam("discount") Integer discount
-			) {
-		
+			@RequestParam("address") String address, @RequestParam("totalPrice") Integer totalPrice,
+			@RequestParam("customerID") Integer customerID, @RequestParam("shopID") Integer shopID,
+			@RequestParam("discount") Integer discount) {
+
 		JSONObject responseJson = new JSONObject();
 		OrderListBean newOl = new OrderListBean();
 
 		ShopBean shop = shopService.findById(shopID);
 		CustomerBean customer = cusService.findCustomerById(customerID);
-		
+
 		newOl.setShop(shop);
 		newOl.setCustomer(customer);
 		newOl.setTotalPrice(totalPrice);
@@ -588,25 +592,25 @@ public class OrderListController {
 		}
 
 		System.out.println(json);
-		String json2 = "["+json+"]";
+		String json2 = "[" + json + "]";
 		try {
 			List<OrderDetailBean> odlist = new ArrayList<>();
 			OrderRequest[] orders = objectMapper.readValue(json2, OrderRequest[].class);
 			System.out.println(orders);
-			 for (OrderRequest order : orders) {
-	                // 在這裡處理每個產品對象
-	                System.out.println(order);
-	    			OrderDetailBean od = new OrderDetailBean();
-	    			
-	    			DishBean dish = dishService.findDishById(order.getId());
-	    			od.setDish(dish);
-	    			od.setOrderList(addOrder);
-	    			od.setAmount(order.getAmount());
-	    			od.setCustomization(order.getCustomization());
-	    			od.setTotalPrice(order.getTotal_price());
-	    			
-	    			odlist.add(od);
-	            }
+			for (OrderRequest order : orders) {
+				// 在這裡處理每個產品對象
+				System.out.println(order);
+				OrderDetailBean od = new OrderDetailBean();
+
+				DishBean dish = dishService.findDishById(order.getId());
+				od.setDish(dish);
+				od.setOrderList(addOrder);
+				od.setAmount(order.getAmount());
+				od.setCustomization(order.getCustomization());
+				od.setTotalPrice(order.getTotal_price());
+
+				odlist.add(od);
+			}
 			boolean success = odService.addAll(odlist);
 			if (success == true) {
 				responseJson.put("message", "明細新增成功");
@@ -616,7 +620,7 @@ public class OrderListController {
 				responseJson.put("success", false);
 				throw new RuntimeException("新增明細失敗"); // 拋出異常來觸發回滾
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
