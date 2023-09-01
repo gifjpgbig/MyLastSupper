@@ -77,7 +77,7 @@ createApp(App)
     maxToasts: 3,
     newestOnTop: true,
     position: 'top-right',
-    timeout: 2000,
+    timeout: 5000,
     closeOnClick: true,
     pauseOnFocusLoss: true,
     pauseOnHover: false,
