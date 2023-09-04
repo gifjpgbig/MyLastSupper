@@ -67,10 +67,10 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
             style="position: absolute; top: 100%; right: 0; left: auto;">
-              <li><a class="dropdown-item" href="#">修改大頭貼</a></li>
+              <!-- <li><a class="dropdown-item" href="#">修改大頭貼</a></li> -->
               <!-- <li><a class="dropdown-item" href="/login">登出</a></li> -->
-              <li><a class="dropdown-item" href="javascript:void(0);" @click="logout()">登出</a></li>
-              <li><a class="dropdown-item" href="javascript:void(0);" @click="logout_google()">登出google</a></li>
+              <!-- <li><a class="dropdown-item" href="javascript:void(0);" @click="logout()">登出</a></li> -->
+              <li><a class="dropdown-item" href="javascript:void(0);" @click="logout_google()">登出</a></li>
             </ul>
           </li>
         </ul>
@@ -108,17 +108,21 @@ const URLAPI= `${URL}cs/findPhoto/`;
 
 const logout_google = function () {
   signOut(auth);
-  Cookies.set('login',{ expires: new Date(0) });
-  Cookies.set('customerServiceID', { expires: new Date(0) });
-  Cookies.set('customerServiceName', { expires: new Date(0) });
+  // Cookies.set('login',{ expires: new Date(0) });
+  // Cookies.set('photo', { expires: new Date(0) });
+  // Cookies.set('name', { expires: new Date(0) });
+  // Cookies.set('photo', { expires: new Date(0) });
+  Cookies.remove('login');
+  Cookies.remove('photo');
+  Cookies.remove('name');
+  Cookies.remove('photo');
   router.push('/login');
 };
 
 const logout = function(){
   console.log('logout')
-  Cookies.set('login',{ expires: new Date(0) });
-  Cookies.set('customerServiceID', { expires: new Date(0) });
-  Cookies.set('customerServiceName', { expires: new Date(0) });
+
+  
   router.push('/login');
 }
 

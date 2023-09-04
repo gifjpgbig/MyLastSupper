@@ -144,21 +144,12 @@ let userInfo = {
   providerId: "",
   uid: "",
   applyText: "",
+  auth : "",
 };
 
 const login = async function () {
   try {
     const result = await signInWithPopup(auth, new GoogleAuthProvider());
-    // Cookies.set("login", JSON.stringify("asds32adsavrAS3Fadf5567"), {
-    //   expires: 1,
-    // });
-    // Cookies.set("customerServiceID", JSON.stringify("101"), { expires: 1 });
-    // Cookies.set("customerServiceName", JSON.stringify("Test Name"), {
-    //   expires: 1,
-    // });
-    // if (Cookies.get("login")) {
-    //   router.push("/home");
-    // }
     const user = result.user;
 
     userInfo.displayName = user.displayName;
@@ -167,7 +158,7 @@ const login = async function () {
     userInfo.photoURL = user.photoURL;
     userInfo.providerId = user.providerId;
     userInfo.uid = user.uid;
-
+    userInfo.auth = user.authorizations;
     console.log("使用者資訊:", user);
 
     const URL = import.meta.env.VITE_API_MANAGE;
@@ -186,6 +177,9 @@ const login = async function () {
       Cookies.set("login", JSON.stringify(userInfo.uid), {
         expires: 1,
       });
+      Cookies.set("auth", JSON.stringify(response.data.userAuth), {
+        expires: 1,
+      });
       Cookies.set("photo", JSON.stringify(userInfo.photoURL), {
         expires: 1,
       });
@@ -195,25 +189,6 @@ const login = async function () {
       //是否是第一次登入
       router.push("/contact");
     }
-
-    // if (response.data.success) {
-    //   alert(response.data.message);
-    //   Cookies.set("login", JSON.stringify("asds32adsavrAS3Fadf5567"), {
-    //     expires: 1,
-    //   });
-    //   Cookies.set("customerServiceID", JSON.stringify(response.data.csID), {
-    //     expires: 1,
-    //   });
-    //   Cookies.set("customerServiceName", JSON.stringify(response.data.csName), {
-    //     expires: 1,
-    //   });
-    //   alert(response.data.csName);
-    //   if (Cookies.get("login")) {
-    //     router.push("/contact");
-    //   }
-    // } else {
-    //   alert(response.data.message);
-    // }
   } catch (error) {
     console.error("登入失敗:", error);
   }

@@ -15,6 +15,7 @@ import EditDeliverer from './views/EditDeliverer.vue';
 import GuestForm from './views/GuestForm.vue'
 import WaitingPage from './views/WaitingPage.vue'
 import Manager from './views/Manager.vue'
+import ClientChat from './views/ClientChat.vue'
 
 const routes = [
     {
@@ -36,12 +37,12 @@ const routes = [
         path: '/about',
         component: About,
         name: 'about',
-         meta: { showNavbar: true, requireAuth: true }
+        meta: { showNavbar: true, requireAuth: true }
     },
     {
         //http://localhost/contact
         path: '/contact',
-        component: Contact, 
+        component: Contact,
         meta: { showNavbar: true, requireAuth: true }
 
     },
@@ -55,21 +56,21 @@ const routes = [
     {
         //http://localhost/orders/add
         path: '/orders/add',
-        component: Add, 
+        component: Add,
         meta: { showNavbar: true, requireAuth: true }
 
     },
     {
         //http://localhost/orders/edit/1
         path: '/orders/edit/:id',
-        component: Edit, 
+        component: Edit,
         meta: { showNavbar: true, requireAuth: true }
 
     },
     {
         //http://localhost/deliver
         path: '/deliver',
-        component: Deliver, 
+        component: Deliver,
         meta: { showNavbar: true, requireAuth: true }
 
     },
@@ -92,48 +93,55 @@ const routes = [
         //http://localhost/chat
         path: '/chat',
         component: Chat,
-        meta: { showNavbar: true,  requireAuth: true } // 显示导航栏
+        meta: { showNavbar: true, requireAuth: true } // 显示导航栏
 
     },
     {
         //http://localhost/deliverer
-        path:'/deliverer',
-        component:Deliverer,
+        path: '/deliverer',
+        component: Deliverer,
         meta: { showNavbar: true, requireAuth: true }
 
     },
     {
         //http://localhost/deliverer/add
-        path:'/deliverer/add',
-        component:AddDeliverer,
+        path: '/deliverer/add',
+        component: AddDeliverer,
         meta: { showNavbar: true, requireAuth: true }
 
     },
     {
         //http://localhost/deliverer/edit/1
-        path:'/deliverer/edit/:id',
-        component:EditDeliverer,
+        path: '/deliverer/edit/:id',
+        component: EditDeliverer,
         meta: { showNavbar: true, requireAuth: true }
 
     },
     {
         //http://localhost/guestForm
-        path:'/guestForm',
-        component:GuestForm,
+        path: '/guestForm',
+        component: GuestForm,
         meta: { showNavbar: false, requireAuth: false }
 
     },
     {
         //http://localhost/waitingPage
-        path:'/waitingPage',
-        component:WaitingPage,
+        path: '/waitingPage',
+        component: WaitingPage,
         meta: { showNavbar: false, requireAuth: false }
 
-    }, 
-       {
+    },
+    {
         //http://localhost/manager
-        path:'/manager',
-        component:Manager,
+        path: '/manager',
+        component: Manager,
+        meta: { showNavbar: true, requireAuth: true }
+
+    }, 
+    {
+        //http://localhost/clientChat
+        path: '/clientChat',
+        component: ClientChat,
         meta: { showNavbar: true, requireAuth: true }
 
     },

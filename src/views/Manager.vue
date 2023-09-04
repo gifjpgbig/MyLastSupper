@@ -46,7 +46,7 @@
       </tbody>
     </table>
   </div>
-  <div>
+  <div v-show="auth[1] === 'manager'">
     <h3>待審核</h3>
     <table class="table table-bordered">
       <thead>
@@ -90,6 +90,8 @@
 import axios from "axios";
 import { reactive, ref } from "vue";
 import GuestFormModal from "../components/GuestFormModal.vue";
+import Cookies from "js-cookie";
+
 
 const managers = ref([]);
 const users = ref([]);
@@ -98,7 +100,9 @@ const URL = import.meta.env.VITE_API_MANAGE;
 let param = {
     uid:""
 }
+const regex = /"([^"]*)"/;
 
+const auth = Cookies.get('auth').match(regex)
 
 
 const loadEmps = async () => {

@@ -1,9 +1,9 @@
 <template>
   <h2>進行中訂單 列表</h2>
 
-  <RouterLink class="btn btn-primary mb-3" to="/orders/add"
+  <!-- <RouterLink class="btn btn-primary mb-3" to="/orders/add"
     ><i class="bi bi-person-add"></i> 新增</RouterLink
-  >
+  > -->
 
   <div class="row mb-3">
     <div class="col-3">
@@ -41,8 +41,8 @@
         <th>店家訂單狀態</th>
         <th>外送訂單狀態</th>
         <!-- <th>訂單狀態</th> -->
-        <th>客戶ID</th>
-        <th>店家ID</th>
+        <th>客戶</th>
+        <th>店家</th>
       </tr>
     </thead>
     <tbody>
@@ -55,6 +55,8 @@
           deliver_status,
           customerID,
           shopID,
+          customerName,
+          shopName,
           showReview,
         } in orders"
         :key="id"
@@ -76,12 +78,12 @@
             </option>
           </select>
         </td> -->
-        <td>{{ customerID }}</td>
-        <td>{{ shopID }}</td>
+        <td>{{ customerName }}</td>
+        <td>{{ shopName }}</td>
         <td>
-          <RouterLink class="btn btn-secondary me-3" :to="'/Orders/edit/' + id"
+          <!-- <RouterLink class="btn btn-secondary me-3" :to="'/Orders/edit/' + id"
             ><i class="bi bi-pencil-fill"></i> 修改</RouterLink
-          >
+          > -->
 
           <button
             class="btn btn-secondary me-3"
@@ -90,7 +92,7 @@
             data-bs-target="#orderModal"
             @click="openOrderDetailsModal(id), (showModal = true)"
           >
-            <i class="bi bi-trash-fill"></i> 詳細
+          <i class="bi bi-list-check"></i> 訂單明細
           </button>
 
           <button
@@ -100,14 +102,14 @@
             data-bs-target="#deliverDetailModal"
             @click="openDeliverDetailsModal(id, status), (showModal = true)"
           >
-            <i class="bi bi-trash-fill"></i> 外送員
+          <i class="bi bi-car-front-fill"></i> 外送歷程
           </button>
 
           <button class="btn btn-danger me-3" @click="deleteHandler(id)">
             <i class="bi bi-trash-fill"></i> 刪除
           </button>
 
-          <button
+          <!-- <button
             v-show="showReview"
             class="btn btn-secondary me-3"
             type="button"
@@ -116,7 +118,7 @@
             @click="openOrderDetailsModal(id), (showModal = true)"
           >
             <i class="bi bi-trash-fill"></i> 意見回饋
-          </button>
+          </button> -->
         </td>
       </tr>
     </tbody>

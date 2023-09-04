@@ -23,10 +23,12 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>數量</th>
-                <th>客製化項目</th>
-                <th>餐點編號</th>
                 <th>訂單編號</th>
+                <th>餐點照片</th>
+                <th>餐點名稱</th>
+                <th>餐點單價</th>
+                <th>客製化項目</th>
+                <th>數量</th>
                 <th>總價</th>
               </tr>
             </thead>
@@ -37,15 +39,22 @@
                   amount,
                   customization,
                   dishID,
+                  dishName,
+                  dishPrice,
                   detailID,
+                  picture,
                   total_price,
                 } in $props.orderdetails"
                 :key="id"
               >
-                <td>{{ amount }}</td>
-                <td>{{ customization }}</td>
-                <td>{{ dishID }}</td>
                 <td>{{ detailID }}</td>
+                <td>
+                  <img :src="picture" alt="" class="avatar">
+                </td>
+                <td>{{ dishName }}</td>
+                <td>{{ dishPrice }}</td>
+                <td>{{ customization }}</td>
+                <td>{{ amount }}</td>
                 <td>{{ total_price }}</td>
               </tr>
             </tbody>
@@ -107,4 +116,10 @@ const closeModalHandler = () => {
 };
 </script>
 
-<style></style>
+<style scoped>
+.avatar {
+  width: 120px;
+  height: 80px;
+  /* border-radius: 50%; */
+}
+</style>

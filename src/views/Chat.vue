@@ -15,7 +15,7 @@
     <div v-for="chat in openedChats">
       <forChat :client="chat"></forChat>
     </div>
-    <button @click="logout">logout</button>
+    <!-- <button @click="logout">logout</button> -->
   </div>
   <div v-else>
     <button @click="login">login</button>

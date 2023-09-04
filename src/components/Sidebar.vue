@@ -15,16 +15,16 @@
               id="menu"
               class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
             >
-              <li class="nav-item">
-                <!-- <a class="nav-link align-middle px-0" href="#">
+              <!-- <li class="nav-item">
+                 <a class="nav-link align-middle px-0" href="#">
                             <i class="fa fa-home fs-4 bi-house"></i>
-                            <span class="ms-1 d-none d-sm-inline">首頁</span></a> -->
+                            <span class="ms-1 d-none d-sm-inline">首頁</span></a> 
 
                 <RouterLink class="nav-link align-middle px-0" to="/home">
                   <i class="fa fa-home fs-4 bi-house"></i>
                   <span class="d-none d-sm-inline"> 首頁</span></RouterLink
                 >
-              </li>
+              </li> -->
 
               <li class="nav-item">
                 <!-- <a class="nav-link px-0 align-middle" href="#"><i class="fa fa-table fs-4 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a> -->
@@ -72,8 +72,14 @@
                   > 外送員管理</RouterLink
                 >
               </li>
-              <li>
+              <li v-if="auth[1] === 'manager'">
                 <RouterLink class="nav-link align-middle px-0" to="/chat">
+                  <i class="fa fa-table fs-4 bi-people"></i>
+                  <span class="d-none d-sm-inline"> 即時訊息</span></RouterLink
+                >
+              </li>
+              <li v-else>
+                <RouterLink class="nav-link align-middle px-0" to="/clientChat">
                   <i class="fa fa-table fs-4 bi-people"></i>
                   <span class="d-none d-sm-inline"> 即時訊息</span></RouterLink
                 >
@@ -127,7 +133,13 @@
   </aside>
 </template>
 
-<script setup></script>
+<script setup>
+  import Cookies from 'js-cookie';
+  const regex = /"([^"]*)"/;
+  const auth = Cookies.get('auth').match(regex)
+
+
+</script>
 
 <style scoped>
 .sidebar {

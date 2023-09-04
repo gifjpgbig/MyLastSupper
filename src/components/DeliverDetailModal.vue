@@ -25,8 +25,8 @@
               <tr>
                 <th>編號</th>
                 <th>客戶地址</th>
-                <th>抵達時間</th>
-                <th>運送時間</th>
+                <!-- <th>抵達時間</th> -->
+                <!-- <th>運送時間</th> -->
                 <th>外送員姓名</th>
                 <th>是否被棄單</th>
                 <th>棄單原因</th>
@@ -47,12 +47,12 @@
               >
                 <td>{{ id }}</td>
                 <td>{{ address }}</td>
-                <td>{{ arriveTime }}</td>
-                <td>{{ deliverTime }}</td>
+                <!-- <td>{{ arriveTime }}</td> -->
+                <!-- <td>{{ deliverTime }}</td> -->
                 <td>{{ driverName }}</td>
                 <td>{{ isCancel }}</td>
                 <td>{{ reason }}</td>
-                <td>
+                <!-- <td>
 
                 <button 
                 v-if="!isCancel"
@@ -65,7 +65,7 @@
                 >
                   <i class="bi bi-trash-fill"></i> 註銷
                 </button>
-              </td>
+              </td> -->
               </tr>
             </tbody>
           </table>

@@ -32,8 +32,8 @@ import "vue-toastification/dist/index.css";
 import VueClickAway from "vue3-click-away";
 import Cookies from "js-cookie";
 import { NProgress } from "nprogress";
-import Vueform from '@vueform/vueform/plugin'
-import vueformConfig from './../vueform.config'
+// import Vueform from '@vueform/vueform/plugin'
+// import vueformConfig from './../vueform.config'
 import './index.scss'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -85,7 +85,7 @@ createApp(App)
   .use(VueSweetalert2)
   .use(pinia)
   .use(VueClickAway)
-  .use(Vueform, vueformConfig)
+  // .use(Vueform, vueformConfig)
   .use(ElementPlus, {size: 'small', zIndex:3000})
   .use(Toast, {
     transition: "Vue-Toastification__bounce",
