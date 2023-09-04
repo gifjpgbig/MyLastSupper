@@ -29,23 +29,23 @@ public class CustomerServiceController {
 	@Autowired
 	private CustomerServiceService csService;
 
-	private final SimpMessagingTemplate messagingTemplate;
+//	private final SimpMessagingTemplate messagingTemplate;
+//
+//	@Autowired
+//	public CustomerServiceController(SimpMessagingTemplate messagingTemplate) {
+//		this.messagingTemplate = messagingTemplate;
+//	}
 
-	@Autowired
-	public CustomerServiceController(SimpMessagingTemplate messagingTemplate) {
-		this.messagingTemplate = messagingTemplate;
-	}
-
-	// websocket傳送訊息到前端
-	@PostMapping("/approve")
-	public String approveApplication(@RequestBody String json) {
-		// 执行审核逻辑，假设审核通过
-		// boolean isApproved = true;
-
-		// 发送审核结果到特定主题
-		messagingTemplate.convertAndSend("/topic/audit", "helllllllllllllllo bitchhhhhhh websuckit");
-		return "fuckkkkkkkkkkkkkkkkkkkkk";
-	}
+//	// websocket傳送訊息到前端
+//	@PostMapping("/approve")
+//	public String approveApplication(@RequestBody String json) {
+//		// 执行审核逻辑，假设审核通过
+//		// boolean isApproved = true;
+//
+//		// 发送审核结果到特定主题
+//		messagingTemplate.convertAndSend("/topic/audit", "helllllllllllllllo bitchhhhhhh websuckit");
+//		return "fuckkkkkkkkkkkkkkkkkkkkk";
+//	}
 
 	//審核成功
 	@PutMapping("/manage/cs/newman")

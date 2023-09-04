@@ -62,7 +62,9 @@ public class OrderDetailController {
 						.put("customization", order.getCustomization())
 						.put("dishID", dishID)
 						.put("dishName", order.getDish().getName())
+						.put("dishPrice", order.getDish().getPrice())
 						.put("detailID", detailID)
+						.put("picture", order.getDish().getPicture())
 						.put("total_price", order.getTotalPrice());
 				array = array.put(item);
 			}

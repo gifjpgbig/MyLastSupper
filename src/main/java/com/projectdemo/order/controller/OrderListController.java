@@ -450,7 +450,9 @@ public class OrderListController {
 				JSONObject item = new JSONObject().put("id", order.getId()).put("address", order.getAddress())
 						.put("cus_status", order.getCusStatus()).put("deliver_status", order.getDeliverStatus())
 						.put("shop_status", order.getShopStatus()).put("customerID", cusID).put("shopID", shopID)
-						.put("showReview", show);
+						.put("showReview", show)
+						.put("customerName", order.getCustomer().getName())
+						.put("shopName", order.getShop().getName());
 
 				array = array.put(item);
 			}

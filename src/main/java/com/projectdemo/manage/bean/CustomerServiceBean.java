@@ -31,7 +31,7 @@ public class CustomerServiceBean {
 	@Column(name = "name", columnDefinition = "nvarchar(12)")
 	private String name;
 
-	@Column(name = "account", columnDefinition = "varchar(20)")
+	@Column(name = "account", columnDefinition = "varchar(50)")
 	private String account;
 
 	@Column(name = "password", columnDefinition = "varchar(20)")
