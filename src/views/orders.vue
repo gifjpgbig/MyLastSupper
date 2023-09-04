@@ -1,5 +1,5 @@
 <template>
-  <h2>Customer Service Order List</h2>
+  <h2>進行中訂單 列表</h2>
 
   <RouterLink class="btn btn-primary mb-3" to="/orders/add"
     ><i class="bi bi-person-add"></i> 新增</RouterLink
@@ -221,6 +221,7 @@ watch(showModal, (newVal) => {
 watch(receivedData, (newVal) => {
   if (newVal) {
     loadOrders();
+    
     receivedData = false;
   }
 });

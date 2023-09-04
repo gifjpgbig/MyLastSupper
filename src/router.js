@@ -12,6 +12,9 @@ import Chat from './views/Chat.vue';
 import Deliverer from './views/Deliverer.vue';
 import AddDeliverer from './views/AddDeliverer.vue';
 import EditDeliverer from './views/EditDeliverer.vue';
+import GuestForm from './views/GuestForm.vue'
+import WaitingPage from './views/WaitingPage.vue'
+import Manager from './views/Manager.vue'
 
 const routes = [
     {
@@ -113,7 +116,27 @@ const routes = [
         meta: { showNavbar: true, requireAuth: true }
 
     },
+    {
+        //http://localhost/guestForm
+        path:'/guestForm',
+        component:GuestForm,
+        meta: { showNavbar: false, requireAuth: false }
 
+    },
+    {
+        //http://localhost/waitingPage
+        path:'/waitingPage',
+        component:WaitingPage,
+        meta: { showNavbar: false, requireAuth: false }
+
+    }, 
+       {
+        //http://localhost/manager
+        path:'/manager',
+        component:Manager,
+        meta: { showNavbar: true, requireAuth: true }
+
+    },
 ]
 
 const router = createRouter({

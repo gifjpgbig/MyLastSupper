@@ -71,6 +71,7 @@ export default {
   },
   mounted() {
     const loginListener = auth.onAuthStateChanged((user) => {
+      console.log("userInChat:"+user)
       if (user != null) {
         this.loggedin = true;
         this.title = "welcome";
@@ -80,6 +81,7 @@ export default {
         this.userInfo.photoURL = user.photoURL;
         this.userInfo.providerId = user.providerId;
         this.userInfo.uid = user.uid;
+        console.log("userInfoInChat="+this.userInfo.photoURL)
         const chatSnapshot = onSnapshot(
           query(collection(db, "chats"), orderBy("date", "desc")),
           (snapshot) => {
@@ -88,6 +90,8 @@ export default {
             });
           },
           (error) => {
+            console.log(error)
+            console.log(error.code)
             if (this.loggedin && error.code.includes("permission")) {
               this.title = "you are not admin !";
             }
