@@ -1,5 +1,6 @@
 package com.projectdemo.manage.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.json.JSONObject;
@@ -8,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.projectdemo.manage.bean.CustomerServiceBean;
 import com.projectdemo.manage.dao.CustomerServiceRepository;
-import com.projectdemo.order.bean.DeliverDetailBean;
-import com.projectdemo.shop.bean.ShopBean;
 
 @Configuration
 public class CustomerServiceService {
@@ -52,5 +51,50 @@ public class CustomerServiceService {
 	}
 	
 	
+	public CustomerServiceBean isExists(String uid) {
+		CustomerServiceBean csb = csRepo.findCSBByUID(uid);
+		if(csb != null) {
+			return csb;
+		}else {
+			return null;
+		}
+	}
 	
+	public CustomerServiceBean createNewBean(CustomerServiceBean csb) {
+		csb.setAuthorizations("guest");
+		csb.setFirstLogin(true);
+		return csRepo.save(csb);
+	}
+	
+	public CustomerServiceBean updateApplyText(CustomerServiceBean csb, String apply) {
+		csb.setApplyText(apply);
+		return csRepo.save(csb);
+	}
+
+	public CustomerServiceBean updateReplyText(CustomerServiceBean csb, String reply) {
+		csb.setReplyText(reply);
+		return csRepo.save(csb);
+	}
+	
+	public CustomerServiceBean updateAuth(CustomerServiceBean csb, String auth) {
+		csb.setAuthorizations(auth);
+		return csRepo.save(csb);
+	}
+	
+	public CustomerServiceBean updateLoginStatus(CustomerServiceBean csb) {
+		csb.setFirstLogin(false);
+		return csRepo.save(csb);
+	}
+	
+	public List<CustomerServiceBean> findManager(){
+		return csRepo.findByAuth("Manager");
+	}
+	
+	public List<CustomerServiceBean> findUser(){
+		return csRepo.findByAuth("user");
+	}
+	
+	public List<CustomerServiceBean> findGuest(){
+		return csRepo.findByAuth("guest");
+	}	
 }
